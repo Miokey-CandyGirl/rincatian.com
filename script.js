@@ -56,13 +56,17 @@ document.addEventListener('DOMContentLoaded', function() {
             z-index: 99999;
         `;
         modal.innerHTML = `
-            <div style="background: #fff; border-radius: 12px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
-                <h2 style="color: #1a237e; margin-bottom: 16px;">QQ社区</h2>
-                <p style="font-size: 1.2rem; color: #333; margin-bottom: 24px;">QQ群号：<b>1234567890</b></p>
-                <button style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="this.closest('div[style*=\'fixed\']').remove()">关闭</button>
+            <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
+                <h2 style="color: #ffd700; margin-bottom: 16px;">QQ社区</h2>
+                <p style="font-size: 1.2rem; color: #fff; margin-bottom: 24px;">QQ群号：<b style='color:#ffd700;'>1234567890</b></p>
+                <button id="qqModalCloseBtn" style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;">关闭</button>
             </div>
         `;
         document.body.appendChild(modal);
+        // 绑定关闭事件
+        document.getElementById('qqModalCloseBtn').onclick = function() {
+            modal.remove();
+        };
     }, 500);
 });
 
@@ -1530,7 +1534,7 @@ function updateDailyWordDisplay(word) {
         linkaitiya: document.getElementById('dailyWordLinkaitiya'),
         pronunciation: document.getElementById('dailyWordPronunciation'),
         chinese: document.getElementById('dailyWordChinese'),
-        type: document.getElementById('dailyWordType'),
+        type: document.getElementById('dailyWordType',
         example: document.getElementById('dailyWordExample'),
         exampleChinese: document.getElementById('dailyWordExampleChinese')
     };
