@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光线使者社区 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="floating-particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">琳凯蒂亚语社区</span>
+                    <span class="logo-english">Rincatian Community</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="grammar.html">语法</a></li>
+                <li><a href="dictionary.html">词典</a></li>
+                <li><a href="culture.html">文化</a></li>
+                <li><a href="community.html" class="active">社区</a></li>
+            <!--    <li><a href="admin.html" class="admin-link" id="adminNav" style="display: none;">管理</a></li>  -->
+            </ul>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="community-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">光线使者社区</h1>
+            <p class="hero-subtitle">与来自琳凯蒂亚星球的伙伴们一起探索魔法语言的奥秘</p>
+            <div class="community-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-label">光线使者</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalPosts">0</div>
+                    <div class="stat-label">魔法留言</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="onlineUsers">0</div>
+                    <div class="stat-label">在线探索者</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="community-main">
+        <div class="community-container">
+            <!-- 社区导航 -->
+            <nav class="community-nav">
+                <ul class="nav-tabs">
+                    <li><a href="#" class="nav-tab active" data-tab="discussions">讨论广场</a></li>
+                    <li><a href="#" class="nav-tab" data-tab="learning">学习交流</a></li>
+                    <li><a href="#" class="nav-tab" data-tab="translation">翻译练习</a></li>
+                    <li><a href="#" class="nav-tab" data-tab="events">星球活动</a></li>
+                    <li><a href="#" class="nav-tab" data-tab="resources">资源分享</a></li>
+                </ul>
+            </nav>
+
+            <div class="community-content">
+                <!-- 讨论广场 -->
+                <section id="discussions" class="community-section active">
+                    <div class="section-header">
+                        <h2>讨论广场</h2>
+                        <button class="btn btn-primary" id="newPostBtn">
+                            <span class="icon">✨</span>
+                            发布新话题
+                        </button>
+                    </div>
+
+                    <div class="posts-container">
+                        <div class="post-filters">
+                            <button class="filter-btn active" data-filter="all">全部</button>
+                            <button class="filter-btn" data-filter="hot">热门</button>
+                            <button class="filter-btn" data-filter="latest">最新</button>
+                            <button class="filter-btn" data-filter="unanswered">待回复</button>
+                        </div>
+
+                        <div class="posts-list" id="postsList">
+                            <!-- 帖子将通过JavaScript动态加载 -->
+                        </div>
+
+                        <div class="load-more">
+                            <button class="btn btn-outline" id="loadMoreBtn">加载更多</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 学习交流 -->
+                <section id="learning" class="community-section">
+                    <div class="section-header">
+                        <h2>学习交流</h2>
+                        <div class="study-tools">
+                            <button class="btn btn-secondary" id="studyGroupBtn">加入学习小组</button>
+                            <button class="btn btn-secondary" id="studyProgressBtn">学习进度</button>
+                        </div>
+                    </div>
+
+                    <div class="learning-content">
+                        <div class="study-groups">
+                            <h3>活跃学习小组</h3>
+                            <div class="groups-grid" id="studyGroups">
+                                <!-- 学习小组将通过JavaScript动态加载 -->
+                            </div>
+                        </div>
+
+                        <div class="study-challenges">
+                            <h3>每日挑战</h3>
+                            <div class="challenge-card" id="dailyChallenge">
+                                <!-- 每日挑战内容 -->
+                            </div>
+                        </div>
+
+                        <div class="study-leaderboard">
+                            <h3>学习排行榜</h3>
+                            <div class="leaderboard-list" id="leaderboard">
+                                <!-- 排行榜将通过JavaScript动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 翻译练习 -->
+                <section id="translation" class="community-section">
+                    <div class="section-header">
+                        <h2>翻译练习</h2>
+                        <button class="btn btn-primary" id="newTranslationBtn">提交翻译</button>
+                    </div>
+
+                    <div class="translation-content">
+                        <div class="translation-challenges">
+                            <h3>翻译挑战</h3>
+                            <div class="challenges-list" id="translationChallenges">
+                                <!-- 翻译挑战将通过JavaScript动态加载 -->
+                            </div>
+                        </div>
+
+                        <div class="translation-showcase">
+                            <h3>优秀翻译展示</h3>
+                            <div class="showcase-list" id="translationShowcase">
+                                <!-- 优秀翻译将通过JavaScript动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 星球活动 -->
+                <section id="events" class="community-section">
+                    <div class="section-header">
+                        <h2>星球活动</h2>
+                        <button class="btn btn-primary" id="createEventBtn">创建活动</button>
+                    </div>
+
+                    <div class="events-content">
+                        <div class="upcoming-events">
+                            <h3>即将开始</h3>
+                            <div class="events-grid" id="upcomingEvents">
+                                <!-- 即将开始的活动 -->
+                            </div>
+                        </div>
+
+                        <div class="ongoing-events">
+                            <h3>正在进行</h3>
+                            <div class="events-grid" id="ongoingEvents">
+                                <!-- 正在进行的活动 -->
+                            </div>
+                        </div>
+
+                        <div class="past-events">
+                            <h3>往期回顾</h3>
+                            <div class="events-grid" id="pastEvents">
+                                <!-- 往期活动 -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 资源分享 -->
+                <section id="resources" class="community-section">
+                    <div class="section-header">
+                        <h2>资源分享</h2>
+                        <button class="btn btn-primary" id="shareResourceBtn">分享资源</button>
+                    </div>
+
+                    <div class="resources-content">
+                        <div class="resource-categories">
+                            <div class="category-tabs">
+                                <button class="category-tab active" data-category="all">全部</button>
+                                <button class="category-tab" data-category="grammar">语法资料</button>
+                                <button class="category-tab" data-category="vocabulary">词汇表</button>
+                                <button class="category-tab" data-category="exercises">练习题</button>
+                                <button class="category-tab" data-category="tools">学习工具</button>
+                                <button class="category-tab" data-category="media">音视频</button>
+                            </div>
+                        </div>
+
+                        <div class="resources-grid" id="resourcesList">
+                            <!-- 资源列表将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 侧边栏 -->
+            <aside class="community-sidebar">
+                <div class="sidebar-widget online-users">
+                    <h3>在线光线使者</h3>
+                    <div class="online-list" id="onlineUsersList">
+                        <!-- 在线用户列表 -->
+                    </div>
+                </div>
+
+                <div class="sidebar-widget recent-activity">
+                    <h3>最新动态</h3>
+                    <div class="activity-list" id="recentActivity">
+                        <!-- 最新动态 -->
+                    </div>
+                </div>
+
+                <div class="sidebar-widget community-rules">
+                    <h3>社区守则</h3>
+                    <div class="rules-content">
+                        <ul>
+                            <li>🌟 尊重每一位光线使者</li>
+                            <li>✨ 友善交流，共同进步</li>
+                            <li>🔮 分享知识，传播光明</li>
+                            <li>🌙 保护社区和谐氛围</li>
+                            <li>💎 禁止恶意灌水和广告</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- 模态框 -->
+    <!-- 登录模态框 -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>光线使者登录</h3>
+                <button class="close-btn" data-modal="loginModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">邮箱/用户名</label>
+                        <input type="text" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">密码</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="rememberMe">
+                            <span>记住我</span>
+                        </label>
+                        <a href="#" class="forgot-password">忘记密码？</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">进入星球</button>
+                </form>
+                <div class="modal-footer">
+                    <p>还没有账号？<a href="#" id="switchToRegister">立即注册</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>成为光线使者</h3>
+                <button class="close-btn" data-modal="registerModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerUsername">用户名</label>
+                        <input type="text" id="registerUsername" required>
+                        <span class="form-hint">3-20个字符，支持中英文</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">邮箱</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">密码</label>
+                        <input type="password" id="registerPassword" required>
+                        <span class="form-hint">至少6个字符</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">确认密码</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userType">选择您的身份</label>
+                        <select id="userType">
+                            <option value="learner">语言学习者</option>
+                            <option value="teacher">语言导师</option>
+                            <option value="translator">翻译探索者</option>
+                            <option value="researcher">语言研究者</option>
+                        </select>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <span>我同意<a href="#">服务条款</a>和<a href="#">隐私政策</a></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">加入星球</button>
+                </form>
+                <div class="modal-footer">
+                    <p>已有账号？<a href="#" id="switchToLogin">立即登录</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布话题模态框 -->
+    <div class="modal" id="newPostModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>发布新话题</h3>
+                <button class="close-btn" data-modal="newPostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="newPostForm">
+                    <div class="form-group">
+                        <label for="postTitle">标题</label>
+                        <input type="text" id="postTitle" placeholder="请输入话题标题..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postCategory">分类</label>
+                        <select id="postCategory">
+                            <option value="general">一般讨论</option>
+                            <option value="grammar">语法问题</option>
+                            <option value="vocabulary">词汇学习</option>
+                            <option value="culture">文化交流</option>
+                            <option value="translation">翻译讨论</option>
+                            <option value="resources">资源分享</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postContent">内容</label>
+                        <textarea id="postContent" rows="8" placeholder="分享您的想法..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postTags">标签</label>
+                        <input type="text" id="postTags" placeholder="请输入标签，用逗号分隔">
+                        <span class="form-hint">例如：语法,初学者,疑问</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">发布话题</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：1234567890</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="ai-translation.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+</body>
+</html>

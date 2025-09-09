@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>认证状态跨页面测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 70%, #533483 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Noto Sans SC', sans-serif;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(26, 35, 126, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        .test-button {
+            background: linear-gradient(45deg, #ffd700, #4ecdc4);
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .status.success { background: rgba(76, 175, 80, 0.2); border-left: 3px solid #4caf50; }
+        .status.error { background: rgba(244, 67, 54, 0.2); border-left: 3px solid #f44336; }
+        .status.info { background: rgba(33, 150, 243, 0.2); border-left: 3px solid #2196f3; }
+        .page-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .page-link {
+            background: linear-gradient(45deg, #7b1fa2, #00bcd4);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .page-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(123, 31, 162, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 复制导航栏以测试认证状态 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">琳凯蒂亚语社区</span>
+                    <span class="logo-english">Rincatian Community</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="grammar.html">语法</a></li>
+                <li><a href="culture.html">文化</a></li>
+                <li><a href="dictionary.html">词典</a></li>
+                <li><a href="community.html">社区</a></li>
+                <li><a href="admin.html" class="admin-link" id="adminNav" style="display: none;">管理</a></li>
+            </ul>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container" style="margin-top: 120px;">
+        <h1>🧪 认证状态跨页面测试</h1>
+        <p>此页面用于测试用户登录后在不同页面间切换时认证状态是否正确保持。</p>
+
+        <div class="test-section">
+            <h3>🔐 当前认证状态</h3>
+            <div id="authStatus" class="status info">检查中...</div>
+            <button class="test-button" onclick="checkAuthStatus()">刷新状态</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🧪 测试操作</h3>
+            <button class="test-button" onclick="testLogin()">测试管理员登录</button>
+            <button class="test-button" onclick="testUserLogin()">测试普通用户登录</button>
+            <button class="test-button" onclick="testLogout()">测试退出登录</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🌐 页面跳转测试</h3>
+            <p>请在登录后点击以下链接测试认证状态是否保持：</p>
+            <div class="page-links">
+                <a href="index.html" class="page-link">首页</a>
+                <a href="dictionary.html" class="page-link">词典</a>
+                <a href="grammar.html" class="page-link">语法</a>
+                <a href="culture.html" class="page-link">文化</a>
+                <a href="community.html" class="page-link">社区</a>
+                <a href="admin.html" class="page-link">管理后台</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 测试日志</h3>
+            <div id="testLog" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">
+                准备开始测试...<br>
+            </div>
+            <button class="test-button" onclick="clearLog()">清空日志</button>
+        </div>
+    </div>
+
+    <!-- 引入必要的脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // 日志记录
+        function log(message) {
+            const logDiv = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[认证测试] ${message}`);
+        }
+
+        // 检查认证状态
+        function checkAuthStatus() {
+            const statusDiv = document.getElementById('authStatus');
+            
+            if (!window.authSystem) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ 认证系统未加载';
+                log('错误：认证系统未加载');
+                return;
+            }
+
+            if (window.authSystem.currentUser) {
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    ✅ 已登录<br>
+                    👤 用户：${window.authSystem.currentUser.username}<br>
+                    🎭 角色：${window.authSystem.currentUser.role}<br>
+                    🔐 权限：${window.authSystem.currentUser.permissions ? window.authSystem.currentUser.permissions.join(', ') : '无'}
+                `;
+                log(`用户已登录：${window.authSystem.currentUser.username} (${window.authSystem.currentUser.role})`);
+            } else {
+                statusDiv.className = 'status info';
+                statusDiv.innerHTML = '⚠️ 未登录';
+                log('用户未登录');
+            }
+        }
+
+        // 测试管理员登录
+        async function testLogin() {
+            try {
+                log('开始测试管理员登录...');
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+
+                if (result.success) {
+                    log('✅ 管理员登录成功');
+                    checkAuthStatus();
+                } else {
+                    log('❌ 登录失败：' + result.message);
+                }
+            } catch (error) {
+                log('❌ 登录错误：' + error.message);
+            }
+        }
+
+        // 测试普通用户登录
+        async function testUserLogin() {
+            try {
+                log('开始测试普通用户登录...');
+                
+                // 先注册用户
+                const registerResult = await window.authSystem.register({
+                    username: 'testuser' + Date.now(),
+                    email: 'test@example.com',
+                    password: 'test123',
+                    role: 'user'
+                });
+
+                if (registerResult.success) {
+                    log('✅ 普通用户注册/登录成功');
+                    checkAuthStatus();
+                } else {
+                    log('❌ 注册失败：' + registerResult.message);
+                }
+            } catch (error) {
+                log('❌ 注册错误：' + error.message);
+            }
+        }
+
+        // 测试退出登录
+        function testLogout() {
+            try {
+                log('开始测试退出登录...');
+                const result = window.authSystem.logout();
+                
+                if (result.success) {
+                    log('✅ 退出登录成功');
+                    checkAuthStatus();
+                } else {
+                    log('❌ 退出失败');
+                }
+            } catch (error) {
+                log('❌ 退出错误：' + error.message);
+            }
+        }
+
+        // 清空日志
+        function clearLog() {
+            document.getElementById('testLog').innerHTML = '日志已清空...<br>';
+        }
+
+        // 页面加载完成后检查状态
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面加载完成，开始检查认证状态...');
+            
+            // 等待认证系统初始化
+            setTimeout(() => {
+                checkAuthStatus();
+                log('认证状态检查完成');
+            }, 500);
+        });
+
+        // 监听认证状态变化
+        window.addEventListener('userLogin', function(event) {
+            log('监听到用户登录事件：' + event.detail.user.username);
+            checkAuthStatus();
+        });
+
+        window.addEventListener('userLogout', function() {
+            log('监听到用户退出事件');
+            checkAuthStatus();
+        });
+    </script>
+</body>
+</html>

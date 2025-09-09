@@ -1,0 +1,24 @@
+{
+  "name": "Rincatian-language-community",
+  "version": "1.0.0",
+  "description": "琳凯蒂亚语社区网站",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "http-server . -p 3000"
+  },
+  "keywords": [
+    "琳凯蒂亚语",
+    "人造语言",
+    "光线传奇",
+    "魔法语言"
+  ],
+  "author": "琳凯蒂亚语社区",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "http-server": "^14.1.1"
+  }
+}

@@ -1,0 +1,1447 @@
+/* 琳凯蒂亚语语法页面专用样式 */
+
+/* 语法页面英雄区域 */
+.grammar-hero {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(135deg, 
+        rgba(26, 35, 126, 0.9) 0%, 
+        rgba(40, 53, 147, 0.8) 50%, 
+        rgba(63, 81, 181, 0.7) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffd700" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+    text-align: center;
+    position: relative;
+}
+
+.page-title {
+    font-size: 3.5rem;
+    color: var(--star-gold);
+    text-shadow: var(--magic-glow);
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.page-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* 导航标签 */
+.grammar-navigation {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 2rem 0;
+    position: sticky;
+    top: 80px;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.grammar-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 25px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.tab-btn.active {
+    background: linear-gradient(45deg, var(--star-gold), var(--magic-purple));
+    border-color: var(--star-gold);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.tab-btn:hover::before {
+    left: 100%;
+}
+
+/* 语法内容区域 */
+.grammar-content {
+    padding: 4rem 0;
+}
+
+.grammar-section {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.grammar-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: var(--star-gold);
+    text-align: center;
+    margin-bottom: 3rem;
+    text-shadow: var(--magic-glow);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--crystal-cyan), var(--star-gold), var(--magic-purple));
+    border-radius: 2px;
+}
+
+/* 语法卡片 */
+.grammar-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.grammar-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--crystal-cyan), var(--star-gold), var(--magic-purple));
+}
+
+.grammar-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2);
+    border-color: var(--star-gold);
+}
+
+.grammar-card h3 {
+    color: var(--crystal-cyan);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.grammar-card h3::before {
+    content: '✦';
+    color: var(--star-gold);
+    font-size: 1.2rem;
+}
+
+/* 数词系统样式 */
+.number-system {
+    margin-top: 2rem;
+}
+
+.number-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.number-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 188, 212, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.number-item:hover {
+    background: rgba(0, 188, 212, 0.2);
+    transform: scale(1.05);
+    border-color: var(--crystal-cyan);
+}
+
+.num {
+    color: var(--star-gold);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.word {
+    color: var(--crystal-cyan);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.prefix-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.prefix-item {
+    background: rgba(123, 31, 162, 0.1);
+    border: 1px solid rgba(123, 31, 162, 0.3);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.prefix-item:hover {
+    background: rgba(123, 31, 162, 0.2);
+    transform: translateY(-3px);
+}
+
+.prefix {
+    display: block;
+    color: var(--magic-purple);
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-family: 'Courier New', monospace;
+}
+
+.meaning {
+    display: block;
+    color: var(--crystal-cyan);
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.example {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* 量名词系统样式 */
+.quantity-system {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+.quantity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.quantity-category {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.quantity-category h5 {
+    color: var(--star-gold);
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.quantity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--crystal-cyan);
+}
+
+.quantity {
+    color: var(--crystal-cyan);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    min-width: 80px;
+}
+
+.quantity-examples {
+    margin-top: 2rem;
+}
+
+.concept-quantity {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.concept-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--magic-purple);
+}
+
+.concept {
+    color: var(--magic-purple);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+/* 代词系统扩展样式 */
+.pronoun-comprehensive-table {
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.pronoun-comprehensive-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.pronoun-comprehensive-table th,
+.pronoun-comprehensive-table td {
+    padding: 1rem 0.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    vertical-align: top;
+}
+
+.pronoun-comprehensive-table th {
+    background: rgba(0, 188, 212, 0.3);
+    color: var(--crystal-cyan);
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.pronoun-comprehensive-table td {
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+.pronoun-comprehensive-table td strong {
+    color: var(--star-gold);
+    font-size: 0.9rem;
+}
+
+.comprehensive-pronouns {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(0, 188, 212, 0.2);
+}
+
+.additional-pronouns {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(123, 31, 162, 0.2);
+}
+
+.additional-pronoun-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.additional-category {
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.additional-category h5 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.additional-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--magic-purple);
+}
+
+.additional-word {
+    color: var(--magic-purple);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    min-width: 80px;
+}
+
+.additional-meaning {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+/* 连词系统扩展样式 */
+.conjunction-examples-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+.conjunction-example-sentences {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.conjunction-example-sentences .example-sentence {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--star-gold);
+}
+
+.conjunction-examples .conj-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--star-gold);
+}
+
+.conj {
+    color: var(--star-gold);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 1rem;
+}
+
+.conjunction-examples .meaning {
+    color: var(--crystal-cyan);
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.conjunction-examples .example {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.conjunction-category p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.analysis {
+    display: block;
+    color: var(--magic-purple);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid var(--magic-purple);
+    font-style: italic;
+}
+
+/* 特色网格 */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-3px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item h4 {
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+/* 语法结构显示 */
+.syntax-example {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--star-gold);
+}
+
+.syntax-pattern {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 1.1rem;
+}
+
+.subject { color: var(--crystal-cyan); font-weight: bold; }
+.modifier { color: var(--magic-purple); font-weight: bold; }
+.verb { color: var(--star-gold); font-weight: bold; }
+.object { color: var(--light-blue); font-weight: bold; }
+.connector { color: var(--text-secondary); font-size: 1.5rem; }
+
+/* 字母表显示 */
+.alphabet-section {
+    margin: 2rem 0;
+}
+
+.alphabet-section h4 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.alphabet-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.letter-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.letter {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 188, 212, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--star-gold);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.letter:hover {
+    background: rgba(0, 188, 212, 0.2);
+    border-color: var(--crystal-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+}
+
+/* 转写方案显示 */
+.transcription-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.transcription-item {
+    background: rgba(123, 31, 162, 0.1);
+    border: 1px solid rgba(123, 31, 162, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.transcription-item:hover {
+    background: rgba(123, 31, 162, 0.2);
+    transform: scale(1.05);
+}
+
+.original {
+    color: var(--star-gold);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.transcribed {
+    color: var(--crystal-cyan);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* 组件样式 */
+.component {
+    background: var(--magic-purple);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.note {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-left: 4px solid var(--star-gold);
+    border-radius: 5px;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+.phonetic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.phonetic-category {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+}
+
+.phonetic-category h4 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+}
+
+.sound-example {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sound {
+    font-family: 'Courier New', monospace;
+    color: var(--star-gold);
+    font-weight: bold;
+}
+
+.meaning {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 词类分类样式 */
+.word-class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.word-class-category {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.word-class-category h4 {
+    color: var(--star-gold);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--crystal-cyan);
+}
+
+.class-name {
+    color: var(--crystal-cyan);
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.class-desc {
+    color: var(--text-secondary);
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+/* 转义词尾表格 */
+.word-ending-table {
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+.word-ending-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.word-ending-table th,
+.word-ending-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.word-ending-table th {
+    background: rgba(255, 215, 0, 0.2);
+    color: var(--star-gold);
+    font-weight: bold;
+}
+
+/* 词汇示例 */
+.example-section {
+    margin-top: 2rem;
+}
+
+.example-section h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+}
+
+.word-example {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.base-word,
+.derived-word {
+    background: var(--accent-blue);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.derived-word {
+    background: var(--crystal-cyan);
+}
+
+.arrow {
+    color: var(--star-gold);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 抒情词样式 */
+.emotion-words {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.emotion-category {
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.emotion-category h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.word-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.word-item .word {
+    color: var(--star-gold);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    min-width: 60px;
+}
+
+.word-item .usage {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.morphology-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.word-structure {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.word-structure h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+}
+
+.word-breakdown {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.root {
+    background: var(--accent-blue);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.prefix {
+    background: var(--magic-purple);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.suffix {
+    background: var(--crystal-cyan);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* 变格表格 */
+.inflection-table {
+    margin-top: 2rem;
+}
+
+.inflection-table h4 {
+    color: var(--star-gold);
+    margin-bottom: 1rem;
+}
+
+.inflection-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.inflection-table th,
+.inflection-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inflection-table th {
+    background: rgba(255, 215, 0, 0.2);
+    color: var(--star-gold);
+    font-weight: bold;
+}
+
+.inflection-table td {
+    color: var(--text-light);
+}
+
+/* 句型示例 */
+.sentence-patterns {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.pattern-example {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--crystal-cyan);
+}
+
+.pattern-example h4 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+}
+
+.example-sentence {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.Rincatian {
+    display: block;
+    font-size: 1.3rem;
+    color: var(--star-gold);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-family: 'Georgia', serif;
+    letter-spacing: 1px;
+}
+
+.translation {
+    display: block;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 魔法语法特殊样式 */
+.magic-card {
+    background: linear-gradient(135deg, 
+        rgba(123, 31, 162, 0.1) 0%, 
+        rgba(26, 35, 126, 0.1) 50%, 
+        rgba(0, 188, 212, 0.1) 100%);
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.magic-examples {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.magic-pattern {
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.magic-pattern h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+}
+
+.example-sentence.magic {
+    background: rgba(123, 31, 162, 0.1);
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.magic-effect {
+    display: block;
+    color: var(--magic-purple);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid var(--magic-purple);
+}
+
+/* 练习区域 */
+.exercise-container {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.exercise-item {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.exercise-prompt {
+    color: var(--star-gold);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.exercise-question {
+    margin: 1rem 0;
+}
+
+.exercise-input,
+.exercise-textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: var(--text-light);
+    font-size: 1rem;
+    margin: 1rem 0;
+    resize: vertical;
+}
+
+.exercise-input:focus,
+.exercise-textarea:focus {
+    outline: none;
+    border-color: var(--star-gold);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.check-btn {
+    background: linear-gradient(45deg, var(--crystal-cyan), var(--star-gold));
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.check-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
+}
+
+.exercise-answer {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 188, 212, 0.1);
+    border-radius: 10px;
+    border-left: 4px solid var(--crystal-cyan);
+}
+
+.exercise-answer strong {
+    color: var(--crystal-cyan);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2.5rem;
+    }
+    
+    .grammar-tabs {
+        gap: 0.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .syntax-pattern {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .phonetic-grid,
+    .morphology-examples {
+        grid-template-columns: 1fr;
+    }
+    
+    .grammar-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .grammar-tabs {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .tab-btn {
+        width: 200px;
+        text-align: center;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 句法结构样式 */
+.detailed-structure {
+    margin-top: 2rem;
+}
+
+.detailed-structure h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.structure-breakdown {
+    display: grid;
+    gap: 1rem;
+}
+
+.structure-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--star-gold);
+}
+
+.structure-name {
+    color: var(--star-gold);
+    font-weight: bold;
+    min-width: 60px;
+}
+
+.structure-desc {
+    color: var(--text-secondary);
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+/* 助词系统样式 */
+.particle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.particle-category {
+    background: rgba(0, 188, 212, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+}
+
+.particle-category h4 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.particle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.particle {
+    color: var(--star-gold);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    min-width: 80px;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 4px;
+}
+
+.usage {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+/* 句法分析样式 */
+.analysis {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 4px solid var(--crystal-cyan);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.part {
+    color: var(--star-gold);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    margin: 0.1rem;
+    display: inline-block;
+}
+
+/* 体态词尾系统样式 */
+.aspect-table {
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+.aspect-table h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.aspect-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.aspect-table th,
+.aspect-table td {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.aspect-table th {
+    background: rgba(123, 31, 162, 0.3);
+    color: var(--magic-purple);
+    font-weight: bold;
+}
+
+.aspect-name {
+    background: rgba(255, 215, 0, 0.2) !important;
+    color: var(--star-gold) !important;
+    font-weight: bold;
+}
+
+.ending {
+    color: var(--crystal-cyan);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* 性状动词样式 */
+.status-verbs {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.status-verb-category {
+    background: rgba(0, 188, 212, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+}
+
+.status-verb-category h4 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+}
+
+.status-examples {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.status-example {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--star-gold);
+}
+
+.formula {
+    color: var(--star-gold);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    min-width: 80px;
+    font-size: 1.1rem;
+}
+
+.meaning {
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+/* 变化类型样式 */
+.change-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.change-type {
+    background: rgba(123, 31, 162, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+.change-type h4 {
+    color: var(--magic-purple);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.classification {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.class-group h5 {
+    color: var(--crystal-cyan);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.change-examples {
+    display: grid;
+    gap: 1rem;
+}
+
+.change-example {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.change-name {
+    color: var(--star-gold);
+    font-weight: bold;
+}
+
+.change-form {
+    color: var(--crystal-cyan);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.change-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* 练习系统样式 */
+.options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.options label:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--star-gold);
+}
+
+.options input[type="radio"] {
+    accent-color: var(--star-gold);
+    width: 16px;
+    height: 16px;
+}
+
+.options input[type="radio"]:checked + span {
+    color: var(--star-gold);
+    font-weight: bold;
+}
+
+.exercise-answer ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.exercise-answer li {
+    margin: 0.5rem 0;
+    color: var(--text-secondary);
+}
+
+.exercise-answer strong {
+    color: var(--crystal-cyan);
+}

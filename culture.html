@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>琳凯蒂亚文化 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="culture.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="floating-particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">琳凯蒂亚语社区</span>
+                    <span class="logo-english">Rincatian Community</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="grammar.html">语法</a></li>
+                <li><a href="dictionary.html">词典</a></li>
+                <li><a href="culture.html" class="active">文化</a></li>
+                <li><a href="community.html">社区</a></li>
+            </ul>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="culture-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">琳凯蒂亚文化世界</h1>
+            <p class="hero-subtitle">探索《光线传奇》中的奇幻星球</p>
+            <div class="crystal-decoration">
+                <div class="crystal red"></div>
+                <div class="crystal orange"></div>
+                <div class="crystal yellow"></div>
+                <div class="crystal green"></div>
+                <div class="crystal blue"></div>
+                <div class="crystal indigo"></div>
+                <div class="crystal purple"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="culture-main">
+        <div class="culture-nav">
+            <ul class="culture-tabs">
+                <li><a href="#geography" class="tab-link active" data-tab="geography">星球地理</a></li>
+                <li><a href="#society" class="tab-link" data-tab="society">社会制度</a></li>
+                <li><a href="#magic" class="tab-link" data-tab="magic">魔法体系</a></li>
+                <li><a href="#legends" class="tab-link" data-tab="legends">传说故事</a></li>
+                <li><a href="#characters" class="tab-link" data-tab="characters">人物志</a></li>
+                <li><a href="#timeline" class="tab-link" data-tab="timeline">历史年表</a></li>
+                <li><a href="#calendar" class="tab-link" data-tab="calendar">田历历法</a></li>
+            </ul>
+        </div>
+
+        <div class="culture-content">
+            <!-- 星球地理 -->
+            <section id="geography" class="culture-section active">
+                <h2>琳凯蒂亚星球地理</h2>
+                
+                <div class="geography-grid">
+                    <div class="geography-card">
+                        <div class="card-icon">🌙</div>
+                        <h3>双月奇观</h3>
+                        <p>琳凯蒂亚星球拥有银月和金月两轮月亮，每当十五交叠时会形成绚烂的彩虹光环，照亮整个星球。</p>
+                        <div class="linkaitiya-text">nim mun: geŋmun hâ jinmun</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">🌳</div>
+                        <h3>银蓝色铃铛树</h3>
+                        <p>神奇的银蓝色铃铛树林遍布星球，它们的果实会唱出优美的歌声，如天籁般动听。</p>
+                        <div class="linkaitiya-text">geŋlâŋi belero</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">✨</div>
+                        <h3>星光河</h3>
+                        <p>蜂蜜色的星光河缓缓流淌，河中生长着发光的莲花，透明的小鱼在其中游弋。</p>
+                        <div class="linkaitiya-text">ĉuēguaŋ rivo</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">⛰️</div>
+                        <h3>星晶山脉</h3>
+                        <p>半透明的星晶山脉矗立天际，山上生长着会发光的神奇蘑菇，点亮夜空。</p>
+                        <div class="linkaitiya-text">ĉuējiŋ montetaro</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">☁️</div>
+                        <h3>流光云</h3>
+                        <p>天空中飘浮着会变色的流光云，随着时间变化色彩，偶尔掉落光球奇观。</p>
+                        <div class="linkaitiya-text">fluguaŋ nubo</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">🌲</div>
+                        <h3>迷雾森林</h3>
+                        <p>神秘的迷雾森林中有会走路的树木和会眨眼睛的古老巨木，充满魔法气息。</p>
+                        <div class="linkaitiya-text">nebula arbaro</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">🌸</div>
+                        <h3>回声花田</h3>
+                        <p>奇特的回声花田能够储存并重放声音，记录着星球上最美好的旋律。</p>
+                        <div class="linkaitiya-text">eĥo florĉampo</div>
+                    </div>
+
+                    <div class="geography-card">
+                        <div class="card-icon">🌱</div>
+                        <h3>悬浮草甸</h3>
+                        <p>漂浮在空中的草甸，长满能奏出童谣的叮咚草，是星球上最浪漫的景观。</p>
+                        <div class="linkaitiya-text">flusanta herbejo</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 社会制度 -->
+            <section id="society" class="culture-section">
+                <h2>琳凯蒂亚社会制度</h2>
+                
+                <div class="society-grid">
+                    <div class="society-card royal">
+                        <h3>王室结构</h3>
+                        <div class="character-list">
+                            <div class="character">
+                                <div class="character-icon emperor">👑</div>
+                                <div class="character-info">
+                                    <h4>星帝 (Ĉuēdai)</h4>
+                                    <p>最高统治者，银胡子中藏着发光的小星，拥有神秘而强大的力量，统治整个琳凯蒂亚星球。</p>
+                                </div>
+                            </div>
+                            <div class="character">
+                                <div class="character-icon empress">👸</div>
+                                <div class="character-info">
+                                    <h4>星母 (Ĉuēpatrino)</h4>
+                                    <p>慈爱的统治者，裙摆绣有星系图案，走过之处会生出荧光草，极其宠爱女儿妙可公主。</p>
+                                </div>
+                            </div>
+                            <div class="character">
+                                <div class="character-icon princess">✨</div>
+                                <div class="character-info">
+                                    <h4>妙可公主 (Miaokel)</h4>
+                                    <p>太阳光线使者，金发蓝眼，拥有太阳手杖，能掌握太阳魔法，散发铃兰柑橘阳光的独特香气。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="society-card guardians">
+                        <h3>光线使者体系</h3>
+                        <div class="guardian-grid">
+                            <div class="guardian">
+                                <div class="guardian-icon sun">☀️</div>
+                                <h4>太阳使者</h4>
+                                <p>掌握太阳魔法，武器为太阳手杖</p>
+                            </div>
+                            <div class="guardian">
+                                <div class="guardian-icon star">⭐</div>
+                                <h4>星星使者</h4>
+                                <p>操控星辰之力，武器为星辰法杖</p>
+                            </div>
+                            <div class="guardian">
+                                <div class="guardian-icon moon">🌙</div>
+                                <h4>月亮使者</h4>
+                                <p>驾驭月光之力，拥有月华魔法</p>
+                            </div>
+                            <div class="guardian">
+                                <div class="guardian-icon cloud">☁️</div>
+                                <h4>云雨使者</h4>
+                                <p>控制云雨天气，掌握水元素魔法</p>
+                            </div>
+                            <div class="guardian">
+                                <div class="guardian-icon thunder">⚡</div>
+                                <h4>雷电使者</h4>
+                                <p>召唤雷电风暴，掌握雷电之力</p>
+                            </div>
+                            <div class="guardian">
+                                <div class="guardian-icon space">🌌</div>
+                                <h4>时空使者</h4>
+                                <p>操控时空虫洞，拥有时空魔法</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="society-card institutions">
+                        <h3>重要机构</h3>
+                        <div class="institution-list">
+                            <div class="institution">
+                                <div class="institution-icon">🏰</div>
+                                <div class="institution-info">
+                                    <h4>星帝宫殿</h4>
+                                    <p>用月光石砌成，有云霞鸟衔朝霞装饰，周围栖息着变色星蝶。</p>
+                                </div>
+                            </div>
+                            <div class="institution">
+                                <div class="institution-icon">🗼</div>
+                                <div class="institution-info">
+                                    <h4>星法塔</h4>
+                                    <p>星球的力量源泉，内藏彩虹核心，是维护星球魔法平衡的关键。</p>
+                                </div>
+                            </div>
+                            <div class="institution">
+                                <div class="institution-icon">🌟</div>
+                                <div class="institution-info">
+                                    <h4>星门</h4>
+                                    <p>连接不同世界的神秘门户，流淌着彩色糖浆般的光芒。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 魔法体系 -->
+            <section id="magic" class="culture-section">
+                <h2>魔法体系</h2>
+                
+                <div class="magic-grid">
+                    <div class="magic-card rainbow-crystal">
+                        <h3>彩虹水晶系统</h3>
+                        <div class="crystal-system">
+                            <div class="crystal-row">
+                                <div class="crystal-item red">
+                                    <div class="crystal-gem"></div>
+                                    <span>赤红水晶</span>
+                                </div>
+                                <div class="crystal-item orange">
+                                    <div class="crystal-gem"></div>
+                                    <span>橙黄水晶</span>
+                                </div>
+                                <div class="crystal-item yellow">
+                                    <div class="crystal-gem"></div>
+                                    <span>明黄水晶</span>
+                                </div>
+                                <div class="crystal-item green">
+                                    <div class="crystal-gem"></div>
+                                    <span>翠绿水晶</span>
+                                </div>
+                            </div>
+                            <div class="crystal-row">
+                                <div class="crystal-item blue">
+                                    <div class="crystal-gem"></div>
+                                    <span>湛蓝水晶</span>
+                                </div>
+                                <div class="crystal-item indigo">
+                                    <div class="crystal-gem"></div>
+                                    <span>靛蓝水晶</span>
+                                </div>
+                                <div class="crystal-item purple">
+                                    <div class="crystal-gem"></div>
+                                    <span>紫晶水晶</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p>七颗彩虹水晶蕴含着星球的核心力量，是光线使者魔法的源泉。</p>
+                    </div>
+
+                    <div class="magic-card weapons">
+                        <h3>魔法道具</h3>
+                        <div class="weapon-list">
+                            <div class="weapon">
+                                <div class="weapon-icon sun-staff">🔆</div>
+                                <h4>太阳手杖</h4>
+                                <p>妙可公主的专属武器，可化为翅膀项链，释放太阳光线和恒星黑离子。</p>
+                            </div>
+                            <div class="weapon">
+                                <div class="weapon-icon star-staff">⭐</div>
+                                <h4>星辰法杖</h4>
+                                <p>丽丽的武器，杖身流转星河光晕，杖头镶嵌自转深蓝星核。</p>
+                            </div>
+                            <div class="weapon">
+                                <div class="weapon-icon magic-disc">🌀</div>
+                                <h4>星魔盘</h4>
+                                <p>云雨和时空使用的探测工具，能感应彩虹水晶的位置。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="magic-card spells">
+                        <h3>魔法法则</h3>
+                        <div class="spell-categories">
+                            <div class="spell-category">
+                                <h4>太阳魔法</h4>
+                                <ul>
+                                    <li>普通技能：太阳光线</li>
+                                    <li>中等技能：太阳光圈</li>
+                                    <li>最大技能：恒星黑离子</li>
+                                </ul>
+                            </div>
+                            <div class="spell-category">
+                                <h4>星辰魔法</h4>
+                                <ul>
+                                    <li>星环防御</li>
+                                    <li>星尘裁决</li>
+                                    <li>星图寻踪</li>
+                                </ul>
+                            </div>
+                            <div class="spell-category">
+                                <h4>云雨魔法</h4>
+                                <ul>
+                                    <li>乌云吞噬</li>
+                                    <li>冰箭射击</li>
+                                    <li>抑郁孢子</li>
+                                </ul>
+                            </div>
+                            <div class="spell-category">
+                                <h4>时空魔法</h4>
+                                <ul>
+                                    <li>虫洞传送</li>
+                                    <li>时间倒流</li>
+                                    <li>空间扭曲</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 传说故事 -->
+            <section id="legends" class="culture-section">
+                <h2>传说故事</h2>
+                
+                <div class="legend-timeline">
+                    <div class="legend-item">
+                        <div class="legend-icon">🌟</div>
+                        <div class="legend-content">
+                            <h3>星球的诞生</h3>
+                            <p>传说琳凯蒂亚星球诞生于彩虹的中心，七色光芒汇聚成这个充满魔法的世界。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-icon">⚔️</div>
+                        <div class="legend-content">
+                            <h3>云雨时空的叛乱</h3>
+                            <p>18年前，云雨和时空因贪婪力量而背叛星帝，攻击星法塔，最终被镇压关入星光石牢狱。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-icon">🚪</div>
+                        <div class="legend-content">
+                            <h3>星门之约</h3>
+                            <p>为了历练和成长，星帝将妙可等光线使者送往地球，等待她们觉醒真正的力量。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-icon">🌈</div>
+                        <div class="legend-content">
+                            <h3>彩虹水晶的散落</h3>
+                            <p>妙可在地球遭受袭击，七颗彩虹水晶散落人间，需要重新找回才能恢复完整力量。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 人物志 -->
+            <section id="characters" class="culture-section">
+                <h2>人物志</h2>
+                
+                <div class="character-profiles">
+                    <div class="character-profile hero">
+                        <div class="profile-avatar sun-princess"></div>
+                        <div class="profile-info">
+                            <h3>妙可公主 / 田野</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>太阳光线使者，琳凯蒂亚小公主</p>
+                                <p><strong>特征：</strong>金发蓝眼，散发铃兰柑橘阳光香气</p>
+                                <p><strong>能力：</strong>太阳魔法，太阳手杖，恒星黑离子</p>
+                                <p><strong>双重身份：</strong>在地球转世为18岁少年田野，遭袭击后变回6岁女孩形态</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-profile ally">
+                        <div class="profile-avatar star-guardian"></div>
+                        <div class="profile-info">
+                            <h3>丽丽</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>星星光线使者</p>
+                                <p><strong>武器：</strong>星辰法杖</p>
+                                <p><strong>能力：</strong>星环防御，星尘裁决，记忆清除</p>
+                                <p><strong>地球身份：</strong>星虹中学高一学生，妙可的童年伙伴</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-profile neutral">
+                        <div class="profile-avatar cloud-user"></div>
+                        <div class="profile-info">
+                            <h3>梦云</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>小云雨光线使者</p>
+                                <p><strong>能力：</strong>控水魔法，避水，冰冻</p>
+                                <p><strong>现状：</strong>被云雨控制，成为内奸棋子</p>
+                                <p><strong>地球身份：</strong>迷茫少女，中考失利后沉迷虚拟世界</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-profile villain">
+                        <div class="profile-avatar cloud-rain"></div>
+                        <div class="profile-info">
+                            <h3>云雨</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>叛逃的云雨光线使者</p>
+                                <p><strong>附身：</strong>地球少年韩斌（17岁）</p>
+                                <p><strong>能力：</strong>乌云吞噬，冰箭攻击，抑郁孢子</p>
+                                <p><strong>目标：</strong>夺取彩虹水晶和星法塔力量</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-profile villain">
+                        <div class="profile-avatar space-time"></div>
+                        <div class="profile-info">
+                            <h3>时空</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>叛逃的时空光线使者</p>
+                                <p><strong>附身：</strong>地球少年俊伟（18岁）</p>
+                                <p><strong>能力：</strong>虫洞传送，时空扭曲，精神操控</p>
+                                <p><strong>特点：</strong>冷静狡猾，擅长谋略和心理战</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-profile sage">
+                        <div class="profile-avatar star-sage"></div>
+                        <div class="profile-info">
+                            <h3>星使爷爷</h3>
+                            <div class="character-details">
+                                <p><strong>身份：</strong>琳凯蒂亚智者，光线使者导师</p>
+                                <p><strong>能力：</strong>预知天命，治愈魔法，星门传送</p>
+                                <p><strong>使命：</strong>指引妙可找回水晶，对抗邪恶势力</p>
+                                <p><strong>形象：</strong>银袍星辰，白胡子掉金粉，温暖声音</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 历史年表 -->
+            <section id="timeline" class="culture-section">
+                <h2>历史年表</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">远古时代</div>
+                        <div class="timeline-content">
+                            <h3>琳凯蒂亚星球诞生</h3>
+                            <p>彩虹中心诞生的魔法星球，双月照耀，银蓝铃铛树开始歌唱。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">18年前</div>
+                        <div class="timeline-content">
+                            <h3>云雨时空叛乱</h3>
+                            <p>云雨和时空觊觎星法塔力量，发动叛乱，攻击彩虹核心，被星帝镇压关押。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">18年前</div>
+                        <div class="timeline-content">
+                            <h3>光线使者启程</h3>
+                            <p>星帝知晓天命，将5岁的妙可公主和其他光线使者送往地球历练。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">1997年</div>
+                        <div class="timeline-content">
+                            <h3>田野诞生</h3>
+                            <p>地球合肥，七只光蝴蝶融入田母腹中，田野带着太阳印记降生。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">2015年8月25日</div>
+                        <div class="timeline-content">
+                            <h3>彩虹水晶散落</h3>
+                            <p>云雨时空附身韩斌俊伟，袭击田野，七颗彩虹水晶散落合肥各处。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">2015年9月</div>
+                        <div class="timeline-content">
+                            <h3>使者觉醒</h3>
+                            <p>丽丽在守护妙可时觉醒星星使者力量，梦云被云雨控制成为内奸。</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">未来</div>
+                        <div class="timeline-content">
+                            <h3>光线传奇续写</h3>
+                            <p>妙可需要找回太阳手杖，集齐七颗彩虹水晶，与伙伴们共同对抗黑暗势力...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 田历历法 -->
+            <section id="calendar" class="culture-section">
+                <h2>琦凯蒂亚新星历（田历）</h2>
+                
+                <div class="calendar-intro">
+                    <div class="calendar-description">
+                        <h3>历法由来</h3>
+                        <p>为了纪念光线使者们地球任务的开启，星帝和星王倡导了历法改革，创立了结合地球公转的新星历。以公元2015年3月21日为华田元年1月1日，此日恰好是春分，象征着新的开始。</p>
+                        
+                        <div class="calendar-rules">
+                            <h4>历法规则</h4>
+                            <ul>
+                                <li><strong>月份设置：</strong>全年12个月，每月天数分别为：30、31、31、32、31、31、30、30、30、29、30、30</li>
+                                <li><strong>闰年规则：</strong>闰年时1月增加一个31号，即变31天</li>
+                                <li><strong>年始日：</strong>每年的第一天必须是春分（以北京时间为准）</li>
+                                <li><strong>纪元起点：</strong>2015年3月21日 = 华田元年1月1日</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav prev" id="prevMonth">◀</button>
+                        <div class="calendar-title">
+                            <h3 id="calendarTitle"></h3>
+                            <p class="calendar-subtitle" id="calendarSubtitle"></p>
+                        </div>
+                        <button class="calendar-nav next" id="nextMonth">▶</button>
+                    </div>
+                    
+                    <div class="calendar-controls">
+                        <button class="btn btn-primary" id="todayBtn">回到今天</button>
+                        <div class="calendar-info">
+                            <span id="todayInfo"></span>
+                        </div>
+                    </div>
+
+                    <div class="calendar-grid">
+                        <div class="calendar-weekdays">
+                            <div class="weekday">日</div>
+                            <div class="weekday">一</div>
+                            <div class="weekday">二</div>
+                            <div class="weekday">三</div>
+                            <div class="weekday">四</div>
+                            <div class="weekday">五</div>
+                            <div class="weekday">六</div>
+                        </div>
+                        <div class="calendar-days" id="calendarDays">
+                            <!-- 日期将由JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color today"></div>
+                            <span>今天</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color current-month"></div>
+                            <span>当月</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color other-month"></div>
+                            <span>其他月</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color festival"></div>
+                            <span>特殊日期</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-festivals">
+                    <h3>田历特殊日期</h3>
+                    <div class="festivals-grid">
+                        <div class="festival-item">
+                            <div class="festival-date">1月1日</div>
+                            <div class="festival-name">新星元旦</div>
+                            <div class="festival-desc">纪念光线使者地球任务开启</div>
+                        </div>
+                        <div class="festival-item">
+                            <div class="festival-date">4月32日</div>
+                            <div class="festival-name">星法塔日</div>
+                            <div class="festival-desc">纪念星法塔的神圣力量</div>
+                        </div>
+                        <div class="festival-item">
+                            <div class="festival-date">7月15日</div>
+                            <div class="festival-name">双月交辉节</div>
+                            <div class="festival-desc">银月金月交迭成彩虹光环</div>
+                        </div>
+                        <div class="festival-item">
+                            <div class="festival-date">10月29日</div>
+                            <div class="festival-name">彩虹水晶节</div>
+                            <div class="festival-desc">纪念七颗彩虹水晶的力量</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：1234567890</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="culture.js"></script>
+</body>
+</html>

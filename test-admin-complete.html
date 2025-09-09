@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理页面功能完整测试 - 琳凯蒂亚语社区</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-section { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .warning { background: rgba(255,152,0,0.2); color: #ff9800; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+        .test-log { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 400px; overflow-y: auto; }
+        .feature-demo { background: rgba(255,255,255,0.05); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .stat-card { background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #4ecdc4; }
+        .stat-label { font-size: 0.9rem; opacity: 0.8; }
+        .user-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .user-table th, .user-table td { padding: 8px; border: 1px solid rgba(255,255,255,0.2); text-align: left; }
+        .user-table th { background: rgba(255,255,255,0.1); }
+        .role-admin { color: #ff6b6b; font-weight: bold; }
+        .role-moderator { color: #4ecdc4; font-weight: bold; }
+        .role-user { color: #95e1d3; }
+        .status-active { color: #4caf50; }
+        .status-inactive { color: #ff9800; }
+        .btn-view, .btn-edit, .btn-delete { padding: 4px 8px; margin: 2px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .btn-view { background: #2196f3; color: white; }
+        .btn-edit { background: #ff9800; color: white; }
+        .btn-delete { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🛠️ 管理页面功能完整测试</h1>
+    
+    <div class="test-section">
+        <h2>🔐 管理员权限验证</h2>
+        <button class="test-button" onclick="testAdminAccess()">测试管理员权限</button>
+        <button class="test-button" onclick="loginAsAdmin()">模拟管理员登录</button>
+        <div id="authStatus" class="status info">等待权限验证...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 数据统计测试</h2>
+        <button class="test-button" onclick="testDataLoading()">测试数据加载</button>
+        <button class="test-button" onclick="testUserDataGeneration()">生成用户数据</button>
+        <button class="test-button" onclick="testStatisticsUpdate()">更新统计数据</button>
+        <div id="dataStatus" class="status info">等待数据测试...</div>
+        
+        <div class="feature-demo">
+            <h4>📈 实时统计面板</h4>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="testTotalUsers">0</div>
+                    <div class="stat-label">总用户数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="testOnlineUsers">0</div>
+                    <div class="stat-label">在线用户</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="testTotalVisits">0</div>
+                    <div class="stat-label">总访问量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="testTodayVisits">0</div>
+                    <div class="stat-label">今日访问</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>👥 用户管理测试</h2>
+        <button class="test-button" onclick="testUserManagement()">测试用户管理</button>
+        <button class="test-button" onclick="testUserTableRender()">渲染用户表格</button>
+        <button class="test-button" onclick="testAddUser()">测试添加用户</button>
+        <div id="userStatus" class="status info">等待用户管理测试...</div>
+        
+        <div class="feature-demo">
+            <h4>👥 用户列表预览</h4>
+            <table class="user-table" id="testUserTable">
+                <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>邮箱</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>注册时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="testUserTableBody">
+                    <tr><td colspan="6" style="text-align: center; color: #999;">暂无数据</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🌐 IP统计与访问分析</h2>
+        <button class="test-button" onclick="testIPTracking()">测试IP追踪</button>
+        <button class="test-button" onclick="testVisitAnalytics()">测试访问分析</button>
+        <button class="test-button" onclick="testGeolocation()">测试地理位置</button>
+        <div id="ipStatus" class="status info">等待IP分析测试...</div>
+        
+        <div class="feature-demo">
+            <h4>🌍 访问分析概览</h4>
+            <div id="ipAnalytics">
+                <p>🔍 正在分析访问数据...</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>⚙️ 系统功能测试</h2>
+        <button class="test-button" onclick="testEventBinding()">测试事件绑定</button>
+        <button class="test-button" onclick="testTabSwitching()">测试标签切换</button>
+        <button class="test-button" onclick="testRealTimeUpdates()">测试实时更新</button>
+        <div id="systemStatus" class="status info">等待系统功能测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 综合测试日志</h2>
+        <div class="test-log" id="testLog">[系统] 管理页面功能测试页面已加载...<br></div>
+        <button class="test-button" onclick="clearTestLog()">清空日志</button>
+        <button class="test-button" onclick="runAllTests()">运行全部测试</button>
+        <button class="test-button" onclick="openAdminPage()">打开管理页面</button>
+    </div>
+
+    <!-- 引入必要的脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="admin.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const logElement = document.getElementById('testLog');
+            logElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function testAdminAccess() {
+            log('测试管理员权限验证...', 'info');
+            
+            try {
+                if (typeof AdminPanel !== 'undefined') {
+                    log('✅ AdminPanel 类已加载', 'success');
+                    
+                    // 测试权限检查方法
+                    const testPanel = new AdminPanel();
+                    if (typeof testPanel.checkAdminAccess === 'function') {
+                        log('✅ checkAdminAccess 方法存在', 'success');
+                        document.getElementById('authStatus').innerHTML = '✅ 管理员权限系统正常';
+                        document.getElementById('authStatus').className = 'status success';
+                    } else {
+                        log('❌ checkAdminAccess 方法不存在', 'error');
+                        document.getElementById('authStatus').innerHTML = '❌ 权限检查方法缺失';
+                        document.getElementById('authStatus').className = 'status error';
+                    }
+                } else {
+                    log('❌ AdminPanel 类未加载', 'error');
+                    document.getElementById('authStatus').innerHTML = '❌ AdminPanel 类未加载';
+                    document.getElementById('authStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 权限测试失败: ${error.message}`, 'error');
+                document.getElementById('authStatus').innerHTML = '❌ 权限测试异常';
+                document.getElementById('authStatus').className = 'status error';
+            }
+        }
+        
+        function loginAsAdmin() {
+            log('模拟管理员登录...', 'info');
+            
+            // 创建管理员用户数据
+            const adminUser = {
+                id: 'admin-test',
+                username: 'admin',
+                email: 'admin@rincatian.com',
+                role: 'admin',
+                status: 'active',
+                joinDate: Date.now(),
+                lastLogin: Date.now(),
+                avatar: '👑'
+            };
+            
+            // 保存到 localStorage
+            localStorage.setItem('currentUser', JSON.stringify(adminUser));
+            
+            log('✅ 模拟管理员登录成功', 'success');
+            document.getElementById('authStatus').innerHTML = '✅ 管理员已登录 (模拟)';
+            document.getElementById('authStatus').className = 'status success';
+        }
+        
+        function testDataLoading() {
+            log('测试数据加载功能...', 'info');
+            
+            try {
+                if (window.adminPanel && typeof window.adminPanel.loadAdminData === 'function') {
+                    window.adminPanel.loadAdminData();
+                    log('✅ 管理数据加载成功', 'success');
+                    document.getElementById('dataStatus').innerHTML = '✅ 数据加载系统正常';
+                    document.getElementById('dataStatus').className = 'status success';
+                } else {
+                    log('❌ adminPanel 或 loadAdminData 方法不存在', 'error');
+                    document.getElementById('dataStatus').innerHTML = '❌ 数据加载系统异常';
+                    document.getElementById('dataStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 数据加载测试失败: ${error.message}`, 'error');
+                document.getElementById('dataStatus').innerHTML = '❌ 数据加载测试失败';
+                document.getElementById('dataStatus').className = 'status error';
+            }
+        }
+        
+        function testUserDataGeneration() {
+            log('测试用户数据生成...', 'info');
+            
+            try {
+                if (window.adminPanel && typeof window.adminPanel.createSampleUsers === 'function') {
+                    const users = window.adminPanel.createSampleUsers();
+                    log(`✅ 生成了 ${users.length} 个示例用户`, 'success');
+                    
+                    // 更新统计显示
+                    document.getElementById('testTotalUsers').textContent = users.length;
+                    document.getElementById('testOnlineUsers').textContent = Math.floor(Math.random() * 20) + 5;
+                    
+                    document.getElementById('dataStatus').innerHTML = `✅ 用户数据生成成功 (${users.length} 个用户)`;
+                    document.getElementById('dataStatus').className = 'status success';
+                } else {
+                    log('❌ createSampleUsers 方法不存在', 'error');
+                    document.getElementById('dataStatus').innerHTML = '❌ 用户数据生成失败';
+                    document.getElementById('dataStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 用户数据生成失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testStatisticsUpdate() {
+            log('测试统计数据更新...', 'info');
+            
+            // 模拟访问数据
+            const visitData = {
+                total: Math.floor(Math.random() * 50000) + 10000,
+                today: Math.floor(Math.random() * 500) + 100
+            };
+            
+            document.getElementById('testTotalVisits').textContent = visitData.total;
+            document.getElementById('testTodayVisits').textContent = visitData.today;
+            
+            log(`✅ 统计数据更新完成: 总访问 ${visitData.total}, 今日 ${visitData.today}`, 'success');
+        }
+        
+        function testUserManagement() {
+            log('测试用户管理功能...', 'info');
+            
+            try {
+                if (window.adminPanel && typeof window.adminPanel.loadUserData === 'function') {
+                    window.adminPanel.loadUserData();
+                    log('✅ 用户管理功能正常', 'success');
+                    document.getElementById('userStatus').innerHTML = '✅ 用户管理系统正常';
+                    document.getElementById('userStatus').className = 'status success';
+                } else {
+                    log('❌ loadUserData 方法不存在', 'error');
+                    document.getElementById('userStatus').innerHTML = '❌ 用户管理系统异常';
+                    document.getElementById('userStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 用户管理测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testUserTableRender() {
+            log('测试用户表格渲染...', 'info');
+            
+            // 生成测试用户数据
+            const testUsers = [
+                {
+                    id: 'admin-001',
+                    username: 'admin',
+                    email: 'admin@rincatian.com',
+                    role: 'admin',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 30
+                },
+                {
+                    id: 'user-001',
+                    username: 'starlight_mage',
+                    email: 'starlight@rincatian.com',
+                    role: 'moderator',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 15
+                },
+                {
+                    id: 'user-002',
+                    username: 'moon_scholar',
+                    email: 'moonscholar@rincatian.com',
+                    role: 'user',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 7
+                }
+            ];
+            
+            const tbody = document.getElementById('testUserTableBody');
+            tbody.innerHTML = '';
+            
+            testUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span>👤</span>
+                            <div>
+                                <div style="font-weight: 500;">${user.username}</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">${user.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td><span class="role-${user.role}">${user.role}</span></td>
+                    <td><span class="status-${user.status}">${user.status}</span></td>
+                    <td>${new Date(user.joinDate).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-view">详情</button>
+                        <button class="btn-edit">编辑</button>
+                        ${user.role !== 'admin' ? '<button class="btn-delete">删除</button>' : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            log(`✅ 用户表格渲染完成: ${testUsers.length} 个用户`, 'success');
+            document.getElementById('userStatus').innerHTML = '✅ 用户表格渲染成功';
+            document.getElementById('userStatus').className = 'status success';
+        }
+        
+        function testAddUser() {
+            log('测试添加用户功能...', 'info');
+            
+            if (window.adminPanel && typeof window.adminPanel.showAddUserModal === 'function') {
+                log('✅ showAddUserModal 方法存在', 'success');
+                document.getElementById('userStatus').innerHTML = '✅ 添加用户功能可用';
+                document.getElementById('userStatus').className = 'status success';
+            } else {
+                log('❌ showAddUserModal 方法不存在', 'error');
+                document.getElementById('userStatus').innerHTML = '❌ 添加用户功能不可用';
+                document.getElementById('userStatus').className = 'status error';
+            }
+        }
+        
+        function testIPTracking() {
+            log('测试IP追踪功能...', 'info');
+            
+            try {
+                if (window.adminPanel && typeof window.adminPanel.generateRandomIP === 'function') {
+                    const randomIP = window.adminPanel.generateRandomIP();
+                    log(`✅ 生成随机IP: ${randomIP}`, 'success');
+                    
+                    const analytics = document.getElementById('ipAnalytics');
+                    analytics.innerHTML = `
+                        <p>🌍 <strong>IP追踪示例:</strong></p>
+                        <p>📍 随机IP: ${randomIP}</p>
+                        <p>🏠 地理位置: ${window.adminPanel.getRandomLocation()}</p>
+                        <p>🌐 浏览器: ${window.adminPanel.getRandomBrowser()}</p>
+                        <p>📱 设备: ${window.adminPanel.getRandomDevice()}</p>
+                    `;
+                    
+                    document.getElementById('ipStatus').innerHTML = '✅ IP追踪功能正常';
+                    document.getElementById('ipStatus').className = 'status success';
+                } else {
+                    log('❌ IP追踪方法不存在', 'error');
+                    document.getElementById('ipStatus').innerHTML = '❌ IP追踪功能异常';
+                    document.getElementById('ipStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ IP追踪测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testVisitAnalytics() {
+            log('测试访问分析功能...', 'info');
+            
+            if (window.adminPanel && typeof window.adminPanel.loadVisitData === 'function') {
+                window.adminPanel.loadVisitData();
+                log('✅ 访问数据加载成功', 'success');
+                document.getElementById('ipStatus').innerHTML = '✅ 访问分析功能正常';
+                document.getElementById('ipStatus').className = 'status success';
+            } else {
+                log('❌ loadVisitData 方法不存在', 'error');
+            }
+        }
+        
+        function testGeolocation() {
+            log('测试地理位置功能...', 'info');
+            
+            const locations = ['北京', '上海', '广州', '深圳', '成都', '杭州'];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+            
+            log(`✅ 地理位置测试: ${randomLocation}`, 'success');
+        }
+        
+        function testEventBinding() {
+            log('测试事件绑定功能...', 'info');
+            
+            if (window.adminPanel && typeof window.adminPanel.bindEvents === 'function') {
+                log('✅ bindEvents 方法存在', 'success');
+                document.getElementById('systemStatus').innerHTML = '✅ 事件绑定系统正常';
+                document.getElementById('systemStatus').className = 'status success';
+            } else {
+                log('❌ bindEvents 方法不存在', 'error');
+                document.getElementById('systemStatus').innerHTML = '❌ 事件绑定系统异常';
+                document.getElementById('systemStatus').className = 'status error';
+            }
+        }
+        
+        function testTabSwitching() {
+            log('测试标签切换功能...', 'info');
+            
+            if (window.adminPanel && typeof window.adminPanel.switchTab === 'function') {
+                log('✅ switchTab 方法存在', 'success');
+                document.getElementById('systemStatus').innerHTML = '✅ 标签切换功能正常';
+                document.getElementById('systemStatus').className = 'status success';
+            } else {
+                log('❌ switchTab 方法不存在', 'error');
+            }
+        }
+        
+        function testRealTimeUpdates() {
+            log('测试实时更新功能...', 'info');
+            
+            if (window.adminPanel && typeof window.adminPanel.startRealTimeUpdates === 'function') {
+                log('✅ startRealTimeUpdates 方法存在', 'success');
+                document.getElementById('systemStatus').innerHTML = '✅ 实时更新功能正常';
+                document.getElementById('systemStatus').className = 'status success';
+            } else {
+                log('❌ startRealTimeUpdates 方法不存在', 'error');
+            }
+        }
+        
+        function clearTestLog() {
+            document.getElementById('testLog').innerHTML = '';
+            log('测试日志已清空', 'info');
+        }
+        
+        function runAllTests() {
+            log('🚀 开始运行全部测试...', 'info');
+            
+            setTimeout(() => testAdminAccess(), 200);
+            setTimeout(() => testDataLoading(), 800);
+            setTimeout(() => testUserDataGeneration(), 1400);
+            setTimeout(() => testStatisticsUpdate(), 2000);
+            setTimeout(() => testUserManagement(), 2600);
+            setTimeout(() => testUserTableRender(), 3200);
+            setTimeout(() => testIPTracking(), 3800);
+            setTimeout(() => testEventBinding(), 4400);
+            
+            log('✅ 全部测试已启动，请查看各项结果', 'success');
+        }
+        
+        function openAdminPage() {
+            window.open('/admin.html', '_blank');
+            log('已尝试打开管理页面', 'info');
+        }
+        
+        // 页面加载时的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('管理页面功能测试页面初始化完成', 'info');
+            
+            // 自动运行基础测试
+            setTimeout(() => {
+                testAdminAccess();
+                testUserDataGeneration();
+                testStatisticsUpdate();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommunityData修复测试 - 琳凯蒂亚语</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <style>
+        .test-container {
+            max-width: 900px;
+            margin: 120px auto 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.8));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .test-title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .test-button {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(45deg, #ffd700, #4ecdc4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #4ecdc4;
+        }
+        
+        .log-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-item {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            border-left: 3px solid #4ecdc4;
+            background: rgba(255, 255, 255, 0.05);
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+        
+        .log-success { border-left-color: #00b894; color: #00b894; }
+        .log-error { border-left-color: #e74c3c; color: #e74c3c; }
+        .log-warning { border-left-color: #f39c12; color: #f39c12; }
+        .log-info { border-left-color: #3498db; color: #3498db; }
+        
+        .fix-highlights {
+            background: linear-gradient(45deg, rgba(0, 184, 148, 0.1), rgba(116, 185, 255, 0.1));
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">CommunityData修复</span>
+                    <span class="logo-english">Fix Test</span>
+                </div>
+            </div>
+            <div class="nav-extras">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small">登录</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container">
+        <h1 class="test-title">🔧 CommunityData 未定义修复测试</h1>
+        
+        <div class="fix-highlights">
+            <h3 style="color: #ffd700; margin-bottom: 1rem;">🎯 修复内容</h3>
+            <ul style="color: #e0e0e0; line-height: 1.8;">
+                <li><strong>🛡️ 兼容层初始化</strong>：创建全局 communityData 对象，确保立即可用</li>
+                <li><strong>📊 数据同步机制</strong>：新旧系统之间的数据同步和兼容</li>
+                <li><strong>🔍 错误检测增强</strong>：在发布函数中添加详细的错误诊断</li>
+                <li><strong>💾 本地存储保护</strong>：确保数据持久化和恢复机制</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 系统状态检查</h3>
+            <button class="test-button" onclick="checkCommunityData()">🔍 检查 CommunityData</button>
+            <button class="test-button" onclick="quickLogin()">⚡ 快速登录</button>
+            <button class="test-button" onclick="testPostModal()">📝 测试发布</button>
+            <button class="test-button" onclick="testDisplayFix()">🔄 测试显示修复</button>
+            <button class="test-button" onclick="clearLog()">🧹 清空日志</button>
+        </div>
+        
+        <div class="log-container">
+            <h4 style="color: #ffd700; margin-bottom: 1rem;">📋 实时测试日志</h4>
+            <div id="testLog"></div>
+        </div>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+
+    <script>
+        // 日志记录函数
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            const icon = icons[type] || icons.info;
+            
+            const logItem = document.createElement('div');
+            logItem.className = `log-item log-${type}`;
+            logItem.innerHTML = `[${timestamp}] ${icon} ${message}`;
+            
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            console.log(`[测试] ${message}`);
+        }
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🌟 CommunityData修复测试页面加载完成', 'info');
+            setTimeout(() => {
+                checkCommunityData();
+            }, 1000);
+        });
+
+        // 检查 CommunityData
+        function checkCommunityData() {
+            log('🔍 开始检查 CommunityData...', 'info');
+            
+            try {
+                if (typeof communityData === 'undefined') {
+                    log('❌ communityData 未定义！这是导致错误的根本原因', 'error');
+                    
+                    // 尝试手动初始化
+                    if (typeof ensureCompatibilityLayer === 'function') {
+                        ensureCompatibilityLayer();
+                        log('✅ 手动初始化成功', 'success');
+                    } else {
+                        log('❌ ensureCompatibilityLayer 函数不存在', 'error');
+                    }
+                } else {
+                    log('✅ communityData 已定义', 'success');
+                    log(`📊 用户数量: ${communityData.users.length}`, 'info');
+                    log(`📄 帖子数量: ${communityData.posts.length}`, 'info');
+                    log(`👤 当前用户: ${communityData.currentUser ? communityData.currentUser.username : '未登录'}`, 'info');
+                }
+                
+            } catch (error) {
+                log(`❌ 检查过程出错: ${error.message}`, 'error');
+            }
+        }
+
+        // 快速登录
+        async function quickLogin() {
+            log('⚡ 执行快速登录...', 'info');
+            
+            try {
+                if (!window.authSystem) {
+                    log('❌ 认证系统未加载', 'error');
+                    return;
+                }
+                
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (result.success) {
+                    log(`✅ 登录成功: ${window.authSystem.currentUser.username}`, 'success');
+                    
+                    // 同步用户数据到兼容层
+                    if (typeof communityData !== 'undefined') {
+                        const currentUser = window.authSystem.currentUser;
+                        communityData.currentUser = {
+                            id: currentUser.id,
+                            username: currentUser.username,
+                            email: currentUser.email || currentUser.username + '@linkaitiya.star',
+                            userType: currentUser.userType || 'learner',
+                            joinDate: currentUser.joinDate || Date.now(),
+                            points: currentUser.points || 0,
+                            rank: currentUser.rank || '光线使者',
+                            avatar: currentUser.avatar || currentUser.username.charAt(0).toUpperCase()
+                        };
+                        log('✅ 用户数据已同步到兼容层', 'success');
+                    }
+                } else {
+                    log(`❌ 登录失败: ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ 登录异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试发布模态框
+        function testPostModal() {
+            log('📝 测试发布模态框和提交功能...', 'info');
+            
+            try {
+                if (!window.authSystem?.currentUser) {
+                    log('⚠️ 请先登录再测试发布功能', 'warning');
+                    return;
+                }
+                
+                if (typeof showNewPostModal === 'function') {
+                    log('🎭 打开发布模态框...', 'info');
+                    showNewPostModal();
+                    
+                    // 自动填写并提交测试
+                    setTimeout(() => {
+                        const titleInput = document.getElementById('newPostTitle');
+                        const contentInput = document.getElementById('newPostContent');
+                        
+                        if (titleInput && contentInput) {
+                            titleInput.value = '测试标题 - CommunityData修复验证';
+                            contentInput.value = '这是一个自动化测试内容，用于验证 communityData 未定义错误的修复效果。如果您看到这个帖子，说明修复成功！';
+                            
+                            log('✅ 已自动填写表单内容', 'success');
+                            log('📤 正在测试提交功能...', 'info');
+                            
+                            // 测试提交
+                            if (typeof handleNewPostSubmit === 'function') {
+                                handleNewPostSubmit();
+                                log('✅ 提交函数已调用，请查看控制台了解详细信息', 'success');
+                            } else {
+                                log('❌ handleNewPostSubmit 函数不存在', 'error');
+                            }
+                            
+                        } else {
+                            log('❌ 未找到表单元素', 'error');
+                        }
+                    }, 500);
+                } else {
+                    log('❌ showNewPostModal 函数不存在', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ 测试失败: ${error.message}`, 'error');
+                console.error('详细错误信息:', error);
+            }
+        }
+
+        // 测试显示修复
+        function testDisplayFix() {
+            log('🔄 测试讨论列表显示修复...', 'info');
+            
+            try {
+                // 检查是否有帖子数据
+                const localPosts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+                log(`💾 本地存储中有 ${localPosts.length} 个帖子`, 'info');
+                
+                if (localPosts.length === 0) {
+                    log('⚠️ 没有帖子数据，将创建测试数据', 'warning');
+                    
+                    // 创建测试帖子
+                    const testPosts = [
+                        {
+                            id: 'test_' + Date.now(),
+                            title: '🎆 测试帖子 - 显示修复验证',
+                            content: '这是一个测试帖子，用于验证帖子在讨论广场中的显示功能。如果您能看到这个帖子，说明显示功能正常！',
+                            category: 'general',
+                            tags: ['测试', '修复', '显示'],
+                            author: {
+                                id: 'test_user',
+                                username: '测试用户',
+                                displayName: '测试用户',
+                                avatar: '🧪'
+                            },
+                            timestamp: Date.now() - 60000, // 1分钟前
+                            likes: [],
+                            replyCount: 0,
+                            views: 0,
+                            status: 'active',
+                            timeDisplay: '1分钟前'
+                        },
+                        {
+                            id: 'test2_' + Date.now(),
+                            title: '🌌 欢迎来到琳凯蒂亚语社区',
+                            content: '大家好！欢迎来到琳凯蒂亚语学习社区。这里是光线使者们交流学习的地方，让我们一起探索这个神秘的宇宙语言！',
+                            category: 'culture',
+                            tags: ['欢迎', '社区', '学习'],
+                            author: {
+                                id: 'admin',
+                                username: 'admin',
+                                displayName: '管理员',
+                                avatar: '🌟'
+                            },
+                            timestamp: Date.now() - 300000, // 5分钟前
+                            likes: ['user1', 'user2'],
+                            replyCount: 3,
+                            views: 25,
+                            status: 'active',
+                            timeDisplay: '5分钟前'
+                        }
+                    ];
+                    
+                    localStorage.setItem('communityPosts', JSON.stringify(testPosts));
+                    log('✅ 测试帖子数据已创建', 'success');
+                }
+                
+                // 检查 loadDiscussions 函数
+                if (typeof loadDiscussions === 'function') {
+                    log('🔄 正在刷新讨论列表...', 'info');
+                    loadDiscussions();
+                    log('✅ 讨论列表刷新完成', 'success');
+                } else {
+                    log('❌ loadDiscussions 函数不存在', 'error');
+                }
+                
+                // 检查页面中是否有 postsList 元素
+                const postsList = document.getElementById('postsList');
+                if (postsList) {
+                    log('✅ 找到 postsList 元素', 'success');
+                    log(`📊 当前显示的帖子数量: ${postsList.children.length}`, 'info');
+                } else {
+                    log('❌ 未找到 postsList 元素，请确保在正确的页面上测试', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ 测试显示修复失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 清空日志
+        function clearLog() {
+            document.getElementById('testLog').innerHTML = '';
+            log('🧹 日志已清空', 'info');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员权限测试 - 琳凯蒂亚语社区</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .test-title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-section h3 {
+            color: #4ecdc4;
+            margin-top: 0;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .status.success {
+            background: rgba(39, 174, 96, 0.2);
+            border: 1px solid #27ae60;
+        }
+        
+        .status.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+        }
+        
+        .status.info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🔐 管理员权限测试</h1>
+        
+        <div class="test-section">
+            <h3>📋 当前用户状态</h3>
+            <div id="userStatus" class="status info">检查中...</div>
+            <div id="userInfo" class="user-info" style="display: none;">
+                <!-- 用户信息将在这里显示 -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🛠 权限测试</h3>
+            <button class="btn btn-primary" onclick="testLogin()">🔑 测试管理员登录</button>
+            <button class="btn btn-primary" onclick="testPermissions()">⚡ 测试权限检查</button>
+            <button class="btn btn-success" onclick="testProfileModal()">👤 测试个人中心</button>
+            <div id="permissionStatus" class="status info" style="display: none;">
+                <!-- 权限测试结果将在这里显示 -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 修复验证</h3>
+            <button class="btn btn-primary" onclick="verifyFix()">✅ 验证修复结果</button>
+            <div id="fixStatus" class="status info" style="display: none;">
+                <!-- 修复验证结果将在这里显示 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入必要的脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `status ${type}`;
+            element.innerHTML = message;
+        }
+        
+        function checkCurrentUser() {
+            const userStatusDiv = document.getElementById('userStatus');
+            const userInfoDiv = document.getElementById('userInfo');
+            
+            if (!window.authSystem) {
+                showStatus('userStatus', '❌ 认证系统未加载', 'error');
+                return;
+            }
+            
+            const currentUser = window.authSystem.currentUser;
+            
+            if (!currentUser) {
+                showStatus('userStatus', '⚠️ 未登录状态', 'info');
+                return;
+            }
+            
+            showStatus('userStatus', '✅ 用户已登录', 'success');
+            
+            userInfoDiv.style.display = 'block';
+            userInfoDiv.innerHTML = `
+                <h4>👤 用户信息</h4>
+                <p><strong>用户名:</strong> ${currentUser.username}</p>
+                <p><strong>角色:</strong> ${currentUser.role}</p>
+                <p><strong>邮箱:</strong> ${currentUser.email}</p>
+                <p><strong>等级:</strong> ${currentUser.rank}</p>
+                <p><strong>头像:</strong> ${currentUser.avatar}</p>
+            `;
+        }
+        
+        async function testLogin() {
+            try {
+                showStatus('permissionStatus', '正在测试管理员登录...', 'info');
+                
+                const result = await window.authSystem.login({
+                    username: '琳凯蒂亚',
+                    password: 'Rincatian-2015!'
+                });
+                
+                if (result.success) {
+                    showStatus('permissionStatus', '✅ 管理员登录成功！', 'success');
+                    
+                    // 更新UI
+                    if (typeof updateAuthenticationState === 'function') {
+                        updateAuthenticationState();
+                    }
+                    
+                    setTimeout(() => {
+                        checkCurrentUser();
+                    }, 500);
+                } else {
+                    showStatus('permissionStatus', `❌ 登录失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('permissionStatus', `❌ 登录错误: ${error.message}`, 'error');
+            }
+        }
+        
+        function testPermissions() {
+            if (!window.authSystem || !window.authSystem.currentUser) {
+                showStatus('permissionStatus', '⚠️ 请先登录', 'info');
+                return;
+            }
+            
+            const user = window.authSystem.currentUser;
+            const isAdmin = window.authSystem.isAdmin();
+            
+            let permissionInfo = `
+                <h4>🔐 权限检查结果</h4>
+                <p><strong>用户名:</strong> ${user.username}</p>
+                <p><strong>角色:</strong> ${user.role}</p>
+                <p><strong>isAdmin()方法:</strong> ${isAdmin ? '✅ true' : '❌ false'}</p>
+                <p><strong>角色检查:</strong> ${user.role === 'admin' ? '✅ admin' : user.role === '管理员' ? '✅ 管理员' : '❌ 非管理员'}</p>
+                <p><strong>用户名检查:</strong> ${user.username === '琳凯蒂亚' ? '✅ 琳凯蒂亚' : '❌ 非管理员用户名'}</p>
+            `;
+            
+            if (isAdmin || user.role === '管理员' || user.username === '琳凯蒂亚') {
+                showStatus('permissionStatus', permissionInfo + '<p style="color: #27ae60;"><strong>✅ 管理员权限验证通过！</strong></p>', 'success');
+            } else {
+                showStatus('permissionStatus', permissionInfo + '<p style="color: #e74c3c;"><strong>❌ 管理员权限验证失败！</strong></p>', 'error');
+            }
+        }
+        
+        function testProfileModal() {
+            if (!window.authSystem || !window.authSystem.currentUser) {
+                showStatus('permissionStatus', '⚠️ 请先登录再测试个人中心', 'info');
+                return;
+            }
+            
+            try {
+                if (typeof showNewProfile === 'function') {
+                    showNewProfile();
+                    showStatus('permissionStatus', '✅ 个人中心模态框已打开，请检查是否显示管理后台按钮', 'success');
+                } else {
+                    showStatus('permissionStatus', '❌ showNewProfile 函数未找到', 'error');
+                }
+            } catch (error) {
+                showStatus('permissionStatus', `❌ 个人中心测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function verifyFix() {
+            showStatus('fixStatus', '正在验证修复结果...', 'info');
+            
+            let results = [];
+            
+            // 检查1: 认证系统isAdmin方法
+            if (window.authSystem) {
+                if (window.authSystem.currentUser) {
+                    const user = window.authSystem.currentUser;
+                    const isAdmin = window.authSystem.isAdmin();
+                    
+                    if (user.role === '管理员' && isAdmin) {
+                        results.push('✅ isAdmin方法正确识别中文角色');
+                    } else if (user.username === '琳凯蒂亚' && isAdmin) {
+                        results.push('✅ isAdmin方法正确识别管理员用户名');
+                    } else {
+                        results.push('❌ isAdmin方法未能正确识别管理员');
+                    }
+                } else {
+                    results.push('⚠️ 未登录，无法测试isAdmin方法');
+                }
+            } else {
+                results.push('❌ 认证系统未加载');
+            }
+            
+            // 检查2: 个人中心权限判断
+            if (typeof showNewProfile === 'function') {
+                results.push('✅ showNewProfile函数存在');
+            } else {
+                results.push('❌ showNewProfile函数缺失');
+            }
+            
+            // 检查3: 导航栏管理员链接
+            const adminNav = document.getElementById('adminNav');
+            if (adminNav) {
+                results.push('✅ 管理员导航链接元素存在');
+            } else {
+                results.push('⚠️ 管理员导航链接元素不存在（当前页面可能没有）');
+            }
+            
+            const resultHtml = `
+                <h4>🔧 修复验证结果</h4>
+                ${results.map(result => `<p>${result}</p>`).join('')}
+                <hr>
+                <p><strong>总结:</strong> ${results.filter(r => r.startsWith('✅')).length}/${results.length} 项检查通过</p>
+            `;
+            
+            const passCount = results.filter(r => r.startsWith('✅')).length;
+            const totalCount = results.length;
+            
+            if (passCount === totalCount) {
+                showStatus('fixStatus', resultHtml, 'success');
+            } else if (passCount > totalCount / 2) {
+                showStatus('fixStatus', resultHtml, 'info');
+            } else {
+                showStatus('fixStatus', resultHtml, 'error');
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 管理员权限测试页面已加载');
+            
+            // 等待脚本加载
+            setTimeout(() => {
+                checkCurrentUser();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>琳凯蒂亚语语法 - Rincatian Grammar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="grammar.css">
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="planet-icon"></div>
+                    <div class="logo-text">
+                        <span class="logo-chinese">琳凯蒂亚语社区</span>
+                        <span class="logo-english">Rincatian Community</span>
+                    </div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html" class="active">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+                <div class="nav-extras">
+                    <div class="tian-calendar">
+                        <span class="calendar-icon">📅</span>
+                        <span class="tian-date" id="tianDate">载入中...</span>
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                        <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                    </div>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <div class="user-avatar" id="userAvatar"></div>
+                        <span class="user-name" id="userName"></span>
+                        <div class="user-dropdown">
+                            <a href="#" id="profileLink">个人中心</a>
+                            <a href="#" id="logoutLink">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="grammar-hero">
+            <div class="container">
+                <h1 class="page-title">琳凯蒂亚语核心语法</h1>
+                <p class="page-subtitle">探索这门星际魔法语言的奥秘</p>
+            </div>
+        </section>
+
+        <section class="grammar-navigation">
+            <div class="container">
+                <div class="grammar-tabs">
+                    <button class="tab-btn active" onclick="showGrammarSection('basics')">基础语法</button>
+                    <button class="tab-btn" onclick="showGrammarSection('phonetics')">语音系统</button>
+                    <button class="tab-btn" onclick="showGrammarSection('morphology')">词法</button>
+                    <button class="tab-btn" onclick="showGrammarSection('syntax')">句法</button>
+                    <button class="tab-btn" onclick="showGrammarSection('aspect')">体态词尾</button>
+                    <button class="tab-btn" onclick="showGrammarSection('magic')">魔法语法</button>
+                    <button class="tab-btn" onclick="showGrammarSection('exercises')">练习</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="grammar-content">
+            <div class="container">
+                <!-- 基础语法 -->
+                <div id="basics" class="grammar-section active">
+                    <h2 class="section-title">基础语法概述</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>语言特点</h3>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">🌟</div>
+                                <h4>星际起源</h4>
+                                <p>琳凯蒂亚语起源于遥远的琳凯蒂亚星球，承载着星际文明的智慧</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🔮</div>
+                                <h4>魔法融合</h4>
+                                <p>语言中融入了魔法元素，某些词汇和语法具有魔法属性</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎵</div>
+                                <h4>音韵美感</h4>
+                                <p>如银蓝色铃铛树的歌声般优美，注重音韵的和谐与流畅</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grammar-card">
+                        <h3>语序结构</h3>
+                        <p>琳凯蒂亚语采用灵活的语序，但基本结构为：</p>
+                        <div class="syntax-example">
+                            <div class="syntax-pattern">
+                                <span class="subject">主语</span>
+                                <span class="connector">+</span>
+                                <span class="modifier">修饰语</span>
+                                <span class="connector">+</span>
+                                <span class="verb">动词</span>
+                                <span class="connector">+</span>
+                                <span class="object">宾语</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>数词系统</h3>
+                        <p>琳凯蒂亚语的数词系统包含基数词、序数词、分数词等多种形式：</p>
+                        
+                        <div class="number-system">
+                            <h4>基数词 (0-22)</h4>
+                            <div class="number-grid">
+                                <div class="number-item"><span class="num">0</span> <span class="word">nu</span></div>
+                                <div class="number-item"><span class="num">1</span> <span class="word">i</span></div>
+                                <div class="number-item"><span class="num">2</span> <span class="word">nim</span></div>
+                                <div class="number-item"><span class="num">3</span> <span class="word">sâm</span></div>
+                                <div class="number-item"><span class="num">4</span> <span class="word">fōl</span></div>
+                                <div class="number-item"><span class="num">5</span> <span class="word">ven</span></div>
+                                <div class="number-item"><span class="num">6</span> <span class="word">lêm</span></div>
+                                <div class="number-item"><span class="num">7</span> <span class="word">qim</span></div>
+                                <div class="number-item"><span class="num">8</span> <span class="word">fa</span></div>
+                                <div class="number-item"><span class="num">9</span> <span class="word">jôl</span></div>
+                                <div class="number-item"><span class="num">10</span> <span class="word">ŝim</span></div>
+                                <div class="number-item"><span class="num">100</span> <span class="word">cen</span></div>
+                                <div class="number-item"><span class="num">1000</span> <span class="word">kio</span></div>
+                                <div class="number-item"><span class="num">万</span> <span class="word">wan</span></div>
+                                <div class="number-item"><span class="num">十万</span> <span class="word">ŝim wan</span></div>
+                                <div class="number-item"><span class="num">百万</span> <span class="word">mion</span></div>
+                                <div class="number-item"><span class="num">千万</span> <span class="word">ŝim mion</span></div>
+                                <div class="number-item"><span class="num">亿</span> <span class="word">yom</span></div>
+                                <div class="number-item"><span class="num">十亿</span> <span class="word">bion</span></div>
+                                <div class="number-item"><span class="num">百亿</span> <span class="word">ŝim bion</span></div>
+                                <div class="number-item"><span class="num">千亿</span> <span class="word">kiom</span></div>
+                                <div class="number-item"><span class="num">兆</span> <span class="word">ĉuē</span></div>
+                            </div>
+                            
+                            <h4>数词前缀和后缀</h4>
+                            <div class="prefix-examples">
+                                <div class="prefix-item">
+                                    <span class="prefix">fu-</span>
+                                    <span class="meaning">负数词</span>
+                                    <span class="example">fu-ven = -5</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">ẑeŋ-</span>
+                                    <span class="meaning">正数词</span>
+                                    <span class="example">ẑeŋ-ven = +5</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">di-</span>
+                                    <span class="meaning">序数词</span>
+                                    <span class="example">dilêm = 第六</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">haŋ-</span>
+                                    <span class="meaning">概数词</span>
+                                    <span class="example">haŋkio = 数以千计</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">-bām</span>
+                                    <span class="meaning">倍数词</span>
+                                    <span class="example">sâmbām = 三倍</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">ape</span>
+                                    <span class="meaning">分数词</span>
+                                    <span class="example">cen ape i = 1%</span>
+                                </div>
+                                <div class="prefix-item">
+                                    <span class="prefix">do</span>
+                                    <span class="meaning">小数词</span>
+                                    <span class="example">i do nim = 1.2</span>
+                                </div>
+                            </div>
+                            
+                            <h4>数词例句</h4>
+                            <div class="example-sentence">
+                                <span class="linkaitiya">fawan jôlkio qimcen ven</span>
+                                <span class="translation">八万九千七百零五</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-system">
+                            <h4>量名词系统</h4>
+                            <p>琳凯蒂亚语使用「数词 + 量名词 + 'da + 名词」结构表示数量：</p>
+                            
+                            <div class="quantity-grid">
+                                <div class="quantity-category">
+                                    <h5>特殊量名词</h5>
+                                    <div class="quantity-item">
+                                        <span class="quantity">tufo</span>
+                                        <span class="meaning">束、丛、簇、绺</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">peco</span>
+                                        <span class="meaning">片、块、件</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">foyo</span>
+                                        <span class="meaning">次、回、趟</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">rupo</span>
+                                        <span class="meaning">群、批、丛、组</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="quantity-category">
+                                    <h5>重量单位</h5>
+                                    <div class="quantity-item">
+                                        <span class="quantity">ton</span>
+                                        <span class="meaning">吨</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">kiloger</span>
+                                        <span class="meaning">千克</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">faŋto</span>
+                                        <span class="meaning">磅</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">ger</span>
+                                        <span class="meaning">克</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="quantity-category">
+                                    <h5>长度单位</h5>
+                                    <div class="quantity-item">
+                                        <span class="quantity">kilomit</span>
+                                        <span class="meaning">千米</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">mit</span>
+                                        <span class="meaning">米</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">dumit</span>
+                                        <span class="meaning">分米</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">celimit</span>
+                                        <span class="meaning">厘米</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">minimit</span>
+                                        <span class="meaning">毫米</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="quantity-category">
+                                    <h5>容量单位</h5>
+                                    <div class="quantity-item">
+                                        <span class="quantity">liẑo</span>
+                                        <span class="meaning">升</span>
+                                    </div>
+                                    <div class="quantity-item">
+                                        <span class="quantity">miniliẑo</span>
+                                        <span class="meaning">毫升</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quantity-examples">
+                                <h5>概量词</h5>
+                                <div class="concept-quantity">
+                                    <div class="concept-item">
+                                        <span class="concept">seego</span>
+                                        <span class="meaning">特别多</span>
+                                    </div>
+                                    <div class="concept-item">
+                                        <span class="concept">pluẑē</span>
+                                        <span class="meaning">好几个，不止一个</span>
+                                    </div>
+                                    <div class="concept-item">
+                                        <span class="concept">neniom</span>
+                                        <span class="meaning">毫无，一点也没有</span>
+                                    </div>
+                                    <div class="concept-item">
+                                        <span class="concept">seetoη</span>
+                                        <span class="meaning">全部，所有、整个</span>
+                                    </div>
+                                    <div class="concept-item">
+                                        <span class="concept">amaso</span>
+                                        <span class="meaning">一大堆，一群</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>代词系统</h3>
+                        <p>琳凯蒂亚语拥有丰富的代词系统，包括人称代词、指示代词和疑问代词：</p>
+                        
+                        <div class="pronoun-system">
+                            <h4>人称代词完整表</h4>
+                            <div class="pronoun-table">
+                                <table>
+                                    <tr>
+                                        <th>类型</th>
+                                        <th>第一人称</th>
+                                        <th>第二人称</th>
+                                        <th>第三人称男</th>
+                                        <th>第三人称女</th>
+                                        <th>第三人称物</th>
+                                        <th>通用</th>
+                                        <th>全体称</th>
+                                    </tr>
+                                    <tr>
+                                        <td>基本型</td>
+                                        <td>wi (我)</td>
+                                        <td>ni (你)</td>
+                                        <td>hi (他)</td>
+                                        <td>ŝi (她)</td>
+                                        <td>ji (它)</td>
+                                        <td>xi (通用)</td>
+                                        <td>onin (大家)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>复数</td>
+                                        <td>win (我们)</td>
+                                        <td>nin (你们)</td>
+                                        <td>hin (他们)</td>
+                                        <td>ŝin (她们)</td>
+                                        <td>jin (它们)</td>
+                                        <td>xin (通用复)</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>尊敬型</td>
+                                        <td>wicâli (老子)</td>
+                                        <td>nincâli (您)</td>
+                                        <td>hicâli</td>
+                                        <td>ŝicâli</td>
+                                        <td>jicâli</td>
+                                        <td>xicâli</td>
+                                        <td>onincâli</td>
+                                    </tr>
+                                    <tr>
+                                        <td>谦卑型</td>
+                                        <td>wizo (在下)</td>
+                                        <td>nizo</td>
+                                        <td>hizo</td>
+                                        <td>ŝizo</td>
+                                        <td>jizo</td>
+                                        <td>xizo</td>
+                                        <td>oninzo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>物主</td>
+                                        <td>wia (我的)</td>
+                                        <td>nia (你的)</td>
+                                        <td>hia (他的)</td>
+                                        <td>ŝia (她的)</td>
+                                        <td>jia (它的)</td>
+                                        <td>xia</td>
+                                        <td>onina</td>
+                                    </tr>
+                                    <tr>
+                                        <td>反身</td>
+                                        <td>wiẑi (我自己)</td>
+                                        <td>niẑi (你自己)</td>
+                                        <td>hiẑi (他自己)</td>
+                                        <td>ŝiẑi (她自己)</td>
+                                        <td>jiẑi (它自己)</td>
+                                        <td>xiẑi</td>
+                                        <td>dōmodâẑi</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <h4>指示代词和疑问代词</h4>
+                            <div class="other-pronouns">
+                                <div class="pronoun-category">
+                                    <h5>指示代词</h5>
+                                    <div class="pronoun-examples">
+                                        <span class="pronoun">ko</span> (这、这个)
+                                        <span class="pronoun">kon</span> (这些)
+                                        <span class="pronoun">go</span> (那、那个)
+                                        <span class="pronoun">gon</span> (那些)
+                                    </div>
+                                </div>
+                                
+                                <div class="pronoun-category">
+                                    <h5>疑问代词</h5>
+                                    <div class="pronoun-examples">
+                                        <span class="pronoun">nei</span> (谁)
+                                        <span class="pronoun">neko</span> (什么)
+                                        <span class="pronoun">nexi</span> (何时)
+                                        <span class="pronoun">nelo</span> (哪里)
+                                        <span class="pronoun">seeli</span> (如何)
+                                        <span class="pronoun">nānde</span> (为什么)
+                                        <span class="pronoun">dosē</span> (多少)
+                                        <span class="pronoun">nānno</span> (什么样的)
+                                        <span class="pronoun">neinde</span> (谁的)
+                                        <span class="pronoun">nekon</span> (哪些)
+                                        <span class="pronoun">hoseeli</span> (多么)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehensive-pronouns">
+                            <h4>综合代词表（逐类别列举）</h4>
+                            <div class="pronoun-comprehensive-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>类别</th>
+                                            <th>近指</th>
+                                            <th>远指</th>
+                                            <th>疑问</th>
+                                            <th>任意</th>
+                                            <th>存在</th>
+                                            <th>否定</th>
+                                            <th>个别</th>
+                                            <th>部分</th>
+                                            <th>大量</th>
+                                            <th>整体</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>事物</strong></td>
+                                            <td>ko<br>(这，这个)</td>
+                                            <td>go<br>(那，那个)</td>
+                                            <td>neko<br>(什么)</td>
+                                            <td>imē<br>(某、任意)</td>
+                                            <td>ezom<br>(有的、存在)</td>
+                                            <td>nezom<br>(没有、不存在)</td>
+                                            <td>xoi<br>(极少的)</td>
+                                            <td>ixo<br>(部分，一些)</td>
+                                            <td>mandi<br>(许多的)</td>
+                                            <td>caŋ<br>(全部、每个)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>人物</strong></td>
+                                            <td>koi<br>(这个人)</td>
+                                            <td>goi<br>(那个人)</td>
+                                            <td>nei<br>(谁)</td>
+                                            <td>mēi<br>(某人)</td>
+                                            <td>ezomi<br>(有人)</td>
+                                            <td>nezomi<br>(没有人)</td>
+                                            <td>xoin<br>(极少数人)</td>
+                                            <td>ixoin<br>(一些人)</td>
+                                            <td>mandin<br>(许多人)</td>
+                                            <td>caŋi<br>(每个人)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>时间</strong></td>
+                                            <td>koxi<br>(这时候)</td>
+                                            <td>goxi<br>(那时候)</td>
+                                            <td>nexi<br>(何时)</td>
+                                            <td>mēxi<br>(某时)</td>
+                                            <td>ezomxi<br>(有时)</td>
+                                            <td>nezomxi<br>(永不)</td>
+                                            <td>xoixi<br>(偶尔)</td>
+                                            <td>ixoxi<br>(一些时候)</td>
+                                            <td>mandixi<br>(许多时候)</td>
+                                            <td>caŋxi<br>(永远，任何时候)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>地点</strong></td>
+                                            <td>kolo<br>(这里)</td>
+                                            <td>golo<br>(那里)</td>
+                                            <td>nelo<br>(哪里)</td>
+                                            <td>mēlo<br>(某地)</td>
+                                            <td>ezomlo<br>(有地方)</td>
+                                            <td>nezomlo<br>(无处)</td>
+                                            <td>xoilo<br>(极少地方)</td>
+                                            <td>ixolo<br>(一些地方)</td>
+                                            <td>mandilo<br>(许多地方)</td>
+                                            <td>caŋlo<br>(到处、各处)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>性质</strong></td>
+                                            <td>kono<br>(这样的)</td>
+                                            <td>gono<br>(那样的)</td>
+                                            <td>nānno<br>(什么样的)</td>
+                                            <td>mēno<br>(某样的)</td>
+                                            <td>-</td>
+                                            <td>neno<br>(没有一样的)</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>caŋno<br>(每样的)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>理由</strong></td>
+                                            <td>dē<br>(这原因)</td>
+                                            <td>gosi<br>(所以)</td>
+                                            <td>nānde<br>(为什么)</td>
+                                            <td>mēnān<br>(某种缘故)</td>
+                                            <td>ezomnān<br>(有理由)</td>
+                                            <td>nenān<br>(没有理由)</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>caŋnān<br>(为每种缘故)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>方式</strong></td>
+                                            <td>koeli<br>(这样地)</td>
+                                            <td>goeli<br>(那样地)</td>
+                                            <td>seeli<br>(如何)</td>
+                                            <td>mēeli<br>(某样地)</td>
+                                            <td>-</td>
+                                            <td>nēeli<br>(怎样也不)</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>caŋeli<br>(每样地)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>数量</strong></td>
+                                            <td>kon<br>(这些)</td>
+                                            <td>gon<br>(那些)</td>
+                                            <td>dosē<br>(多少)<br>nekon<br>(哪些)</td>
+                                            <td>imen<br>(某些)</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>jindō<br>(尽所有)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="additional-pronouns">
+                            <h4>其他相关代词</h4>
+                            <div class="additional-pronoun-grid">
+                                <div class="additional-category">
+                                    <h5>相互代词</h5>
+                                    <div class="additional-item">
+                                        <span class="additional-word">samhō</span>
+                                        <span class="additional-meaning">相互、互相、彼此</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="additional-category">
+                                    <h5>物称代词</h5>
+                                    <div class="additional-item">
+                                        <span class="additional-word">wa</span>
+                                        <span class="additional-meaning">我家（专指自己家里的人或物）</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="additional-category">
+                                    <h5>其他类别</h5>
+                                    <div class="additional-item">
+                                        <span class="additional-word">dose</span>
+                                        <span class="additional-meaning">做、造、使……成为</span>
+                                    </div>
+                                    <div class="additional-item">
+                                        <span class="additional-word">kota</span>
+                                        <span class="additional-meaning">其余，其他</span>
+                                    </div>
+                                    <div class="additional-item">
+                                        <span class="additional-word">yalê</span>
+                                        <span class="additional-meaning">因为某种缘故</span>
+                                    </div>
+                                    <div class="additional-item">
+                                        <span class="additional-word">yolê</span>
+                                        <span class="additional-meaning">用某种方法</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>连词系统</h3>
+                        <p>琳凯蒂亚语的连词用于连接词语和句子，表达不同的逻辑关系：</p>
+                        
+                        <div class="conjunction-system">
+                            <div class="conjunction-category">
+                                <h4>联合关系</h4>
+                                <p>用于连接并列的词语或句子，表示同等或相似的关系。</p>
+                                <div class="conjunction-examples">
+                                    <div class="conj-item">
+                                        <span class="conj">hâ</span>
+                                        <span class="meaning">和、与、且</span>
+                                        <span class="example">最基本的联合连词</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">kowe</span>
+                                        <span class="meaning">此外</span>
+                                        <span class="example">进一步补充信息</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">giza</span>
+                                        <span class="meaning">总之</span>
+                                        <span class="example">总结性连词</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">ole</span>
+                                        <span class="meaning">并且、而且</span>
+                                        <span class="example">递进关系</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conjunction-category">
+                                <h4>对立关系</h4>
+                                <p>表示选择、转折或相反的关系。</p>
+                                <div class="conjunction-examples">
+                                    <div class="conj-item">
+                                        <span class="conj">kona</span>
+                                        <span class="meaning">或者、还是</span>
+                                        <span class="example">选择关系</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">sedo</span>
+                                        <span class="meaning">但是</span>
+                                        <span class="example">转折关系</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">vakan</span>
+                                        <span class="meaning">尽管</span>
+                                        <span class="example">让步关系</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">nega</span>
+                                        <span class="meaning">相反</span>
+                                        <span class="example">相反关系</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">nes…cenes…</span>
+                                        <span class="meaning">既不……也不……</span>
+                                        <span class="example">双重否定</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conjunction-category">
+                                <h4>因果关系</h4>
+                                <p>表示原因、结果或推理关系。</p>
+                                <div class="conjunction-examples">
+                                    <div class="conj-item">
+                                        <span class="conj">qavi</span>
+                                        <span class="meaning">因为</span>
+                                        <span class="example">表示原因</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">gosi</span>
+                                        <span class="meaning">所以</span>
+                                        <span class="example">表示结果</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">silo</span>
+                                        <span class="meaning">因此、那么</span>
+                                        <span class="example">推理结果</span>
+                                    </div>
+                                    <div class="conj-item">
+                                        <span class="conj">kuni…silo…</span>
+                                        <span class="meaning">如此……以至于……</span>
+                                        <span class="example">程度因果</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conjunction-category">
+                                <h4>条件关系</h4>
+                                <p>表示假设、条件或在某种情况下的关系。</p>
+                                <div class="conjunction-examples">
+                                    <div class="conj-item">
+                                        <span class="conj">rugo</span>
+                                        <span class="meaning">假设</span>
+                                        <span class="example">假设条件</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conjunction-category">
+                                <h4>目的关系</h4>
+                                <p>表示行为的目的或意图。</p>
+                                <div class="conjunction-examples">
+                                    <div class="conj-item">
+                                        <span class="conj">poroŋ</span>
+                                        <span class="meaning">为了</span>
+                                        <span class="example">表示目的</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="conjunction-examples-section">
+                            <h4>连词使用例句</h4>
+                            <div class="conjunction-example-sentences">
+                                <div class="example-sentence">
+                                    <span class="linkaitiya">Wi’ô libo’ō midê hâ nin’ô musik’ō timê yo.</span>
+                                    <span class="translation">我看书，你们听音乐。</span>
+                                    <span class="analysis">使用 hâ 连接两个并列的动作</span>
+                                </div>
+                                
+                                <div class="example-sentence">
+                                    <span class="linkaitiya">Qavi yomê’xu, silo wi’ô go’ō mi nezele yo.</span>
+                                    <span class="translation">因为下雨了，所以我没有看到那个。</span>
+                                    <span class="analysis">使用 qavi…silo 连接因果关系</span>
+                                </div>
+                                
+                                <div class="example-sentence">
+                                    <span class="linkaitiya">Vakan timyê’xu, sedo wi’ô poroŋgês yo.</span>
+                                    <span class="translation">尽管下雨，但是我要出去。</span>
+                                    <span class="analysis">使用 vakan…sedo 表示让步转折</span>
+                                </div>
+                                
+                                <div class="example-sentence">
+                                    <span class="linkaitiya">Poroŋ liboke sose, wi’ô ko libo’ō midê yo.</span>
+                                    <span class="translation">为了学习，我看这本书。</span>
+                                    <span class="analysis">使用 poroŋ 表示目的</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 语音系统 -->
+                <div id="phonetics" class="grammar-section">
+                    <h2 class="section-title">语音系统</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>字母表（41个字母）</h3>
+                        <p>琳凯蒂亚语共有41个字母，包含15个元音和26个辅音：</p>
+                        
+                        <div class="alphabet-section">
+                            <h4>元音（15个）</h4>
+                            <div class="alphabet-grid">
+                                <div class="letter-group">
+                                    <span class="letter">a [ä]</span>
+                                    <span class="letter">e [e̞]</span>
+                                    <span class="letter">i [i]</span>
+                                    <span class="letter">o [ɑʊ̯]</span>
+                                    <span class="letter">u [u]</span>
+                                </div>
+                                <div class="letter-group">
+                                    <span class="letter">ā [aɪ̯]</span>
+                                    <span class="letter">ē [eɪ̯]</span>
+                                    <span class="letter">ï [z̩]</span>
+                                    <span class="letter">ō [oʊ̯]</span>
+                                    <span class="letter">ü [y]</span>
+                                </div>
+                                <div class="letter-group">
+                                    <span class="letter">â [æ]</span>
+                                    <span class="letter">ê [ɤ]</span>
+                                    <span class="letter">î [ɸ]</span>
+                                    <span class="letter">ô [œ]</span>
+                                    <span class="letter">û [o]</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alphabet-section">
+                            <h4>辅音（26个）</h4>
+                            <div class="alphabet-grid">
+                                <div class="letter-group">
+                                    <span class="letter">b [pɑʊ̯]</span>
+                                    <span class="letter">c [tsʰɑʊ̯]</span>
+                                    <span class="letter">ĉ [tʂʰɑʊ̯]/[tɕʰɑʊ̯]</span>
+                                    <span class="letter">d [tɑʊ̯]</span>
+                                    <span class="letter">f [fɑʊ̯]</span>
+                                    <span class="letter">g [kɑʊ̯]/[k]</span>
+                                </div>
+                                <div class="letter-group">
+                                    <span class="letter">h [xɑʊ̯]</span>
+                                    <span class="letter">j [tɕɑʊ̯]</span>
+                                    <span class="letter">k [kʰɑʊ̯]</span>
+                                    <span class="letter">l [lɑʊ̯]/[ɭ]</span>
+                                    <span class="letter">m [mɑʊ̯]/[m̚]</span>
+                                    <span class="letter">n [nɑʊ̯]/[n̚]</span>
+                                </div>
+                                <div class="letter-group">
+                                    <span class="letter">p [pʰɑʊ̯]</span>
+                                    <span class="letter">q [tɕʰɑʊ̯]</span>
+                                    <span class="letter">r [ɻɑʊ̯]/[l]/[ɚ]</span>
+                                    <span class="letter">s [sɑʊ̯]</span>
+                                    <span class="letter">ŝ [ʂɑʊ̯]/[ɕɑʊ̯]</span>
+                                    <span class="letter">t [tʰɑʊ̯]</span>
+                                </div>
+                                <div class="letter-group">
+                                    <span class="letter">v [vɑʊ̯]</span>
+                                    <span class="letter">w [wɑʊ̯]</span>
+                                    <span class="letter">x [ɕɑʊ̯]</span>
+                                    <span class="letter">y [jɑʊ̯]</span>
+                                    <span class="letter">z [tsɑʊ̯]/[θɑʊ̯]</span>
+                                    <span class="letter">ẑ [tʂɑʊ̯]/[tɕɑʊ̯]</span>
+                                    <span class="letter">θ [θɑʊ̯]</span>
+                                    <span class="letter">ŋ [ŋɑʊ̯]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>特殊字母转写方案</h3>
+                        <p>以下是琳凯蒂亚语特殊字母的转写方法：</p>
+                        <div class="transcription-grid">
+                            <div class="transcription-item">
+                                <span class="original">ā</span> → <span class="transcribed">ai</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">â</span> → <span class="transcribed">ae</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ĉ</span> → <span class="transcribed">ch</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ē</span> → <span class="transcribed">ei</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ê</span> → <span class="transcribed">eh</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ï</span> → <span class="transcribed">iz</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">î</span> → <span class="transcribed">iv</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ō</span> → <span class="transcribed">ou</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ô</span> → <span class="transcribed">oe</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ŝ</span> → <span class="transcribed">sh</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ü</span> → <span class="transcribed">yu</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">û</span> → <span class="transcribed">uo</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ẑ</span> → <span class="transcribed">zh</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">θ</span> → <span class="transcribed">th</span>
+                            </div>
+                            <div class="transcription-item">
+                                <span class="original">ŋ</span> → <span class="transcribed">ng</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>音节结构</h3>
+                        <p>琳凯蒂亚语的音节结构规则：</p>
+                        <div class="syntax-example">
+                            <div class="syntax-pattern">
+                                <span class="component">辅音</span>
+                                <span class="connector">+</span>
+                                <span class="component">[介音]</span>
+                                <span class="connector">+</span>
+                                <span class="component">元音</span>
+                                <span class="connector">+</span>
+                                <span class="component">尾音</span>
+                            </div>
+                        </div>
+                        <p class="note">注：单独一个辅音也算作一个音节</p>
+                    </div>
+                </div>
+
+                <!-- 词法 -->
+                <div id="morphology" class="grammar-section">
+                    <h2 class="section-title">词法结构</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>词类分类</h3>
+                        <div class="word-class-grid">
+                            <div class="word-class-category">
+                                <h4>按数量分类</h4>
+                                <div class="class-item">
+                                    <span class="class-name">有限词</span>
+                                    <span class="class-desc">代词、数词、连词、助词、拒情词</span>
+                                </div>
+                                <div class="class-item">
+                                    <span class="class-name">无限词</span>
+                                    <span class="class-desc">名词、动词、形容词、副词、声叹词</span>
+                                </div>
+                            </div>
+                            
+                            <div class="word-class-category">
+                                <h4>按来源分类</h4>
+                                <div class="class-item">
+                                    <span class="class-name">外来词</span>
+                                    <span class="class-desc">需要转写成符合41个字母的形态</span>
+                                </div>
+                                <div class="class-item">
+                                    <span class="class-name">原有词</span>
+                                    <span class="class-desc">类似成语的语言压缩包</span>
+                                </div>
+                                <div class="class-item">
+                                    <span class="class-name">标准词</span>
+                                    <span class="class-desc">规定且固定的3000个词根</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>转义词尾规则</h3>
+                        <p>标准词中的名词、动词、形容词、副词只拥有唯一一种原生词性，若需转为其他词性需要添加相应的转义词尾。</p>
+                        
+                        <div class="word-ending-table">
+                            <table>
+                                <tr>
+                                    <th>词性</th>
+                                    <th>转义词尾</th>
+                                    <th>特殊说明</th>
+                                </tr>
+                                <tr>
+                                    <td>名词</td>
+                                    <td>-o</td>
+                                    <td>集体属性复数：-on</td>
+                                </tr>
+                                <tr>
+                                    <td>动词</td>
+                                    <td>-e、-le等16种体态词尾</td>
+                                    <td>根据体、态的不同而变化</td>
+                                </tr>
+                                <tr>
+                                    <td>形容词</td>
+                                    <td>-i（弱形容词）、-a（强形容词）</td>
+                                    <td>弱：含蓄、状态；强：强烈、性质</td>
+                                </tr>
+                                <tr>
+                                    <td>副词</td>
+                                    <td>-u（修饰动词或形容词）、-li（修饰其他成分）</td>
+                                    <td>口语中区分不明显</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="example-section">
+                            <h4>转义例词</h4>
+                            <div class="morphology-examples">
+                                <div class="word-example">
+                                    <span class="base-word">mono</span>
+                                    <span class="meaning">(原生名词“姓名”)</span>
+                                    <span class="arrow">→</span>
+                                    <span class="derived-word">monoe</span>
+                                    <span class="meaning">(动词“命名”)</span>
+                                </div>
+                                <div class="word-example">
+                                    <span class="base-word">sose</span>
+                                    <span class="meaning">(动词“学习”)</span>
+                                    <span class="arrow">→</span>
+                                    <span class="derived-word">soseo</span>
+                                    <span class="meaning">(名词“学生”)</span>
+                                    <span class="arrow">→</span>
+                                    <span class="derived-word">soseon</span>
+                                    <span class="meaning">(名词“学生们”)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>拒情词</h3>
+                        <p>拒情词是琳凯蒂亚语的特色词类，包含强调词、领语中的牵词、结语中的止词。</p>
+                        
+                        <div class="emotion-words">
+                            <div class="emotion-category">
+                                <h4>强调词</h4>
+                                <div class="word-item">
+                                    <span class="word">ce</span>
+                                    <span class="usage">用于强调某个词或整句话</span>
+                                </div>
+                            </div>
+                            
+                            <div class="emotion-category">
+                                <h4>领语牵词</h4>
+                                <div class="word-item">
+                                    <span class="word">celoŋ</span>
+                                    <span class="usage">请</span>
+                                </div>
+                                <div class="word-item">
+                                    <span class="word">nuden</span>
+                                    <span class="usage">禁止</span>
+                                </div>
+                                <div class="word-item">
+                                    <span class="word">haden</span>
+                                    <span class="usage">建议</span>
+                                </div>
+                            </div>
+                            
+                            <div class="emotion-category">
+                                <h4>结语止词</h4>
+                                <div class="word-item">
+                                    <span class="word">yo</span>
+                                    <span class="usage">陈述句结尾</span>
+                                </div>
+                                <div class="word-item">
+                                    <span class="word">ne</span>
+                                    <span class="usage">疑问句结尾</span>
+                                </div>
+                                <div class="word-item">
+                                    <span class="word">ga</span>
+                                    <span class="usage">感叹句结尾</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 句法 -->
+                <div id="syntax" class="grammar-section">
+                    <h2 class="section-title">句法规则</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>标准句式</h3>
+                        <p>琳凯蒂亚语的基本句式结构：</p>
+                        <div class="syntax-example">
+                            <div class="syntax-pattern">
+                                <span class="component">领语</span>
+                                <span class="connector">+</span>
+                                <span class="component">主语</span>
+                                <span class="connector">+</span>
+                                <span class="component">谓语</span>
+                                <span class="connector">+</span>
+                                <span class="component">宾语</span>
+                                <span class="connector">+</span>
+                                <span class="component">结语</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detailed-structure">
+                            <h4>详细结构</h4>
+                            <div class="structure-breakdown">
+                                <div class="structure-item">
+                                    <span class="structure-name">领语</span>
+                                    <span class="structure-desc">牵词 或 被提前的某个成分</span>
+                                </div>
+                                <div class="structure-item">
+                                    <span class="structure-name">主语</span>
+                                    <span class="structure-desc">定语 + 施语 + 主语助词</span>
+                                </div>
+                                <div class="structure-item">
+                                    <span class="structure-name">谓语</span>
+                                    <span class="structure-desc">状语 + 述语 + 补语 + 补语助词</span>
+                                </div>
+                                <div class="structure-item">
+                                    <span class="structure-name">宾语</span>
+                                    <span class="structure-desc">定语 + 受语 + 宾语助词</span>
+                                </div>
+                                <div class="structure-item">
+                                    <span class="structure-name">结语</span>
+                                    <span class="structure-desc">前止词 + 后止词</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>助词系统</h3>
+                        <p>琳凯蒂亚语使用丰富的助词系统来标记句子成分，使语序完全灵活。</p>
+                        
+                        <div class="particle-grid">
+                            <div class="particle-category">
+                                <h4>主语助词</h4>
+                                <div class="particle-item">
+                                    <span class="particle">'ô</span>
+                                    <span class="usage">施语为可自发动作时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'j</span>
+                                    <span class="usage">施语为不可自发动作时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'l</span>
+                                    <span class="usage">事物性质、状态、抽象概念做施语时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'fo</span>
+                                    <span class="usage">一个句子充当主语时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="particle-category">
+                                <h4>宾语助词</h4>
+                                <div class="particle-item">
+                                    <span class="particle">'ô</span>
+                                    <span class="usage">间接宾语助词</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'ō</span>
+                                    <span class="usage">直接宾语助词（通常省略）</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">fō</span>
+                                    <span class="usage">一个句子充当宾语时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="particle-category">
+                                <h4>定语助词</h4>
+                                <div class="particle-item">
+                                    <span class="particle">'a</span>
+                                    <span class="usage">一般定语助词</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'da</span>
+                                    <span class="usage">一个句子充当定语时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'xa</span>
+                                    <span class="usage">时间词作定语时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'ka</span>
+                                    <span class="usage">地点词作定语时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="particle-category">
+                                <h4>状语助词</h4>
+                                <div class="particle-item">
+                                    <span class="particle">'u</span>
+                                    <span class="usage">一般状语助词</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'du</span>
+                                    <span class="usage">一个句子充当状语时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'xu</span>
+                                    <span class="usage">时间词作状语时</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'ku</span>
+                                    <span class="usage">地点词作状语时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="particle-category">
+                                <h4>特殊助词</h4>
+                                <div class="particle-item">
+                                    <span class="particle">'peyoŋ</span>
+                                    <span class="usage">方式状语助词</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'gu / 'gun</span>
+                                    <span class="usage">频率状语助词</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'poroŋ</span>
+                                    <span class="usage">目的状语助词（计划实现）</span>
+                                </div>
+                                <div class="particle-item">
+                                    <span class="particle">'poni</span>
+                                    <span class="usage">目的状语助词（已经实现）</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>基本句型</h3>
+                        <div class="sentence-patterns">
+                            <div class="pattern-example">
+                                <h4>陈述句</h4>
+                                <div class="example-sentence">
+                                    <span class="Rincatian">Wi'ô soseo es yo.</span>
+                                    <span class="translation">我是学生。</span>
+                                    <div class="analysis">
+                                        <span class="part">Wi'ô</span> (我+主语助词) + 
+                                        <span class="part">soseo</span> (学生) + 
+                                        <span class="part">es</span> (是) + 
+                                        <span class="part">yo</span> (陈述句结尾)
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pattern-example">
+                                <h4>疑问句</h4>
+                                <div class="example-sentence">
+                                    <span class="Rincatian">Ni'ô nelo ez ne?</span>
+                                    <span class="translation">你在哪里？</span>
+                                    <div class="analysis">
+                                        <span class="part">Ni'ô</span> (你+主语助词) + 
+                                        <span class="part">nelo</span> (哪里) + 
+                                        <span class="part">ez</span> (在) + 
+                                        <span class="part">ne</span> (疑问句结尾)
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pattern-example">
+                                <h4>祈使句</h4>
+                                <div class="example-sentence">
+                                    <span class="Rincatian">Celoŋ, libo'ō mide!</span>
+                                    <span class="translation">请看书！</span>
+                                    <div class="analysis">
+                                        <span class="part">Celoŋ</span> (请+领语) + 
+                                        <span class="part">libo'ō</span> (书+直接宾语助词) + 
+                                        <span class="part">mide</span> (看)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 体态词尾 -->
+                <div id="aspect" class="grammar-section">
+                    <h2 class="section-title">体态词尾系统</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>动词体态词尾 (4×4×2系统)</h3>
+                        <p>琳凯蒂亚语动词和形容词围绕4个体和4个语态形成16个动词体态词尾和16个形容词体态词尾：</p>
+                        
+                        <div class="aspect-table">
+                            <h4>动词体态词尾表</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>主动</th>
+                                        <th>被动</th>
+                                        <th>使动</th>
+                                        <th>迫动（不得不）</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="aspect-name">一般</td>
+                                        <td class="ending">-e</td>
+                                        <td class="ending">-ē</td>
+                                        <td class="ending">-ê</td>
+                                        <td class="ending">-û</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">计划</td>
+                                        <td class="ending">-ge</td>
+                                        <td class="ending">-gē</td>
+                                        <td class="ending">-gê</td>
+                                        <td class="ending">-gû</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">进行</td>
+                                        <td class="ending">-ze</td>
+                                        <td class="ending">-zē</td>
+                                        <td class="ending">-zê</td>
+                                        <td class="ending">-zû</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">完成</td>
+                                        <td class="ending">-le</td>
+                                        <td class="ending">-lē</td>
+                                        <td class="ending">-lê</td>
+                                        <td class="ending">-lû</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="aspect-table">
+                            <h4>形容词体态词尾表</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>主动</th>
+                                        <th>被动</th>
+                                        <th>使动</th>
+                                        <th>迫动</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="aspect-name">一般</td>
+                                        <td class="ending">-ye</td>
+                                        <td class="ending">-yē</td>
+                                        <td class="ending">-yê</td>
+                                        <td class="ending">-yû</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">计划</td>
+                                        <td class="ending">-gie</td>
+                                        <td class="ending">-giē</td>
+                                        <td class="ending">-giê</td>
+                                        <td class="ending">-giû</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">进行</td>
+                                        <td class="ending">-zie</td>
+                                        <td class="ending">-ziē</td>
+                                        <td class="ending">-ziê</td>
+                                        <td class="ending">-ziû</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="aspect-name">完成</td>
+                                        <td class="ending">-lie</td>
+                                        <td class="ending">-liē</td>
+                                        <td class="ending">-liê</td>
+                                        <td class="ending">-liû</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>性状动词系统</h3>
+                        <p>琳凯蒂亚语有两个重要的性状动词：</p>
+                        
+                        <div class="status-verbs">
+                            <div class="status-verb-category">
+                                <h4>性质动词 "es" —— 等同性</h4>
+                                <p>表示主语的性质或判断主语是什么的连接桥梁，后接宾语：</p>
+                                <div class="status-examples">
+                                    <div class="status-example">
+                                        <span class="formula">A es B</span>
+                                        <span class="meaning">A = B，"A是、等于、等同于B"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A ese B</span>
+                                        <span class="meaning">A ≈ B，"A像、可能是、近似于B"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A nes B</span>
+                                        <span class="meaning">A ≠ B，"A不是、不等于、不同于B"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A ces B</span>
+                                        <span class="meaning">A == B，"A一定是、肯定是、绝对是B"</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="status-verb-category">
+                                <h4>状态动词 "ez" —— 现实性</h4>
+                                <p>表示主语状态或者存在性的连接桥梁，后接宾语：</p>
+                                <div class="status-examples">
+                                    <div class="status-example">
+                                        <span class="formula">A ez B</span>
+                                        <span class="meaning">A ∈ B，"A在、置于、存在于B"；B ∈ A，"B有、拥有A"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A eze B</span>
+                                        <span class="meaning">"A可能于B"；"B可能有A"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A nez B</span>
+                                        <span class="meaning">A ∉ B，"A不于B"；B ∉ A，"B没有A"</span>
+                                    </div>
+                                    <div class="status-example">
+                                        <span class="formula">A cez B</span>
+                                        <span class="meaning">A == B，"A肯定在B"；B == A，"B一定有A"</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>动词变化规则</h3>
+                        <p>根据变化对象和变化特点，分为自变/他变和静变/动变：</p>
+                        
+                        <div class="change-types">
+                            <div class="change-type">
+                                <h4>变化分类</h4>
+                                <div class="classification">
+                                    <div class="class-group">
+                                        <h5>按变化来源</h5>
+                                        <div class="class-item">
+                                            <span class="class-name">自变</span>
+                                            <span class="class-desc">不受外界影响，自发产生的变化，只对主语负责</span>
+                                        </div>
+                                        <div class="class-item">
+                                            <span class="class-name">他变</span>
+                                            <span class="class-desc">受到外界影响而产生变化，需要有宾语</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-group">
+                                        <h5>按变化过程</h5>
+                                        <div class="class-item">
+                                            <span class="class-name">静变</span>
+                                            <span class="class-desc">变化时间较长，难以观察过程，侧重结果</span>
+                                        </div>
+                                        <div class="class-item">
+                                            <span class="class-name">动变</span>
+                                            <span class="class-desc">变化时间较短，可见变化过程，侧重过程</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="change-type">
+                                <h4>形容词变化表述</h4>
+                                <div class="change-examples">
+                                    <div class="change-example">
+                                        <span class="change-name">自静变</span>
+                                        <span class="change-form">-lie（主动完成式）</span>
+                                        <span class="change-desc">自然而然地完成了某种状态的变化</span>
+                                    </div>
+                                    <div class="change-example">
+                                        <span class="change-name">自动变</span>
+                                        <span class="change-form">-zie（主动进行式）</span>
+                                        <span class="change-desc">正在自然地进行某种状态的变化</span>
+                                    </div>
+                                    <div class="change-example">
+                                        <span class="change-name">他静变</span>
+                                        <span class="change-form">-liē（被动完成式）</span>
+                                        <span class="change-desc">被外力完成了某种状态的变化</span>
+                                    </div>
+                                    <div class="change-example">
+                                        <span class="change-name">他动变</span>
+                                        <span class="change-form">-ziē（被动进行式）</span>
+                                        <span class="change-desc">正在被外力进行某种状态的变化</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 魔法语法 -->
+                <div id="magic" class="grammar-section">
+                    <h2 class="section-title">魔法语法</h2>
+                    
+                    <div class="grammar-card magic-card">
+                        <h3>魔法语态</h3>
+                        <p>琳凯蒂亚语特有的魔法语态，用于表达魔法行为和状态：</p>
+                        
+                        <div class="magic-examples">
+                            <div class="magic-pattern">
+                                <h4>引导语态 (Incantation Mode)</h4>
+                                <p>用于施法咒语：</p>
+                                <div class="example-sentence magic">
+                                    <span class="Rincatian">ʔa-lum kris-tal mel-oth!</span>
+                                    <span class="translation">愿光芒在水晶中显现！</span>
+                                    <span class="magic-effect">✨ 具有召唤光芒的魔法效果</span>
+                                </div>
+                            </div>
+                            
+                            <div class="magic-pattern">
+                                <h4>共鸣语态 (Resonance Mode)</h4>
+                                <p>用于与自然元素交流：</p>
+                                <div class="example-sentence magic">
+                                    <span class="Rincatian">Sil-va tel-an mor-eth...</span>
+                                    <span class="translation">银蓝色的树儿轻声歌唱...</span>
+                                    <span class="magic-effect">🎵 能引起铃铛树的共鸣</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 练习 -->
+                <div id="exercises" class="grammar-section">
+                    <h2 class="section-title">语法练习</h2>
+                    
+                    <div class="grammar-card">
+                        <h3>基础翻译练习</h3>
+                        <div class="exercise-container">
+                            <div class="exercise-item">
+                                <p class="exercise-prompt">将下列中文翻译成琳凯蒂亚语：</p>
+                                <div class="exercise-question">
+                                    <p>1. 我们计划去学校。</p>
+                                    <input type="text" class="exercise-input" placeholder="输入琳凯蒂亚语翻译...">
+                                    <button class="check-btn" onclick="checkAnswer(1)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-1" style="display: none;">
+                                    <p><strong>参考答案：</strong> Win'ô soselio'poroŋ toge yo.</p>
+                                    <p><strong>语法分析：</strong> Win'ô (我们+主语助词) + soselio'poroŋ (学校+目的状语助词) + toge (计划去) + yo (陈述句结尾)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-item">
+                                <div class="exercise-question">
+                                    <p>2. 他正在看书。</p>
+                                    <input type="text" class="exercise-input" placeholder="输入琳凯蒂亚语翻译...">
+                                    <button class="check-btn" onclick="checkAnswer(2)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-2" style="display: none;">
+                                    <p><strong>参考答案：</strong> Hi'ô libo'ō mideze yo.</p>
+                                    <p><strong>语法分析：</strong> Hi'ô (他+主语助词) + libo'ō (书+直接宾语助词) + mideze (正在看) + yo (陈述句结尾)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-item">
+                                <div class="exercise-question">
+                                    <p>3. 这本书很有趣。</p>
+                                    <input type="text" class="exercise-input" placeholder="输入琳凯蒂亚语翻译...">
+                                    <button class="check-btn" onclick="checkAnswer(3)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-3" style="display: none;">
+                                    <p><strong>参考答案：</strong> Ko libo'l kârokia ye yo.</p>
+                                    <p><strong>语法分析：</strong> Ko libo'l (这本书+主语助词) + kârokia (有趣) + ye (形容词一般主动式) + yo (陈述句结尾)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>助词使用练习</h3>
+                        <div class="exercise-container">
+                            <div class="exercise-item">
+                                <p class="exercise-prompt">选择正确的助词填空：</p>
+                                <div class="exercise-question">
+                                    <p>4. Wi___ soseo es yo. (我是学生。)</p>
+                                    <div class="options">
+                                        <label><input type="radio" name="q4" value="'ô"> 'ô</label>
+                                        <label><input type="radio" name="q4" value="'j"> 'j</label>
+                                        <label><input type="radio" name="q4" value="'l"> 'l</label>
+                                        <label><input type="radio" name="q4" value="'ō"> 'ō</label>
+                                    </div>
+                                    <button class="check-btn" onclick="checkAnswer(4)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-4" style="display: none;">
+                                    <p><strong>正确答案：</strong> 'ô</p>
+                                    <p><strong>解释：</strong> "我"作为主语时，属于可自发动作的施语，使用'ô助词。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-item">
+                                <div class="exercise-question">
+                                    <p>5. Libo___ mide! (看书！)</p>
+                                    <div class="options">
+                                        <label><input type="radio" name="q5" value="'ô"> 'ô</label>
+                                        <label><input type="radio" name="q5" value="'ō"> 'ō</label>
+                                        <label><input type="radio" name="q5" value="'a"> 'a</label>
+                                        <label><input type="radio" name="q5" value="'u"> 'u</label>
+                                    </div>
+                                    <button class="check-btn" onclick="checkAnswer(5)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-5" style="display: none;">
+                                    <p><strong>正确答案：</strong> 'ō</p>
+                                    <p><strong>解释：</strong> "书"作为直接宾语，使用'ō直接宾语助词。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>体态词尾练习</h3>
+                        <div class="exercise-container">
+                            <div class="exercise-item">
+                                <p class="exercise-prompt">根据中文意思选择正确的体态词尾：</p>
+                                <div class="exercise-question">
+                                    <p>6. Wi soseo___ yo. (我已经学习了。)</p>
+                                    <div class="options">
+                                        <label><input type="radio" name="q6" value="e"> -e (一般主动)</label>
+                                        <label><input type="radio" name="q6" value="ze"> -ze (进行主动)</label>
+                                        <label><input type="radio" name="q6" value="le"> -le (完成主动)</label>
+                                        <label><input type="radio" name="q6" value="ge"> -ge (计划主动)</label>
+                                    </div>
+                                    <button class="check-btn" onclick="checkAnswer(6)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-6" style="display: none;">
+                                    <p><strong>正确答案：</strong> -le</p>
+                                    <p><strong>解释：</strong> "已经学习了"表示动作已经完成，使用完成主动式-le。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-item">
+                                <div class="exercise-question">
+                                    <p>7. Ŝi'ô libo'ō mid___ yo. (她正在看书。)</p>
+                                    <div class="options">
+                                        <label><input type="radio" name="q7" value="e"> -e (一般主动)</label>
+                                        <label><input type="radio" name="q7" value="ze"> -ze (进行主动)</label>
+                                        <label><input type="radio" name="q7" value="le"> -le (完成主动)</label>
+                                        <label><input type="radio" name="q7" value="ge"> -ge (计划主动)</label>
+                                    </div>
+                                    <button class="check-btn" onclick="checkAnswer(7)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-7" style="display: none;">
+                                    <p><strong>正确答案：</strong> -ze</p>
+                                    <p><strong>解释：</strong> "正在看书"表示动作正在进行，使用进行主动式-ze。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h3>综合语法分析</h3>
+                        <div class="exercise-container">
+                            <div class="exercise-item">
+                                <p class="exercise-prompt">分析下列琳凯蒂亚语句子的语法结构：</p>
+                                <div class="exercise-question">
+                                    <p>8. 分析句子：Celoŋ, nin'ô qigen'xa maŋana'xa libo'ō midege yo!</p>
+                                    <textarea class="exercise-textarea" placeholder="请详细分析每个成分的语法作用..."></textarea>
+                                    <button class="check-btn" onclick="checkAnswer(8)">检查答案</button>
+                                </div>
+                                <div class="exercise-answer" id="answer-8" style="display: none;">
+                                    <p><strong>参考分析：</strong></p>
+                                    <ul>
+                                        <li><strong>Celoŋ</strong> - 领语牵词，表示"请"</li>
+                                        <li><strong>nin'ô</strong> - 主语："你们"+主语助词'ô</li>
+                                        <li><strong>qigen'xa</strong> - 时间定语："明天"+时间定语助词'xa</li>
+                                        <li><strong>maŋana'xa</strong> - 时间定语："早上"+时间定语助词'xa</li>
+                                        <li><strong>libo'ō</strong> - 直接宾语："书"+直接宾语助词'ō</li>
+                                        <li><strong>midege</strong> - 谓语动词："看"+计划主动式-ge</li>
+                                        <li><strong>yo</strong> - 结语后止词，陈述句结尾</li>
+                                    </ul>
+                                    <p><strong>整句翻译：</strong>请你们明天早上计划看书！</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：1234567890</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="grammar.js"></script>
+</body>
+</html>

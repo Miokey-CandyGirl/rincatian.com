@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理页面调试工具 - 琳凯蒂亚语社区</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .debug-panel { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .debug-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .debug-button:hover { background: #45a049; }
+        .debug-output { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 400px; overflow-y: auto; margin: 10px 0; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .warning { background: rgba(255,152,0,0.2); color: #ff9800; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+    </style>
+</head>
+<body>
+    <h1>🔧 管理页面调试工具</h1>
+    
+    <div class="debug-panel">
+        <h2>🔍 快速诊断</h2>
+        <button class="debug-button" onclick="quickDiagnosis()">快速诊断问题</button>
+        <button class="debug-button" onclick="checkUserState()">检查用户状态</button>
+        <button class="debug-button" onclick="checkPageElements()">检查页面元素</button>
+        <button class="debug-button" onclick="forceShowAdmin()">强制显示管理面板</button>
+        <div id="diagnosisResult" class="status info">等待诊断...</div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>👤 用户状态设置</h2>
+        <button class="debug-button" onclick="setAdminUser()">设置管理员用户</button>
+        <button class="debug-button" onclick="clearUserData()">清除用户数据</button>
+        <button class="debug-button" onclick="checkAuthSystems()">检查认证系统</button>
+        <div id="userStatus" class="status info">等待操作...</div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>🛠️ 修复操作</h2>
+        <button class="debug-button" onclick="fixAdminAccess()">修复管理员权限</button>
+        <button class="debug-button" onclick="reloadAdminPanel()">重新加载管理面板</button>
+        <button class="debug-button" onclick="resetAdminPage()">重置管理页面</button>
+        <div id="fixStatus" class="status info">等待修复...</div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>📊 调试输出</h2>
+        <div class="debug-output" id="debugOutput">[系统] 调试工具已启动<br></div>
+        <button class="debug-button" onclick="clearDebugOutput()">清空输出</button>
+        <button class="debug-button" onclick="openAdminPage()">打开管理页面</button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const outputElement = document.getElementById('debugOutput');
+            outputElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            outputElement.scrollTop = outputElement.scrollHeight;
+        }
+        
+        function quickDiagnosis() {
+            log('开始快速诊断...', 'info');
+            
+            // 检查localStorage中的用户数据
+            const currentUser = localStorage.getItem('currentUser');
+            const authToken = localStorage.getItem('authToken');
+            const adminToken = localStorage.getItem('adminToken');
+            
+            log('当前用户数据: ' + (currentUser || '无'), currentUser ? 'success' : 'warning');
+            log('认证令牌: ' + (authToken || '无'), authToken ? 'success' : 'warning');
+            log('管理员令牌: ' + (adminToken || '无'), adminToken ? 'success' : 'warning');
+            
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    log(`用户名: ${user.username}, 角色: ${user.role}`, 'info');
+                    
+                    if (user.username === 'admin' || user.role === 'admin') {
+                        log('✅ 检测到管理员用户', 'success');
+                        document.getElementById('diagnosisResult').innerHTML = '✅ 检测到管理员用户，问题可能在页面显示';
+                        document.getElementById('diagnosisResult').className = 'status success';
+                    } else {
+                        log('❌ 当前用户不是管理员', 'error');
+                        document.getElementById('diagnosisResult').innerHTML = '❌ 当前用户不是管理员';
+                        document.getElementById('diagnosisResult').className = 'status error';
+                    }
+                } catch (error) {
+                    log('❌ 用户数据格式错误: ' + error.message, 'error');
+                    document.getElementById('diagnosisResult').innerHTML = '❌ 用户数据格式错误';
+                    document.getElementById('diagnosisResult').className = 'status error';
+                }
+            } else {
+                log('❌ 未找到用户数据', 'error');
+                document.getElementById('diagnosisResult').innerHTML = '❌ 未找到用户数据，需要先登录';
+                document.getElementById('diagnosisResult').className = 'status error';
+            }
+        }
+        
+        function checkUserState() {
+            log('检查用户状态...', 'info');
+            
+            // 检查所有可能的用户数据源
+            const sources = [
+                { name: 'localStorage.currentUser', data: localStorage.getItem('currentUser') },
+                { name: 'localStorage.authToken', data: localStorage.getItem('authToken') },
+                { name: 'window.authSystem', data: window.authSystem },
+                { name: 'window.communitySystem', data: window.communitySystem }
+            ];
+            
+            sources.forEach(source => {
+                if (source.data) {
+                    if (typeof source.data === 'string') {
+                        log(`${source.name}: ${source.data}`, 'success');
+                    } else {
+                        log(`${source.name}: 对象存在`, 'success');
+                        if (source.data.currentUser) {
+                            log(`  - currentUser: ${JSON.stringify(source.data.currentUser)}`, 'info');
+                        }
+                    }
+                } else {
+                    log(`${source.name}: 不存在`, 'warning');
+                }
+            });
+            
+            document.getElementById('userStatus').innerHTML = '用户状态检查完成，查看调试输出';
+            document.getElementById('userStatus').className = 'status info';
+        }
+        
+        function checkPageElements() {
+            log('检查页面元素...', 'info');
+            
+            // 检查关键元素
+            const elements = [
+                'adminPanel',
+                'accessDenied', 
+                'userName',
+                'userInfo',
+                'authButtons'
+            ];
+            
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const style = window.getComputedStyle(element);
+                    log(`${id}: 存在, display: ${style.display}, visibility: ${style.visibility}`, 'success');
+                } else {
+                    log(`${id}: 不存在`, 'error');
+                }
+            });
+        }
+        
+        function setAdminUser() {
+            log('设置管理员用户...', 'info');
+            
+            const adminUser = {
+                id: 'admin-debug',
+                username: 'admin',
+                role: 'admin',
+                email: 'admin@rincatian.com',
+                avatar: '👑',
+                joinDate: Date.now(),
+                lastLogin: Date.now()
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(adminUser));
+            localStorage.setItem('adminToken', 'true');
+            localStorage.setItem('authToken', 'admin-token-' + Date.now());
+            
+            log('✅ 管理员用户设置完成', 'success');
+            document.getElementById('userStatus').innerHTML = '✅ 管理员用户设置完成';
+            document.getElementById('userStatus').className = 'status success';
+        }
+        
+        function clearUserData() {
+            log('清除用户数据...', 'info');
+            
+            const keys = ['currentUser', 'authToken', 'adminToken', 'isAdmin'];
+            keys.forEach(key => {
+                localStorage.removeItem(key);
+                log(`清除: ${key}`, 'info');
+            });
+            
+            log('✅ 用户数据清除完成', 'success');
+            document.getElementById('userStatus').innerHTML = '✅ 用户数据清除完成';
+            document.getElementById('userStatus').className = 'status success';
+        }
+        
+        function checkAuthSystems() {
+            log('检查认证系统...', 'info');
+            
+            if (window.authSystem) {
+                log('✅ window.authSystem 存在', 'success');
+                log(`currentUser: ${JSON.stringify(window.authSystem.currentUser)}`, 'info');
+            } else {
+                log('❌ window.authSystem 不存在', 'error');
+            }
+            
+            if (window.communitySystem) {
+                log('✅ window.communitySystem 存在', 'success');
+                log(`currentUser: ${JSON.stringify(window.communitySystem.currentUser)}`, 'info');
+            } else {
+                log('❌ window.communitySystem 不存在', 'error');
+            }
+        }
+        
+        function forceShowAdmin() {
+            log('强制显示管理面板...', 'info');
+            
+            // 首先设置管理员用户
+            setAdminUser();
+            
+            // 然后强制显示面板
+            setTimeout(() => {
+                log('向管理页面发送强制显示命令...', 'info');
+                
+                // 设置强制显示标志
+                localStorage.setItem('forceShowAdmin', 'true');
+                localStorage.setItem('adminForceTimestamp', Date.now().toString());
+                
+                // 设置管理员令牌
+                localStorage.setItem('adminToken', 'true');
+                
+                // 触发 storage 事件（如果管理页面在同一个标签页中）
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'forceShowAdmin',
+                    newValue: 'true',
+                    oldValue: null,
+                    storageArea: localStorage
+                }));
+                
+                log('✅ 强制显示命令已发送', 'success');
+                log('🔄 请刷新管理页面或点击“强制显示”按钮', 'warning');
+                
+                document.getElementById('diagnosisResult').innerHTML = '✅ 强制显示命令已发送，请刷新管理页面';
+                document.getElementById('diagnosisResult').className = 'status success';
+                
+                // 自动打开管理页面
+                setTimeout(() => {
+                    openAdminPage();
+                }, 1000);
+            }, 500);
+        }
+        
+        function fixAdminAccess() {
+            log('修复管理员权限...', 'info');
+            
+            // 1. 设置正确的用户数据
+            setAdminUser();
+            
+            // 2. 设置强制显示标志
+            localStorage.setItem('forceShowAdmin', 'true');
+            localStorage.setItem('adminDebugMode', 'true');
+            
+            // 3. 创建完整的用户数据
+            const users = [
+                {
+                    id: 'admin-001',
+                    username: 'admin',
+                    email: 'admin@rincatian.com',
+                    role: 'admin',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 30,
+                    lastLogin: Date.now(),
+                    avatar: '👑'
+                }
+            ];
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('linkaitiya_users', JSON.stringify(users));
+            
+            log('✅ 管理员权限修复完成', 'success');
+            document.getElementById('fixStatus').innerHTML = '✅ 管理员权限修复完成，请刷新管理页面';
+            document.getElementById('fixStatus').className = 'status success';
+        }
+        
+        function reloadAdminPanel() {
+            log('重新加载管理面板...', 'info');
+            
+            if (window.opener && window.opener.adminPanel) {
+                try {
+                    window.opener.adminPanel.forceAdminCheck();
+                    window.opener.adminPanel.checkAdminAccess();
+                    log('✅ 管理面板重新加载完成', 'success');
+                } catch (error) {
+                    log('❌ 重新加载失败: ' + error.message, 'error');
+                }
+            } else {
+                log('❌ 无法访问管理面板', 'error');
+            }
+        }
+        
+        function resetAdminPage() {
+            log('重置管理页面...', 'info');
+            
+            // 清除所有相关数据
+            clearUserData();
+            
+            // 重新设置管理员
+            setTimeout(() => {
+                fixAdminAccess();
+                log('✅ 管理页面重置完成', 'success');
+                document.getElementById('fixStatus').innerHTML = '✅ 管理页面重置完成';
+                document.getElementById('fixStatus').className = 'status success';
+            }, 500);
+        }
+        
+        function clearDebugOutput() {
+            document.getElementById('debugOutput').innerHTML = '';
+            log('调试输出已清空', 'info');
+        }
+        
+        function openAdminPage() {
+            window.open('admin.html', '_blank');
+            log('已打开管理页面', 'info');
+        }
+        
+        // 页面加载时自动运行诊断
+        document.addEventListener('DOMContentLoaded', function() {
+            log('调试工具初始化完成', 'info');
+            setTimeout(quickDiagnosis, 1000);
+        });
+        
+        // 监听localStorage变化
+        window.addEventListener('storage', function(e) {
+            if (e.key && (e.key.includes('admin') || e.key.includes('user') || e.key.includes('auth'))) {
+                log(`检测到存储变化: ${e.key} = ${e.newValue}`, 'info');
+            }
+        });
+    </script>
+</body>
+</html>

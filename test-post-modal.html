@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布话题测试 - 琳凯蒂亚语</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 120px auto 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .test-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #ffd700, #4ecdc4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .instructions {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .status-display {
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+        }
+        
+        .status-success { background: rgba(76, 175, 80, 0.2); border: 1px solid #4caf50; }
+        .status-error { background: rgba(244, 67, 54, 0.2); border: 1px solid #f44336; }
+        .status-info { background: rgba(33, 150, 243, 0.2); border: 1px solid #2196f3; }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">发布话题测试</span>
+                    <span class="logo-english">Post Test</span>
+                </div>
+            </div>
+            <div class="nav-extras">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container">
+        <h1>🧪 发布话题功能测试</h1>
+        
+        <div class="instructions">
+            <h3>📋 测试步骤</h3>
+            <ol style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <li>首先点击"登录管理员"按钮进行登录</li>
+                <li>然后点击"测试发布话题"按钮</li>
+                <li>在弹出的对话框中：
+                    <ul>
+                        <li>✅ 检查右上角的 ❌ 按钮是否可以点击关闭</li>
+                        <li>✅ 填写标题和内容，然后点击"发布话题"</li>
+                        <li>✅ 验证是否提示成功或显示错误</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="status-display" id="statusDisplay">
+            <strong>系统状态:</strong> 等待测试...
+        </div>
+        
+        <button class="test-button" onclick="loginAdmin()">🔐 登录管理员</button>
+        <button class="test-button" onclick="testPostModal()">📝 测试发布话题</button>
+        <button class="test-button" onclick="checkStatus()">🔍 检查系统状态</button>
+        <button class="test-button" onclick="logout()">🚪 退出登录</button>
+        
+        <div style="margin-top: 2rem;">
+            <h3>🐛 问题调试</h3>
+            <button class="test-button" onclick="debugModal()">🔧 调试模态框</button>
+            <button class="test-button" onclick="testSimpleModal()">🎯 测试简单模态框</button>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+
+    <script>
+        // 显示状态
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('statusDisplay');
+            statusDiv.className = `status-display status-${type}`;
+            statusDiv.innerHTML = `<strong>状态:</strong> ${message}`;
+            console.log(`[状态] ${message}`);
+        }
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('页面加载完成，等待系统初始化...', 'info');
+            
+            setTimeout(() => {
+                checkStatus();
+            }, 1000);
+        });
+
+        // 登录管理员
+        async function loginAdmin() {
+            showStatus('正在登录管理员账户...', 'info');
+            
+            if (!window.authSystem) {
+                showStatus('❌ 认证系统未加载', 'error');
+                return;
+            }
+            
+            try {
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (result.success) {
+                    showStatus(`✅ 管理员登录成功: ${window.authSystem.currentUser.username}`, 'success');
+                } else {
+                    showStatus(`❌ 登录失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ 登录异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试发布话题模态框
+        function testPostModal() {
+            showStatus('正在测试发布话题模态框...', 'info');
+            
+            try {
+                if (typeof showNewPostModal === 'function') {
+                    showNewPostModal();
+                    showStatus('✅ 发布话题模态框已打开，请测试功能', 'success');
+                } else {
+                    showStatus('❌ showNewPostModal 函数未定义', 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ 模态框测试失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 检查系统状态
+        function checkStatus() {
+            let status = [];
+            
+            // 检查认证系统
+            if (window.authSystem) {
+                if (window.authSystem.currentUser) {
+                    status.push(`✅ 用户已登录: ${window.authSystem.currentUser.username}`);
+                } else {
+                    status.push(`⚠️ 用户未登录`);
+                }
+            } else {
+                status.push(`❌ 认证系统未加载`);
+            }
+            
+            // 检查社区系统
+            if (window.communitySystem) {
+                status.push(`✅ 社区系统已加载`);
+            } else {
+                status.push(`❌ 社区系统未加载`);
+            }
+            
+            // 检查关键函数
+            const functions = ['showNewPostModal', 'createModal', 'showModal', 'submitNewPost'];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    status.push(`✅ ${funcName} 函数可用`);
+                } else {
+                    status.push(`❌ ${funcName} 函数缺失`);
+                }
+            });
+            
+            showStatus(status.join('<br>'), status.some(s => s.includes('❌')) ? 'error' : 'success');
+        }
+
+        // 退出登录
+        function logout() {
+            if (window.authSystem && window.authSystem.currentUser) {
+                window.authSystem.logout();
+                showStatus('✅ 已退出登录', 'info');
+            } else {
+                showStatus('⚠️ 当前未登录', 'info');
+            }
+        }
+
+        // 调试模态框
+        function debugModal() {
+            showStatus('开始调试模态框...', 'info');
+            
+            // 检查现有模态框
+            const existingModals = document.querySelectorAll('.modal');
+            console.log('现有模态框数量:', existingModals.length);
+            
+            // 手动创建测试模态框
+            try {
+                const modal = createModal('debugModal', '调试模态框', `
+                    <div style="padding: 20px;">
+                        <p>这是一个调试模态框</p>
+                        <button onclick="closeModal('debugModal')" class="btn btn-primary">关闭</button>
+                    </div>
+                `);
+                
+                document.body.appendChild(modal);
+                showModal('debugModal');
+                showStatus('✅ 调试模态框已创建和显示', 'success');
+            } catch (error) {
+                showStatus(`❌ 调试模态框创建失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试简单模态框
+        function testSimpleModal() {
+            showStatus('测试简单模态框...', 'info');
+            
+            const simpleModal = document.createElement('div');
+            simpleModal.id = 'simpleTestModal';
+            simpleModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10001;
+            `;
+            
+            simpleModal.innerHTML = `
+                <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); padding: 30px; border-radius: 15px; max-width: 400px; color: white; text-align: center;">
+                    <h3 style="color: #ffd700; margin-bottom: 20px;">🎯 简单测试模态框</h3>
+                    <p style="margin-bottom: 20px;">如果您能看到此模态框并能成功关闭它，说明基础模态框功能正常。</p>
+                    <button onclick="document.getElementById('simpleTestModal').remove()" style="background: #ffd700; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">✅ 关闭测试</button>
+                </div>
+            `;
+            
+            // 点击背景关闭
+            simpleModal.addEventListener('click', (e) => {
+                if (e.target === simpleModal) {
+                    simpleModal.remove();
+                }
+            });
+            
+            document.body.appendChild(simpleModal);
+            showStatus('✅ 简单模态框已显示，请尝试关闭', 'success');
+        }
+    </script>
+</body>
+</html>

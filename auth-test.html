@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>认证系统测试 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a237e;
+            color: white;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .danger-button {
+            background: #f44336;
+        }
+        .danger-button:hover {
+            background: #d32f2f;
+        }
+        .admin-only {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: #ff9800;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
+        .error { background: rgba(244, 67, 54, 0.2); color: #f44336; }
+        .info { background: rgba(33, 150, 243, 0.2); color: #2196f3; }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(26, 35, 126, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-extras {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .btn {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #e8eaf6;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd700, #00bcd4);
+            color: #1a237e;
+            font-weight: 600;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ffd700, #7b1fa2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.8rem;
+        }
+        .user-name {
+            color: #e8eaf6;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 琳凯蒂亚语认证系统测试</h1>
+    
+    <div class="test-section">
+        <h2>模拟导航栏</h2>
+        <div class="nav-container">
+            <div>琳凯蒂亚语社区</div>
+            <div class="nav-extras">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">登录</button>
+                    <button class="btn btn-primary" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div style="margin-left: 10px;">
+                        <button class="btn btn-outline" id="profileLink">个人中心</button>
+                        <button class="btn btn-outline" id="logoutLink">退出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>认证系统状态</h2>
+        <div id="authStatus" class="status info">正在检查认证系统...</div>
+        <p><strong>当前用户：</strong><span id="currentUserInfo">未登录</span></p>
+        <p><strong>权限：</strong><span id="userPermissions">无</span></p>
+    </div>
+    
+    <div class="test-section">
+        <h2>认证操作</h2>
+        <button class="test-button" onclick="testQuickLogin()">快速登录测试账户</button>
+        <button class="test-button" onclick="testCreateUser()">创建测试用户</button>
+        <button class="test-button" onclick="testLogout()">退出登录</button>
+        <button class="test-button danger-button" onclick="testDeleteAllUsers()">清空所有用户（危险）</button>
+    </div>
+    
+    <div class="test-section admin-only">
+        <h2>管理员功能测试（仅管理员可用）</h2>
+        <button class="test-button" onclick="testAddVocabulary()">添加测试词汇</button>
+        <button class="test-button" onclick="testAddGrammar()">添加测试语法</button>
+        <button class="test-button" onclick="testViewUsers()">查看所有用户</button>
+        <button class="test-button" onclick="testGetStatistics()">获取统计信息</button>
+        <a href="admin.html" class="test-button" style="text-decoration: none; display: inline-block;">进入管理后台</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>内容权限测试</h2>
+        <button class="test-button" onclick="testReadContent()">读取内容（所有用户）</button>
+        <button class="test-button" onclick="testWriteContent()">写入内容（仅管理员）</button>
+        <button class="test-button" onclick="testDeleteContent()">删除内容（仅管理员）</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试结果</h2>
+        <div id="testResults" style="max-height: 300px; overflow-y: auto; background: #000; padding: 10px; border-radius: 5px; font-family: monospace;"></div>
+        <button class="test-button" onclick="clearResults()">清空结果</button>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script>
+        let testResults = document.getElementById('testResults');
+        
+        function logResult(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196f3';
+            testResults.innerHTML += `<div style="color: ${color}; margin-bottom: 5px;">[${timestamp}] ${message}</div>`;
+            testResults.scrollTop = testResults.scrollHeight;
+        }
+        
+        function clearResults() {
+            testResults.innerHTML = '';
+        }
+        
+        function updateAuthStatus() {
+            const authStatus = document.getElementById('authStatus');
+            const currentUserInfo = document.getElementById('currentUserInfo');
+            const userPermissions = document.getElementById('userPermissions');
+            
+            if (window.authSystem) {
+                authStatus.className = 'status success';
+                authStatus.textContent = '认证系统已加载并正常运行';
+                
+                if (window.authSystem.currentUser) {
+                    const user = window.authSystem.currentUser;
+                    currentUserInfo.textContent = `${user.username} (${user.role})`;
+                    userPermissions.textContent = user.permissions ? user.permissions.join(', ') : '基础权限';
+                } else {
+                    currentUserInfo.textContent = '未登录';
+                    userPermissions.textContent = '无';
+                }
+            } else {
+                authStatus.className = 'status error';
+                authStatus.textContent = '认证系统未加载';
+                currentUserInfo.textContent = '系统错误';
+                userPermissions.textContent = '无法获取';
+            }
+        }
+        
+        async function testQuickLogin() {
+            try {
+                logResult('尝试登录管理员账户...', 'info');
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (result.success) {
+                    logResult(`登录成功: ${result.message}`, 'success');
+                    updateAuthStatus();
+                    updateNewAuthUI();
+                } else {
+                    logResult(`登录失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                logResult(`登录错误: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testCreateUser() {
+            try {
+                const timestamp = Date.now();
+                logResult('创建测试用户...', 'info');
+                
+                const result = await window.authSystem.register({
+                    username: `testuser${timestamp}`,
+                    email: `test${timestamp}@example.com`,
+                    password: '123456',
+                    role: 'user'
+                });
+                
+                if (result.success) {
+                    logResult(`用户创建成功: ${result.message}`, 'success');
+                    updateAuthStatus();
+                    updateNewAuthUI();
+                } else {
+                    logResult(`用户创建失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                logResult(`创建用户错误: ${error.message}`, 'error');
+            }
+        }
+        
+        function testLogout() {
+            try {
+                logResult('退出登录...', 'info');
+                const result = window.authSystem.logout();
+                logResult(`退出成功: ${result.message}`, 'success');
+                updateAuthStatus();
+                updateNewAuthUI();
+            } catch (error) {
+                logResult(`退出错误: ${error.message}`, 'error');
+            }
+        }
+        
+        function testDeleteAllUsers() {
+            if (!confirm('确定要删除所有用户吗？这将清空除管理员外的所有账户！')) {
+                return;
+            }
+            
+            try {
+                logResult('删除所有非管理员用户...', 'info');
+                const users = window.authSystem.getAllUsers();
+                let deletedCount = 0;
+                
+                users.forEach(user => {
+                    if (user.role !== 'admin' && user.id !== window.authSystem.currentUser?.id) {
+                        try {
+                            window.authSystem.deleteUser(user.id);
+                            deletedCount++;
+                        } catch (error) {
+                            logResult(`删除用户 ${user.username} 失败: ${error.message}`, 'error');
+                        }
+                    }
+                });
+                
+                logResult(`成功删除 ${deletedCount} 个用户`, 'success');
+                updateAuthStatus();
+            } catch (error) {
+                logResult(`删除用户错误: ${error.message}`, 'error');
+            }
+        }
+        
+        function testAddVocabulary() {
+            try {
+                logResult('测试添加词汇...', 'info');
+                
+                const result = window.contentManager.addVocabulary({
+                    word: 'test',
+                    pronunciation: 'test',
+                    meaning: '测试',
+                    type: '名',
+                    definition: '这是一个测试词汇',
+                    examples: ['test example'],
+                    level: 'basic',
+                    tags: ['测试']
+                });
+                
+                logResult(`词汇添加成功: ${result.message}`, 'success');
+            } catch (error) {
+                logResult(`添加词汇失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testAddGrammar() {
+            try {
+                logResult('测试添加语法规则...', 'info');
+                
+                const result = window.contentManager.addGrammar({
+                    title: '测试语法规则',
+                    category: '测试分类',
+                    description: '这是一个测试语法规则',
+                    rules: ['规则1', '规则2'],
+                    examples: ['例句1', '例句2'],
+                    level: 'beginner'
+                });
+                
+                logResult(`语法规则添加成功: ${result.message}`, 'success');
+            } catch (error) {
+                logResult(`添加语法规则失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testViewUsers() {
+            try {
+                logResult('获取所有用户...', 'info');
+                const users = window.authSystem.getAllUsers();
+                logResult(`找到 ${users.length} 个用户:`, 'success');
+                users.forEach(user => {
+                    logResult(`- ${user.username} (${user.role}) - ${user.email}`, 'info');
+                });
+            } catch (error) {
+                logResult(`获取用户失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testGetStatistics() {
+            try {
+                logResult('获取统计信息...', 'info');
+                const stats = window.contentManager.getStatistics();
+                logResult(`词汇: ${stats.vocabulary}, 语法: ${stats.grammar}, 短语: ${stats.phrases}, 数词: ${stats.numbers}`, 'success');
+            } catch (error) {
+                logResult(`获取统计信息失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testReadContent() {
+            try {
+                logResult('测试读取内容权限...', 'info');
+                const vocabulary = window.contentManager.getVocabulary();
+                logResult(`成功读取 ${vocabulary.length} 个词汇`, 'success');
+            } catch (error) {
+                logResult(`读取内容失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testWriteContent() {
+            try {
+                logResult('测试写入内容权限...', 'info');
+                testAddVocabulary();
+            } catch (error) {
+                logResult(`写入内容失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testDeleteContent() {
+            try {
+                logResult('测试删除内容权限...', 'info');
+                const vocabulary = window.contentManager.getVocabulary();
+                if (vocabulary.length > 0) {
+                    const result = window.contentManager.deleteVocabulary(vocabulary[0].id);
+                    logResult(`删除内容成功: ${result.message}`, 'success');
+                } else {
+                    logResult('没有可删除的内容', 'info');
+                }
+            } catch (error) {
+                logResult(`删除内容失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 页面加载后初始化
+        setTimeout(() => {
+            updateAuthStatus();
+            logResult('认证系统测试页面已加载', 'success');
+        }, 1000);
+    </script>
+</body>
+</html>

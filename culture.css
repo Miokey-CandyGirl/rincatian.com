@@ -1,0 +1,1101 @@
+/* 文化页面专用样式 */
+
+/* 文化英雄区域 */
+.culture-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 70%, #533483 100%);
+    position: relative;
+    padding: 150px 0 100px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.culture-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 4s ease-in-out infinite;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* 彩虹水晶装饰 */
+.crystal-decoration {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 2rem;
+}
+
+.crystal {
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    border-radius: 3px;
+    animation: crystalFloat 3s ease-in-out infinite;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.crystal.red { 
+    background: #ff4757; 
+    animation-delay: 0s;
+}
+.crystal.orange { 
+    background: #ff7675; 
+    animation-delay: 0.2s;
+}
+.crystal.yellow { 
+    background: #fdcb6e; 
+    animation-delay: 0.4s;
+}
+.crystal.green { 
+    background: #00b894; 
+    animation-delay: 0.6s;
+}
+.crystal.blue { 
+    background: #0984e3; 
+    animation-delay: 0.8s;
+}
+.crystal.indigo { 
+    background: #6c5ce7; 
+    animation-delay: 1s;
+}
+.crystal.purple { 
+    background: #a29bfe; 
+    animation-delay: 1.2s;
+}
+
+@keyframes crystalFloat {
+    0%, 100% { transform: rotate(45deg) translateY(0px); }
+    50% { transform: rotate(45deg) translateY(-10px); }
+}
+
+/* 文化主要内容区域 */
+.culture-main {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%);
+    padding: 0;
+}
+
+/* 文化导航标签 */
+.culture-nav {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 70px;
+    z-index: 100;
+}
+
+.culture-tabs {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.culture-tabs li {
+    flex: 1;
+}
+
+.tab-link {
+    display: block;
+    padding: 15px 20px;
+    color: #b0b0c8;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+}
+
+.tab-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-link.active {
+    color: #ffd700;
+    border-bottom-color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* 文化内容区域 */
+.culture-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.culture-section {
+    display: none;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.culture-section.active {
+    display: block;
+}
+
+.culture-section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* 地理网格 */
+.geography-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 2rem;
+}
+
+.geography-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.geography-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.geography-card:hover::before {
+    opacity: 1;
+}
+
+.geography-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.geography-card h3 {
+    color: #ffd700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.geography-card p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.Rincatian-text {
+    background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* 社会制度网格 */
+.society-grid {
+    display: grid;
+    gap: 30px;
+    margin-top: 2rem;
+}
+
+.society-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.society-card h3 {
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 角色列表 */
+.character-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.character {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.character:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: translateX(5px);
+}
+
+.character-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+
+.character-info h4 {
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.character-info p {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* 守护者网格 */
+.guardian-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 1rem;
+}
+
+.guardian {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.guardian:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.guardian-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.guardian h4 {
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.guardian p {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+}
+
+/* 机构列表 */
+.institution-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.institution {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.institution:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.institution-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.institution-info h4 {
+    color: #ffd700;
+    margin-bottom: 0.3rem;
+}
+
+.institution-info p {
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+/* 魔法系统 */
+.magic-grid {
+    display: grid;
+    gap: 30px;
+    margin-top: 2rem;
+}
+
+.magic-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.magic-card h3 {
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 彩虹水晶系统 */
+.crystal-system {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 1rem;
+}
+
+.crystal-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.crystal-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.crystal-gem {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px currentColor;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.crystal-item:hover .crystal-gem {
+    transform: scale(1.2);
+}
+
+.crystal-item.red .crystal-gem { background: #ff4757; }
+.crystal-item.orange .crystal-gem { background: #ff7675; }
+.crystal-item.yellow .crystal-gem { background: #fdcb6e; }
+.crystal-item.green .crystal-gem { background: #00b894; }
+.crystal-item.blue .crystal-gem { background: #0984e3; }
+.crystal-item.indigo .crystal-gem { background: #6c5ce7; }
+.crystal-item.purple .crystal-gem { background: #a29bfe; }
+
+.crystal-item span {
+    color: #e0e0e0;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* 武器列表 */
+.weapon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.weapon {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.weapon:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.weapon-icon {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+}
+
+.weapon h4 {
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.weapon p {
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+/* 法术分类 */
+.spell-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.spell-category {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.spell-category h4 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.spell-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.spell-category li {
+    color: #e0e0e0;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spell-category li:last-child {
+    border-bottom: none;
+}
+
+/* 传说时间线 */
+.legend-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 2rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.legend-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.2);
+}
+
+.legend-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    flex-shrink: 0;
+}
+
+.legend-content h3 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.legend-content p {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* 人物档案 */
+.character-profiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin-top: 2rem;
+}
+
+.character-profile {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 20px;
+}
+
+.character-profile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid;
+}
+
+.character-profile.hero .profile-avatar { border-color: #ffd700; background: linear-gradient(45deg, #ffd700, #ff6b6b); }
+.character-profile.ally .profile-avatar { border-color: #4ecdc4; background: linear-gradient(45deg, #4ecdc4, #45b7d1); }
+.character-profile.neutral .profile-avatar { border-color: #95a5a6; background: linear-gradient(45deg, #95a5a6, #74b9ff); }
+.character-profile.villain .profile-avatar { border-color: #e74c3c; background: linear-gradient(45deg, #e74c3c, #8e44ad); }
+.character-profile.sage .profile-avatar { border-color: #9b59b6; background: linear-gradient(45deg, #9b59b6, #3498db); }
+
+.profile-info h3 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.character-details p {
+    color: #e0e0e0;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.character-details strong {
+    color: #ffd700;
+}
+
+/* 历史时间线 */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 2rem;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #ffd700, #4ecdc4, #ff6b6b);
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    position: relative;
+}
+
+.timeline-date {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #1a1a2e;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-width: 100px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-content {
+    flex: 1;
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.2);
+}
+
+.timeline-content h3 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.timeline-content p {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .culture-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-link {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .geography-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-profiles {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .timeline::before {
+        left: 20px;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .timeline-date {
+        align-self: flex-start;
+        margin-left: 10px;
+    }
+    
+    .crystal-row {
+        flex-wrap: wrap;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 田历历法样式 */
+.calendar-intro {
+    margin-bottom: 2rem;
+}
+
+.calendar-description {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 2rem;
+}
+
+.calendar-description h3 {
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-description p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-rules {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #ffd700;
+}
+
+.calendar-rules h4 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.calendar-rules ul {
+    list-style: none;
+    padding: 0;
+}
+
+.calendar-rules li {
+    color: #e0e0e0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-rules li:last-child {
+    border-bottom: none;
+}
+
+.calendar-rules strong {
+    color: #ffd700;
+}
+
+/* 日历容器 */
+.calendar-container {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 2rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.calendar-nav {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #1a1a2e;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.calendar-title {
+    text-align: center;
+    flex: 1;
+}
+
+.calendar-title h3 {
+    color: #ffd700;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-subtitle {
+    color: #4ecdc4;
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-info {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+}
+
+/* 日历网格 */
+.calendar-grid {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: linear-gradient(45deg, #ffd700, #4ecdc4);
+}
+
+.weekday {
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #1a1a2e;
+    font-size: 0.9rem;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 26, 46, 0.8);
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 500;
+}
+
+.calendar-day:hover {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    transform: scale(1.05);
+}
+
+.calendar-day.today {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #1a1a2e;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.calendar-day.other-month {
+    color: #666;
+    background: rgba(26, 26, 46, 0.4);
+}
+
+.calendar-day.festival {
+    background: linear-gradient(45deg, #9b59b6, #3498db);
+    color: #fff;
+}
+
+.calendar-day.festival::after {
+    content: '★';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: 0.7rem;
+    color: #ffd700;
+}
+
+/* 图例 */
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.legend-color.today {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+}
+
+.legend-color.current-month {
+    background: rgba(26, 26, 46, 0.8);
+}
+
+.legend-color.other-month {
+    background: rgba(26, 26, 46, 0.4);
+}
+
+.legend-color.festival {
+    background: linear-gradient(45deg, #9b59b6, #3498db);
+}
+
+.legend-item span {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+}
+
+/* 特殊日期 */
+.calendar-festivals {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.calendar-festivals h3 {
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.festivals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.festival-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #9b59b6;
+    transition: all 0.3s ease;
+}
+
+.festival-item:hover {
+    background: rgba(155, 89, 182, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(155, 89, 182, 0.2);
+}
+
+.festival-date {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.festival-name {
+    color: #4ecdc4;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.festival-desc {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* 响应式设计 - 田历 */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 20px;
+    }
+    
+    .calendar-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .calendar-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .calendar-title h3 {
+        font-size: 1.5rem;
+    }
+    
+    .calendar-controls {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .weekday {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    
+    .calendar-day {
+        font-size: 0.9rem;
+    }
+    
+    .calendar-legend {
+        gap: 15px;
+    }
+    
+    .festivals-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-description {
+        padding: 20px;
+    }
+}

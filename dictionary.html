@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>琳凯蒂亚语词典 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dictionary.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="floating-particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">琳凯蒂亚语社区</span>
+                    <span class="logo-english">Rincatian Community</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="grammar.html">语法</a></li>
+                <li><a href="dictionary.html" class="active">词典</a></li>
+                <li><a href="culture.html">文化</a></li>
+                <li><a href="community.html">社区</a></li>
+            <!--    <li><a href="admin.html" class="admin-link" id="adminNav" style="display: none;">管理</a></li>  -->
+            </ul>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="dictionary-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">琳凯蒂亚语词典</h1>
+            <p class="hero-subtitle">探索魔法语言的词汇宝库，掌握光线使者的智慧结晶</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索琳凯蒂亚语词汇..." autocomplete="off">
+                    <button class="search-btn" id="searchBtn">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+                <div class="search-filters">
+                    <select id="languageFilter">
+                        <option value="all">全部语言</option>
+                        <option value="linkaitian">琳凯蒂亚语→中文</option>
+                        <option value="chinese">中文→琳凯蒂亚语</option>
+                    </select>
+                    <select id="typeFilter">
+                        <option value="all">全部词性</option>
+                        <option value="名">名词</option>
+                        <option value="动">动词</option>
+                        <option value="形">形容词</option>
+                        <option value="副">副词</option>
+                        <option value="代">代词</option>
+                        <option value="数">数词</option>
+                        <option value="连">连词</option>
+                        <option value="助">助词</option>
+                        <option value="抒">抒情词</option>
+                        <option value="声">声叹词</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dictionary-main">
+        <div class="dictionary-container">
+            <!-- 快速导航 -->
+            <nav class="dictionary-nav">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="standard">标准词汇</button>
+                    <button class="nav-tab" data-tab="grammar">语法词汇</button>
+                    <button class="nav-tab" data-tab="alphabet">字母发音</button>
+                    <button class="nav-tab" data-tab="phrases">常用短语</button>
+                    <button class="nav-tab" data-tab="numbers">数词系统</button>
+                </div>
+            </nav>
+
+            <!-- 标准词汇页面 -->
+            <section id="standard" class="dictionary-section active">
+                <div class="section-header">
+                    <h2>标准词汇</h2>
+                    <div class="header-actions">
+                        <div class="word-count">
+                            共收录 <span id="wordCount">0</span> 个词汇
+                        </div>
+                        <button class="btn btn-primary" id="addWordBtn">
+                            <span class="icon">➕</span>
+                            添加单词
+                        </button>
+                    </div>
+                    <div class="section-desc">探索琳凯蒂亚语的核心词汇体系</div>
+                </div>
+
+                <div class="alphabet-filter">
+                    <div class="alphabet-buttons" id="alphabetFilter">
+                        <!-- 字母筛选按钮将通过JS生成 -->
+                    </div>
+                </div>
+
+                <div class="search-results" id="searchResults">
+                    <!-- 搜索结果将显示在这里 -->
+                </div>
+
+                <div class="word-list" id="wordList">
+                    <!-- 词汇列表将通过JS生成 -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- 分页控件 -->
+                </div>
+            </section>
+
+            <!-- 语法词汇页面 -->
+            <section id="grammar" class="dictionary-section">
+                <div class="section-header">
+                    <h2>语法词汇</h2>
+                    <p class="section-desc">琳凯蒂亚语语法体系中的核心词汇</p>
+                </div>
+
+                <div class="grammar-categories">
+                    <div class="category-group">
+                        <h3>助词系统</h3>
+                        <div class="grammar-grid" id="particleList">
+                            <!-- 助词列表 -->
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <h3>代词系统</h3>
+                        <div class="grammar-grid" id="pronounList">
+                            <!-- 代词列表 -->
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <h3>连词系统</h3>
+                        <div class="grammar-grid" id="conjunctionList">
+                            <!-- 连词列表 -->
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <h3>能愿前止词</h3>
+                        <div class="grammar-grid" id="modalList">
+                            <!-- 能愿前止词列表 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 字母发音页面 -->
+            <section id="alphabet" class="dictionary-section">
+                <div class="section-header">
+                    <h2>字母发音表</h2>
+                    <p class="section-desc">琳凯蒂亚语41个字母的发音指南</p>
+                </div>
+
+                <div class="alphabet-sections">
+                    <div class="alphabet-group">
+                        <h3>元音字母（15个）</h3>
+                        <div class="letters-grid" id="vowelsList">
+                            <!-- 元音字母 -->
+                        </div>
+                    </div>
+
+                    <div class="alphabet-group">
+                        <h3>辅音字母（26个）</h3>
+                        <div class="letters-grid" id="consonantsList">
+                            <!-- 辅音字母 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 常用短语页面 -->
+            <section id="phrases" class="dictionary-section">
+                <div class="section-header">
+                    <h2>常用短语</h2>
+                    <p class="section-desc">日常交流中的实用琳凯蒂亚语表达</p>
+                </div>
+
+                <div class="phrases-categories">
+                    <div class="phrase-category">
+                        <h3>问候用语</h3>
+                        <div class="phrase-list" id="greetingPhrases">
+                            <!-- 问候短语 -->
+                        </div>
+                    </div>
+
+                    <div class="phrase-category">
+                        <h3>基础对话</h3>
+                        <div class="phrase-list" id="basicPhrases">
+                            <!-- 基础对话短语 -->
+                        </div>
+                    </div>
+
+                    <div class="phrase-category">
+                        <h3>时间表达</h3>
+                        <div class="phrase-list" id="timePhrases">
+                            <!-- 时间相关短语 -->
+                        </div>
+                    </div>
+
+                    <div class="phrase-category">
+                        <h3>魔法用语</h3>
+                        <div class="phrase-list" id="magicPhrases">
+                            <!-- 魔法相关短语 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 数词系统页面 -->
+            <section id="numbers" class="dictionary-section">
+                <div class="section-header">
+                    <h2>数词系统</h2>
+                    <p class="section-desc">琳凯蒂亚语完整的数词体系</p>
+                </div>
+
+                <div class="numbers-sections">
+                    <div class="number-group">
+                        <h3>基数词（0-22）</h3>
+                        <div class="numbers-grid" id="cardinalNumbers">
+                            <!-- 基数词 -->
+                        </div>
+                    </div>
+
+                    <div class="number-group">
+                        <h3>数词词缀</h3>
+                        <div class="suffix-list" id="numberSuffixes">
+                            <!-- 数词词缀 -->
+                        </div>
+                    </div>
+
+                    <div class="number-group">
+                        <h3>量名词系统</h3>
+                        <div class="measure-list" id="measureWords">
+                            <!-- 量名词 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 词汇详情模态框 -->
+        <div class="modal" id="wordDetailModal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="modalWordTitle"></h3>
+                    <button class="close-btn" data-modal="wordDetailModal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalWordContent">
+                    <!-- 词汇详情内容 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：1234567890</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="dictionary.js"></script>
+</body>
+</html>

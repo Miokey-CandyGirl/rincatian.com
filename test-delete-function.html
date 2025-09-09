@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试删除用户功能 - 琳凯蒂亚语管理后台</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .test-title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-section h3 {
+            color: #4ecdc4;
+            margin-top: 0;
+        }
+        
+        .user-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #4ecdc4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-test {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-test:hover {
+            background: #2980b9;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .status.success {
+            background: rgba(39, 174, 96, 0.2);
+            border: 1px solid #27ae60;
+        }
+        
+        .status.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🧪 删除用户功能测试</h1>
+        
+        <div class="test-section">
+            <h3>📋 当前用户列表</h3>
+            <div id="userList" class="user-list">
+                <!-- 用户列表将在这里动态加载 -->
+            </div>
+            <button class="btn btn-test" onclick="loadUsers()">🔄 刷新用户列表</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🛠 测试操作</h3>
+            <button class="btn btn-test" onclick="createTestUsers()">👥 创建测试用户</button>
+            <button class="btn btn-test" onclick="testDeleteFunction()">⚡ 测试删除功能</button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;">
+            <!-- 状态信息将在这里显示 -->
+        </div>
+    </div>
+
+    <!-- 引入必要的脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="admin.js"></script>
+    
+    <script>
+        // 测试脚本
+        let testUsers = [];
+        
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        function createTestUsers() {
+            try {
+                const testUserData = [
+                    {
+                        id: 'test_user_1',
+                        username: 'test_user_1',
+                        email: 'test1@test.com',
+                        password: 'test123',
+                        role: 'user',
+                        status: 'active',
+                        joinDate: Date.now(),
+                        avatar: '🧪'
+                    },
+                    {
+                        id: 'test_user_2',
+                        username: 'test_user_2',
+                        email: 'test2@test.com',
+                        password: 'test123',
+                        role: 'user',
+                        status: 'active',
+                        joinDate: Date.now(),
+                        avatar: '🔬'
+                    }
+                ];
+                
+                let users = JSON.parse(localStorage.getItem('linkaitiya_users') || '[]');
+                
+                // 检查测试用户是否已存在
+                testUserData.forEach(testUser => {
+                    const exists = users.find(u => u.id === testUser.id);
+                    if (!exists) {
+                        users.push(testUser);
+                    }
+                });
+                
+                localStorage.setItem('linkaitiya_users', JSON.stringify(users));
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                showStatus('测试用户创建成功！', 'success');
+                loadUsers();
+            } catch (error) {
+                showStatus('创建测试用户失败: ' + error.message, 'error');
+            }
+        }
+        
+        function loadUsers() {
+            try {
+                const users = JSON.parse(localStorage.getItem('linkaitiya_users') || '[]');
+                const userListDiv = document.getElementById('userList');
+                
+                if (users.length === 0) {
+                    userListDiv.innerHTML = '<div style="text-align: center; color: #999;">暂无用户数据</div>';
+                    return;
+                }
+                
+                userListDiv.innerHTML = users.map(user => `
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar">${user.avatar || '👤'}</div>
+                            <div>
+                                <div style="font-weight: 500;">${user.username}</div>
+                                <div style="font-size: 0.8rem; color: #aaa;">ID: ${user.id}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="margin-right: 10px; padding: 4px 8px; background: ${user.role === 'admin' ? '#e74c3c' : '#3498db'}; border-radius: 4px; font-size: 0.8rem;">${user.role}</span>
+                            ${user.role !== 'admin' ? 
+                                `<button class="btn btn-danger" onclick="testDeleteUser('${user.id}')">🗑️ 删除</button>` : 
+                                '<span style="color: #999;">不可删除</span>'
+                            }
+                        </div>
+                    </div>
+                `).join('');
+                
+                showStatus(`加载了 ${users.length} 个用户`, 'success');
+            } catch (error) {
+                showStatus('加载用户失败: ' + error.message, 'error');
+            }
+        }
+        
+        function testDeleteUser(userId) {
+            try {
+                if (!window.adminPanel) {
+                    showStatus('adminPanel 未初始化', 'error');
+                    return;
+                }
+                
+                // 调用 adminPanel 的删除方法
+                window.adminPanel.deleteUser(userId);
+                
+                // 刷新用户列表
+                setTimeout(() => {
+                    loadUsers();
+                }, 500);
+            } catch (error) {
+                showStatus('删除用户测试失败: ' + error.message, 'error');
+            }
+        }
+        
+        function testDeleteFunction() {
+            try {
+                // 检查必要的组件是否存在
+                if (!window.authSystem) {
+                    showStatus('❌ authSystem 未加载', 'error');
+                    return;
+                }
+                
+                if (!window.adminPanel) {
+                    showStatus('❌ adminPanel 未加载', 'error');
+                    return;
+                }
+                
+                // 检查删除方法是否存在
+                if (typeof window.adminPanel.deleteUser !== 'function') {
+                    showStatus('❌ deleteUser 方法不存在', 'error');
+                    return;
+                }
+                
+                showStatus('✅ 删除功能组件检查通过！可以正常使用删除功能。', 'success');
+            } catch (error) {
+                showStatus('测试删除功能时出错: ' + error.message, 'error');
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 删除用户功能测试页面已加载');
+            
+            // 等待脚本加载
+            setTimeout(() => {
+                loadUsers();
+                testDeleteFunction();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

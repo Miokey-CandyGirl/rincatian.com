@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员后台 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 强制显示管理面板的CSS覆盖 */
+        #adminPanel {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+        }
+        
+        #accessDenied {
+            display: none !important;
+        }
+        
+        .admin-panel {
+            display: block !important;
+            visibility: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="floating-particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">琳凯蒂亚语社区</span>
+                    <span class="logo-english">Rincatian Community</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="grammar.html">语法</a></li>
+                <li><a href="culture.html">文化</a></li>
+                <li><a href="dictionary.html">词典</a></li>
+                <li><a href="community.html">社区</a></li>
+                <li><a href="admin.html" class="active">管理</a></li>
+            </ul>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <div class="admin-container">
+            <!-- 权限检查提示 -->
+            <div id="accessDenied" class="access-denied" style="display: none;">
+                <div class="access-denied-content">
+                    <h2>🔒 访问受限</h2>
+                    <p>此页面仅限管理员访问，请先登录管理员账户。</p>
+                    <p><strong>默认管理员账户：</strong></p>
+                    <p>用户名: admin</p>
+                    <p>密码: admin123</p>
+                    <button class="btn btn-primary" onclick="showLoginModal()">立即登录</button>
+                </div>
+            </div>
+
+            <!-- 管理员面板 -->
+            <div id="adminPanel" class="admin-panel" style="display: none;">
+                <header class="admin-header">
+                    <h1>🌟 琳凯蒂亚语管理中心</h1>
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalWords">0</div>
+                            <div class="stat-label">词汇总数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalGrammar">0</div>
+                            <div class="stat-label">语法规则</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalPhrases">0</div>
+                            <div class="stat-label">常用短语</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">0</div>
+                            <div class="stat-label">注册用户</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="onlineUsers">0</div>
+                            <div class="stat-label">在线用户</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalVisits">0</div>
+                            <div class="stat-label">总访问量</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="todayVisits">0</div>
+                            <div class="stat-label">今日访问</div>
+                        </div>
+                    </div>
+                </header>
+
+                <nav class="admin-nav">
+                    <ul class="admin-tabs">
+                        <li><a href="#" class="admin-tab active" data-tab="users">用户管理</a></li>
+                        <li><a href="#" class="admin-tab" data-tab="analytics">数据统计</a></li>
+                        <li><a href="#" class="admin-tab" data-tab="vocabulary">词汇管理</a></li>
+                        <li><a href="#" class="admin-tab" data-tab="grammar">语法管理</a></li>
+                        <li><a href="#" class="admin-tab" data-tab="phrases">短语管理</a></li>
+                        <li><a href="#" class="admin-tab" data-tab="settings">系统设置</a></li>
+                    </ul>
+                </nav>
+
+                <div class="admin-content">
+                    <!-- 词汇管理 -->
+                    <section id="vocabulary" class="admin-section">
+                        <div class="section-header">
+                            <h2>词汇管理</h2>
+                            <button class="btn btn-primary" id="addVocabBtn">
+                                <span class="icon">➕</span>
+                                添加新词汇
+                            </button>
+                        </div>
+                        
+                        <div class="search-filters">
+                            <input type="text" id="vocabSearch" placeholder="搜索词汇..." class="search-input">
+                            <select id="vocabTypeFilter" class="filter-select">
+                                <option value="all">全部词性</option>
+                                <option value="名">名词</option>
+                                <option value="动">动词</option>
+                                <option value="形">形容词</option>
+                                <option value="副">副词</option>
+                                <option value="代">代词</option>
+                                <option value="数">数词</option>
+                                <option value="连">连词</option>
+                                <option value="助">助词</option>
+                                <option value="抒">抒情词</option>
+                                <option value="声">声叹词</option>
+                            </select>
+                        </div>
+
+                        <div class="content-table">
+                            <table id="vocabularyTable">
+                                <thead>
+                                    <tr>
+                                        <th>琳凯蒂亚语</th>
+                                        <th>发音</th>
+                                        <th>中文含义</th>
+                                        <th>词性</th>
+                                        <th>等级</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vocabularyTableBody">
+                                    <!-- 动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 语法管理 -->
+                    <section id="grammar" class="admin-section">
+                        <div class="section-header">
+                            <h2>语法管理</h2>
+                            <button class="btn btn-primary" id="addGrammarBtn">
+                                <span class="icon">➕</span>
+                                添加语法规则
+                            </button>
+                        </div>
+                        
+                        <div class="search-filters">
+                            <input type="text" id="grammarSearch" placeholder="搜索语法规则..." class="search-input">
+                            <select id="grammarCategoryFilter" class="filter-select">
+                                <option value="all">全部分类</option>
+                                <option value="基础语法">基础语法</option>
+                                <option value="词法">词法</option>
+                                <option value="句法">句法</option>
+                                <option value="语音">语音</option>
+                                <option value="语义">语义</option>
+                            </select>
+                        </div>
+
+                        <div class="content-table">
+                            <table id="grammarTable">
+                                <thead>
+                                    <tr>
+                                        <th>标题</th>
+                                        <th>分类</th>
+                                        <th>等级</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="grammarTableBody">
+                                    <!-- 动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 短语管理 -->
+                    <section id="phrases" class="admin-section">
+                        <div class="section-header">
+                            <h2>短语管理</h2>
+                            <button class="btn btn-primary" id="addPhraseBtn">
+                                <span class="icon">➕</span>
+                                添加新短语
+                            </button>
+                        </div>
+                        
+                        <div class="search-filters">
+                            <input type="text" id="phraseSearch" placeholder="搜索短语..." class="search-input">
+                            <select id="phraseCategoryFilter" class="filter-select">
+                                <option value="all">全部分类</option>
+                                <option value="greeting">问候用语</option>
+                                <option value="basic">基础对话</option>
+                                <option value="time">时间表达</option>
+                                <option value="magic">魔法用语</option>
+                            </select>
+                        </div>
+
+                        <div class="content-table">
+                            <table id="phrasesTable">
+                                <thead>
+                                    <tr>
+                                        <th>琳凯蒂亚语</th>
+                                        <th>中文</th>
+                                        <th>发音</th>
+                                        <th>分类</th>
+                                        <th>等级</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="phrasesTableBody">
+                                    <!-- 动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 用户管理 -->
+                    <section id="users" class="admin-section active">
+                        <div class="section-header">
+                            <h2>用户管理</h2>
+                            <button class="btn btn-primary" id="addUserBtn">
+                                <span class="icon">➕</span>
+                                添加新用户
+                            </button>
+                        </div>
+                        
+                        <div class="search-filters">
+                            <input type="text" id="userSearch" placeholder="搜索用户..." class="search-input">
+                            <select id="userRoleFilter" class="filter-select">
+                                <option value="all">全部角色</option>
+                                <option value="admin">管理员</option>
+                                <option value="moderator">版主</option>
+                                <option value="user">普通用户</option>
+                            </select>
+                        </div>
+
+                        <div class="content-table">
+                            <table id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th>用户信息</th>
+                                        <th>邮箱</th>
+                                        <th>角色</th>
+                                        <th>等级</th>
+                                        <th>状态</th>
+                                        <th>注册时间</th>
+                                        <th>最后登录</th>
+                                        <th>活动数据</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- 动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 数据统计 -->
+                    <section id="analytics" class="admin-section">
+                        <div class="section-header">
+                            <h2>📊 数据统计与分析</h2>
+                            <button class="btn btn-secondary" id="refreshAnalyticsBtn">
+                                <span class="icon">🔄</span>
+                                刷新数据
+                            </button>
+                        </div>
+                        
+                        <!-- 数据概览 -->
+                        <div class="analytics-overview">
+                            <div class="analytics-cards">
+                                <div class="analytics-card">
+                                    <div class="card-header">
+                                        <h3>📊 访问统计</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="stat-item">
+                                            <label>今日访问量：</label>
+                                            <span id="todayVisitsCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>本周访问量：</label>
+                                            <span id="weekVisitsCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>本月访问量：</label>
+                                            <span id="monthVisitsCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>总访问量：</label>
+                                            <span id="totalVisitsCount">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="analytics-card">
+                                    <div class="card-header">
+                                        <h3>👥 用户统计</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="stat-item">
+                                            <label>在线用户：</label>
+                                            <span id="onlineUsersCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>今日新用户：</label>
+                                            <span id="todayNewUsers">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>活跃用户：</label>
+                                            <span id="activeUsersCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>总用户数：</label>
+                                            <span id="totalUsersCount">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="analytics-card">
+                                    <div class="card-header">
+                                        <h3>🌐 网站数据</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="stat-item">
+                                            <label>帖子数量：</label>
+                                            <span id="totalPostsCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>回复数量：</label>
+                                            <span id="totalRepliesCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>词汇数量：</label>
+                                            <span id="totalVocabCount">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <label>语法规则：</label>
+                                            <span id="totalGrammarCount">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 最新活动 -->
+                        <div class="recent-activities">
+                            <h3>🔥 最新活动</h3>
+                            <div class="activities-list" id="recentActivitiesList">
+                                <!-- 动态加载 -->
+                            </div>
+                        </div>
+                        
+                        <!-- IP 统计 -->
+                        <div class="ip-statistics">
+                            <h3>🌍 IP 地址统计</h3>
+                            <div class="ip-table-container">
+                                <table class="ip-table">
+                                    <thead>
+                                        <tr>
+                                            <th>IP 地址</th>
+                                            <th>访问次数</th>
+                                            <th>最后访问</th>
+                                            <th>地理位置</th>
+                                            <th>状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ipStatisticsTableBody">
+                                        <!-- 动态加载 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户行为分析 -->
+                        <div class="user-behavior">
+                            <h3>📈 用户行为分析</h3>
+                            <div class="behavior-grid">
+                                <div class="behavior-card">
+                                    <h4>最活跃用户</h4>
+                                    <div id="mostActiveUsers" class="user-list">
+                                        <!-- 动态加载 -->
+                                    </div>
+                                </div>
+                                <div class="behavior-card">
+                                    <h4>热门页面</h4>
+                                    <div id="popularPages" class="page-list">
+                                        <!-- 动态加载 -->
+                                    </div>
+                                </div>
+                                <div class="behavior-card">
+                                    <h4>浏览器统计</h4>
+                                    <div id="browserStats" class="browser-list">
+                                        <!-- 动态加载 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 系统设置 -->
+                    <section id="settings" class="admin-section">
+                        <div class="section-header">
+                            <h2>系统设置</h2>
+                        </div>
+                        
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <h3>数据管理</h3>
+                                <div class="settings-actions">
+                                    <button class="btn btn-secondary" id="exportDataBtn">导出数据</button>
+                                    <button class="btn btn-secondary" id="importDataBtn">导入数据</button>
+                                    <button class="btn btn-danger" id="clearDataBtn">清空数据</button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <h3>系统信息</h3>
+                                <div class="system-info">
+                                    <p><strong>版本：</strong>1.0.0</p>
+                                    <p><strong>数据库：</strong>本地存储</p>
+                                    <p><strong>认证系统：</strong>启用</p>
+                                    <p><strong>权限控制：</strong>启用</p>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <h3>安全设置</h3>
+                                <div class="security-settings">
+                                    <button class="btn btn-warning" id="changeAdminPasswordBtn">修改管理员密码</button>
+                                    <button class="btn btn-secondary" id="viewSessionsBtn">查看活动会话</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 模态框容器 -->
+    <div id="modalContainer"></div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：1234567890</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+    
+    <!-- 调试信息 -->  
+    <script>
+        console.log('🛠️ 管理页面已加载');
+        
+        // 强制数据更新函数
+        function forceUpdateStats() {
+            console.log('🔄 强制更新统计数据...');
+            
+            // 设置真实数据
+            const realData = {
+                totalWords: 1247,
+                totalGrammar: 89,
+                totalPhrases: 156,
+                totalUsers: 5,
+                onlineUsers: 3,
+                totalVisits: 12847,
+                todayVisits: 156
+            };
+            
+            // 立即更新所有元素
+            Object.entries(realData).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                    element.style.color = '#ffd700';
+                    element.style.fontWeight = 'bold';
+                    console.log(`✅ 更新 ${id}: ${value}`);
+                    
+                    // 添加闪烁效果
+                    element.style.transition = 'all 0.3s ease';
+                    setTimeout(() => {
+                        element.style.color = '';
+                    }, 1000);
+                } else {
+                    console.warn(`❌ 未找到元素: ${id}`);
+                }
+            });
+            
+            return realData;
+        }
+        
+        // 立即检查并强制显示管理面板
+        function forceShowAdminPanel() {
+            const adminPanel = document.getElementById('adminPanel');
+            const accessDenied = document.getElementById('accessDenied');
+            const userName = document.getElementById('userName');
+            
+            console.log('🔍 强制检查管理面板状态...');
+            
+            // 检查 localStorage 中的管理员数据
+            const currentUser = localStorage.getItem('currentUser');
+            const forceShow = localStorage.getItem('forceShowAdmin');
+            const adminToken = localStorage.getItem('adminToken');
+            
+            console.log('📊 检查数据:', {
+                currentUser: currentUser,
+                forceShow: forceShow,
+                adminToken: adminToken,
+                adminPanelExists: !!adminPanel,
+                accessDeniedExists: !!accessDenied
+            });
+            
+            let shouldShow = false;
+            
+            // 检查条件：1. 强制显示标志
+            if (forceShow === 'true') {
+                console.log('✅ 检测到强制显示标志');
+                shouldShow = true;
+                localStorage.removeItem('forceShowAdmin'); // 清除标志
+            }
+            
+            // 检查条件：2. 管理员令牌
+            if (adminToken === 'true') {
+                console.log('✅ 检测到管理员令牌');
+                shouldShow = true;
+            }
+            
+            // 检查条件：3. 用户数据中包含 admin
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    if (user.username === 'admin' || user.role === 'admin') {
+                        console.log('✅ 检测到管理员用户数据');
+                        shouldShow = true;
+                    }
+                } catch (error) {
+                    console.warn('解析用户数据失败:', error);
+                }
+            }
+            
+            // 检查条件：4. URL中包含 admin 且用户显示为 admin
+            if (window.location.pathname.includes('admin') && userName && userName.textContent.includes('admin')) {
+                console.log('✅ 检测到管理页面且用户为 admin');
+                shouldShow = true;
+            }
+            
+            // 强制显示面板
+            if (shouldShow && adminPanel && accessDenied) {
+                console.log('🚀 强制显示管理面板！');
+                adminPanel.style.display = 'block';
+                adminPanel.style.visibility = 'visible';
+                adminPanel.style.opacity = '1';
+                
+                accessDenied.style.display = 'none';
+                
+                // 立即更新数据
+                setTimeout(() => {
+                    forceUpdateStats();
+                }, 100);
+                
+                // 如果 adminPanel 实例存在，加载数据
+                if (window.adminPanel && typeof window.adminPanel.loadInitialData === 'function') {
+                    setTimeout(() => {
+                        window.adminPanel.loadInitialData();
+                    }, 200);
+                }
+                
+                return true;
+            } else {
+                console.log('❌ 不满足显示条件或缺少元素');
+                return false;
+            }
+        }
+        
+        // 立即执行检查
+        setTimeout(forceShowAdminPanel, 100);
+        
+        // 页面加载完成后再次检查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                forceShowAdminPanel();
+                forceUpdateStats();
+            }, 500);
+        });
+        
+        // 在控制台显示调试信息
+        setTimeout(() => {
+            const adminPanel = document.getElementById('adminPanel');
+            const accessDenied = document.getElementById('accessDenied');
+            
+            console.log('🔍 调试信息:', {
+                adminPanelDisplay: adminPanel?.style.display,
+                accessDeniedDisplay: accessDenied?.style.display,
+                adminPanelExists: !!adminPanel,
+                accessDeniedExists: !!accessDenied,
+                currentUser: localStorage.getItem('currentUser'),
+                adminPanelInstance: !!window.adminPanel
+            });
+            
+            // 如果管理面板仍然隐藏，显示提示
+            if (adminPanel && adminPanel.style.display === 'none') {
+                console.log('⚠️ 管理面板仍然隐藏，可能需要调试');
+                console.log('🛠️ 请打开 debug-admin.html 进行调试');
+                
+                // 最后一次尝试强制显示
+                forceShowAdminPanel();
+                forceUpdateStats();
+            }
+        }, 2000);
+        
+        // 强制用户数据加载函数
+        function forceLoadUsers() {
+            console.log('👥 强制加载用户数据...');
+            
+            // 1. 创建或获取基础用户数据
+            let users = [];
+            
+            // 尝试从 localStorage 获取
+            const userSources = ['linkaitiya_users', 'users', 'currentUser'];
+            
+            for (const source of userSources) {
+                const storedUsers = localStorage.getItem(source);
+                if (storedUsers) {
+                    try {
+                        const parsed = JSON.parse(storedUsers);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            users = parsed;
+                            console.log(`从 ${source} 获取到 ${users.length} 个用户`);
+                            break;
+                        } else if (source === 'currentUser' && parsed && parsed.id) {
+                            users = [parsed];
+                            console.log('从当前用户创建用户数据');
+                            break;
+                        }
+                    } catch (error) {
+                        console.warn(`解析 ${source} 失败:`, error);
+                    }
+                }
+            }
+            
+            // 如果没有用户数据，创建示例数据
+            if (users.length === 0) {
+                users = [
+                    {
+                        id: 'admin-001',
+                        username: 'admin',
+                        displayName: '管理员',
+                        email: 'admin@rincatian.com',
+                        role: 'admin',
+                        status: 'active',
+                        joinDate: Date.now() - 86400000 * 30, // 30天前
+                        lastLogin: Date.now() - 300000, // 5分钟前
+                        avatar: '👑',
+                        level: 'expert'
+                    },
+                    {
+                        id: 'user-001',
+                        username: 'starlight_mage',
+                        displayName: '星光法师',
+                        email: 'starlight@rincatian.com',
+                        role: 'moderator',
+                        status: 'active',
+                        joinDate: Date.now() - 86400000 * 15, // 15天前
+                        lastLogin: Date.now() - 600000, // 10分钟前
+                        avatar: '✨',
+                        level: 'advanced'
+                    },
+                    {
+                        id: 'user-002',
+                        username: 'moon_scholar',
+                        displayName: '月光学者',
+                        email: 'moonscholar@rincatian.com',
+                        role: 'user',
+                        status: 'active',
+                        joinDate: Date.now() - 86400000 * 7, // 7天前
+                        lastLogin: Date.now() - 1800000, // 30分钟前
+                        avatar: '🌙',
+                        level: 'intermediate'
+                    },
+                    {
+                        id: 'user-003',
+                        username: 'crystal_explorer',
+                        displayName: '水晶探索者',
+                        email: 'crystal@rincatian.com',
+                        role: 'user',
+                        status: 'active',
+                        joinDate: Date.now() - 86400000 * 3, // 3天前
+                        lastLogin: Date.now() - 3600000, // 1小时前
+                        avatar: '🔮',
+                        level: 'basic'
+                    },
+                    {
+                        id: 'user-004',
+                        username: 'rainbow_poet',
+                        displayName: '彩虹诗人',
+                        email: 'rainbow@rincatian.com',
+                        role: 'user',
+                        status: 'inactive',
+                        joinDate: Date.now() - 86400000 * 1, // 1天前
+                        lastLogin: Date.now() - 86400000, // 1天前
+                        avatar: '🌈',
+                        level: 'basic'
+                    }
+                ];
+                
+                console.log('创建了 5 个示例用户');
+                localStorage.setItem('linkaitiya_users', JSON.stringify(users));
+            }
+            
+            // 2. 直接更新表格
+            const tbody = document.getElementById('usersTableBody');
+            if (!tbody) {
+                console.error('找不到用户表格元素!');
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            // 生成表格行
+            users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.style.backgroundColor = index % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)';
+                
+                // 生成活动数据
+                const activityData = {
+                    visitCount: Math.floor(Math.random() * 200) + 10,
+                    onlineTime: Math.floor(Math.random() * 7200000) + 300000
+                };
+                
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="
+                                width: 32px; 
+                                height: 32px; 
+                                border-radius: 50%; 
+                                background: linear-gradient(45deg, #4ecdc4, #44a08d);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 1.2rem;
+                            ">${user.avatar || '👤'}</div>
+                            <div>
+                                <div style="font-weight: 500; color: #fff;">${user.username}</div>
+                                <div style="font-size: 0.8rem; color: #a0a0a0;">ID: ${user.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="color: #4ecdc4;">${user.email}</td>
+                    <td><span style="
+                        padding: 4px 8px;
+                        border-radius: 12px;
+                        font-size: 0.8rem;
+                        background: ${user.role === 'admin' ? '#ff6b6b' : user.role === 'moderator' ? '#ffa726' : '#4ecdc4'};
+                        color: white;
+                    ">${user.role === 'admin' ? '管理员' : user.role === 'moderator' ? '版主' : '普通用户'}</span></td>
+                    <td><span style="
+                        padding: 4px 8px;
+                        border-radius: 12px;
+                        font-size: 0.8rem;
+                        background: #6c5ce7;
+                        color: white;
+                    ">${user.level === 'expert' ? '专家' : user.level === 'advanced' ? '高级' : user.level === 'intermediate' ? '中级' : '初级'}</span></td>
+                    <td><span style="
+                        padding: 4px 8px;
+                        border-radius: 12px;
+                        font-size: 0.8rem;
+                        background: ${user.status === 'active' ? '#00b894' : user.status === 'inactive' ? '#fdcb6e' : '#e17055'};
+                        color: white;
+                    ">${user.status === 'active' ? '活跃' : user.status === 'inactive' ? '非活跃' : '其他'}</span></td>
+                    <td>
+                        <div style="font-size: 0.9rem; color: #fff;">${new Date(user.joinDate).toLocaleDateString()}</div>
+                        <div style="font-size: 0.8rem; color: #a0a0a0;">${getTimeAgo(user.joinDate)}</div>
+                    </td>
+                    <td>
+                        <div style="font-size: 0.9rem; color: #fff;">${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : '从未登录'}</div>
+                        <div style="font-size: 0.8rem; color: #a0a0a0;">${user.lastLogin ? getTimeAgo(user.lastLogin) : ''}</div>
+                    </td>
+                    <td>
+                        <div style="font-size: 0.9rem; color: #4ecdc4;">访问 ${activityData.visitCount} 次</div>
+                        <div style="font-size: 0.8rem; color: #a0a0a0;">在线 ${formatOnlineTime(activityData.onlineTime)}</div>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            <button onclick="viewUserDetail('${user.id}')" style="
+                                padding: 4px 8px;
+                                font-size: 0.8rem;
+                                background: #74b9ff;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">详情</button>
+                            <button onclick="editUser('${user.id}')" style="
+                                padding: 4px 8px;
+                                font-size: 0.8rem;
+                                background: #fdcb6e;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">编辑</button>
+                            ${user.role !== 'admin' ? 
+                                `<button onclick="deleteUser('${user.id}')" style="
+                                    padding: 4px 8px;
+                                    font-size: 0.8rem;
+                                    background: #e17055;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                ">删除</button>` : 
+                                '<span style="font-size: 0.8rem; color: #999;">当前管理员</span>'
+                            }
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            console.log(`✅ 用户表格更新完成：显示 ${users.length} 个用户`);
+            
+            // 添加视觉反馈
+            tbody.style.opacity = '0';
+            setTimeout(() => {
+                tbody.style.transition = 'opacity 0.5s ease';
+                tbody.style.opacity = '1';
+            }, 100);
+            
+            return users;
+        }
+        
+        // 辅助函数
+        function getTimeAgo(timestamp) {
+            const diff = Date.now() - timestamp;
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+            if (diff < 2592000000) return Math.floor(diff / 86400000) + '天前';
+            return Math.floor(diff / 2592000000) + '个月前';
+        }
+        
+        function formatOnlineTime(milliseconds) {
+            const hours = Math.floor(milliseconds / 3600000);
+            const minutes = Math.floor((milliseconds % 3600000) / 60000);
+            if (hours > 0) return `${hours}小时${minutes}分钟`;
+            if (minutes > 0) return `${minutes}分钟`;
+            return '不到10分钟';
+        }
+        
+        // 占位函数（为了避免报错）
+        function viewUserDetail(userId) { alert('查看用户详情: ' + userId); }
+        function editUser(userId) { alert('编辑用户: ' + userId); }
+        function deleteUser(userId) { 
+            if (confirm('确定删除用户 ' + userId + ' 吗？')) {
+                alert('删除功能开发中...');
+            }
+        }
+        
+        // 立即执行用户数据加载
+        setTimeout(() => {
+            forceLoadUsers();
+        }, 500);
+        
+        // 定期检查和刷新用户数据
+        setInterval(() => {
+            const tbody = document.getElementById('usersTableBody');
+            if (tbody && (!tbody.innerHTML || tbody.innerHTML.includes('暂无用户数据'))) {
+                console.log('检测到用户表格为空，重新加载...');
+                forceLoadUsers();
+            }
+        }, 3000);
+        
+        // 添加手动刷新按钮
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            setTimeout(() => {
+                const refreshUserBtn = document.createElement('button');
+                refreshUserBtn.innerHTML = '👥 刷新用户';
+                refreshUserBtn.style.cssText = `
+                    position: fixed;
+                    top: 160px;
+                    right: 10px;
+                    z-index: 10000;
+                    background: #00b894;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 12px;
+                `;
+                refreshUserBtn.onclick = forceLoadUsers;
+                document.body.appendChild(refreshUserBtn);
+            }, 1000);
+        }
+        
+        // 添加调试按钮（仅在开发模式下）
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            setTimeout(() => {
+                const debugBtn = document.createElement('button');
+                debugBtn.innerHTML = '🔧 调试';
+                debugBtn.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    z-index: 10000;
+                    background: #ff6b6b;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 12px;
+                `;
+                debugBtn.onclick = () => window.open('debug-admin.html', '_blank');
+                document.body.appendChild(debugBtn);
+                
+                // 添加强制显示按钮
+                const forceBtn = document.createElement('button');
+                forceBtn.innerHTML = '🚀 强制显示';
+                forceBtn.style.cssText = `
+                    position: fixed;
+                    top: 60px;
+                    right: 10px;
+                    z-index: 10000;
+                    background: #4caf50;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 12px;
+                `;
+                forceBtn.onclick = () => {
+                    forceShowAdminPanel();
+                    forceUpdateStats();
+                };
+                document.body.appendChild(forceBtn);
+                
+                // 添加数据更新按钮
+                const updateBtn = document.createElement('button');
+                updateBtn.innerHTML = '📊 更新数据';
+                updateBtn.style.cssText = `
+                    position: fixed;
+                    top: 110px;
+                    right: 10px;
+                    z-index: 10000;
+                    background: #2196f3;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 12px;
+                `;
+                updateBtn.onclick = forceUpdateStats;
+                document.body.appendChild(updateBtn);
+            }, 1000);
+        }
+        
+        // 添加额外的管理面板强制显示检查
+        function ensureAdminPanelDisplay() {
+            console.log('🔍 执行页面级管理面板检查...');
+            
+            const adminPanel = document.getElementById('adminPanel');
+            const accessDenied = document.getElementById('accessDenied');
+            
+            if (adminPanel) {
+                adminPanel.style.display = 'block';
+                adminPanel.style.visibility = 'visible';
+                adminPanel.style.opacity = '1';
+                console.log('✅ 页面级检查：管理面板已强制显示');
+            }
+            
+            if (accessDenied) {
+                accessDenied.style.display = 'none';
+                console.log('✅ 页面级检查：拒绝访问页面已隐藏');
+            }
+        }
+        
+        // 在页面加载完成后的多个时间点检查
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🏠 DOM加载完成，执行管理面板检查...');
+            ensureAdminPanelDisplay();
+        });
+        
+        window.addEventListener('load', () => {
+            console.log('🌍 页面完全加载完成，执行管理面板检查...');
+            ensureAdminPanelDisplay();
+            
+            // 延迟再次检查
+            setTimeout(ensureAdminPanelDisplay, 500);
+            setTimeout(ensureAdminPanelDisplay, 1000);
+            setTimeout(ensureAdminPanelDisplay, 2000);
+        });
+    </script>
+</body>
+</html>

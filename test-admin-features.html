@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理功能测试 - 琳凯蒂亚语社区</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-section { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+    </style>
+</head>
+<body>
+    <h1>🛠️ 管理功能测试</h1>
+    
+    <div class="test-section">
+        <h2>🔐 管理员登录测试</h2>
+        <button class="test-button" onclick="loginAsAdmin()">登录为管理员</button>
+        <button class="test-button" onclick="checkAdminAccess()">检查管理员权限</button>
+        <div id="loginStatus" class="status info">等待登录...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>👥 用户管理测试</h2>
+        <button class="test-button" onclick="createTestUsers()">创建测试用户</button>
+        <button class="test-button" onclick="testUserData()">测试用户数据显示</button>
+        <button class="test-button" onclick="openAdminPage()">打开管理页面</button>
+        <div id="userStatus" class="status info">等待创建用户...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 数据统计测试</h2>
+        <button class="test-button" onclick="createTestData()">创建测试数据</button>
+        <button class="test-button" onclick="testAnalytics()">测试数据统计</button>
+        <div id="dataStatus" class="status info">等待创建数据...</div>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        function loginAsAdmin() {
+            // 模拟管理员登录
+            const adminUser = {
+                id: 'admin-001',
+                username: 'admin',
+                email: 'admin@rincatian.com',
+                role: 'admin',
+                status: 'active',
+                joinDate: Date.now() - 86400000 * 30,
+                lastLogin: Date.now(),
+                avatar: '👑'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(adminUser));
+            
+            // 更新认证系统
+            if (window.authSystem) {
+                window.authSystem.currentUser = adminUser;
+            }
+            
+            // 也在 linkaitiya_users 中添加这个管理员
+            const users = JSON.parse(localStorage.getItem('linkaitiya_users') || '[]');
+            if (!users.find(u => u.id === adminUser.id)) {
+                users.push({ ...adminUser, password: 'hashed_admin123' });
+                localStorage.setItem('linkaitiya_users', JSON.stringify(users));
+            }
+            
+            document.getElementById('loginStatus').innerHTML = '✅ 管理员登录成功';
+            document.getElementById('loginStatus').className = 'status success';
+        }
+        
+        function checkAdminAccess() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('loginStatus').innerHTML = '✅ 管理员权限验证通过';
+                document.getElementById('loginStatus').className = 'status success';
+            } else {
+                document.getElementById('loginStatus').innerHTML = '❌ 非管理员用户，权限不足';
+                document.getElementById('loginStatus').className = 'status error';
+            }
+        }
+        
+        function createTestUsers() {
+            const testUsers = [
+                {
+                    id: 'admin-001',
+                    username: 'admin',
+                    email: 'admin@rincatian.com',
+                    role: 'admin',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 30,
+                    lastLogin: Date.now(),
+                    avatar: '👑'
+                },
+                {
+                    id: 'user-001',
+                    username: 'testuser',
+                    email: 'testuser@example.com',
+                    role: 'user',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 15,
+                    lastLogin: Date.now() - 300000,
+                    avatar: '🧪'
+                },
+                {
+                    id: 'user-002',
+                    username: 'linguist',
+                    email: 'linguist@example.com',
+                    role: 'moderator',
+                    status: 'active',
+                    joinDate: Date.now() - 86400000 * 45,
+                    lastLogin: Date.now() - 600000,
+                    avatar: '📚'
+                },
+                {
+                    id: 'user-003',
+                    username: 'newbie',
+                    email: 'newbie@example.com',
+                    role: 'user',
+                    status: 'inactive',
+                    joinDate: Date.now() - 86400000 * 3,
+                    lastLogin: Date.now() - 86400000,
+                    avatar: '🌱'
+                }
+            ];
+            
+            // 保存用户数据
+            localStorage.setItem('users', JSON.stringify(testUsers));
+            
+            // 创建用户活动数据
+            const userActivityData = {
+                'admin-001': {
+                    visitCount: 156,
+                    lastIP: '192.168.1.100',
+                    lastUserAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    onlineTime: 7200000,
+                    loginHistory: []
+                },
+                'user-001': {
+                    visitCount: 89,
+                    lastIP: '10.0.0.15',
+                    lastUserAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                    onlineTime: 3600000,
+                    loginHistory: []
+                },
+                'user-002': {
+                    visitCount: 234,
+                    lastIP: '172.16.0.50',
+                    lastUserAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+                    onlineTime: 5400000,
+                    loginHistory: []
+                },
+                'user-003': {
+                    visitCount: 12,
+                    lastIP: '192.168.1.200',
+                    lastUserAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15',
+                    onlineTime: 600000,
+                    loginHistory: []
+                }
+            };
+            
+            localStorage.setItem('userActivityData', JSON.stringify(userActivityData));
+            
+            document.getElementById('userStatus').innerHTML = '✅ 测试用户创建成功 (4个用户)';
+            document.getElementById('userStatus').className = 'status success';
+        }
+        
+        function testUserData() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const activityData = JSON.parse(localStorage.getItem('userActivityData') || '{}');
+            
+            console.log('用户数据:', users);
+            console.log('活动数据:', activityData);
+            
+            if (users.length > 0) {
+                document.getElementById('userStatus').innerHTML = `✅ 用户数据验证成功 (${users.length}个用户，包含活动统计)`;
+                document.getElementById('userStatus').className = 'status success';
+            } else {
+                document.getElementById('userStatus').innerHTML = '❌ 用户数据不存在，请先创建测试用户';
+                document.getElementById('userStatus').className = 'status error';
+            }
+        }
+        
+        function createTestData() {
+            // 创建访问数据
+            const visitData = {
+                total: 4567,
+                today: 123,
+                week: 856,
+                month: 2341,
+                ips: {
+                    '192.168.1.100': { count: 234, lastVisit: Date.now() - 120000 },
+                    '10.0.0.15': { count: 89, lastVisit: Date.now() - 300000 },
+                    '172.16.0.50': { count: 145, lastVisit: Date.now() - 600000 }
+                },
+                pages: {
+                    '/community.html': 456,
+                    '/dictionary.html': 234,
+                    '/grammar.html': 189
+                },
+                browsers: {
+                    'Chrome': 65,
+                    'Firefox': 20,
+                    'Safari': 15
+                }
+            };
+            
+            localStorage.setItem('visitData', JSON.stringify(visitData));
+            
+            // 创建一些社区帖子数据
+            const communityPosts = [
+                {
+                    id: 'post-001',
+                    title: '琳凯蒂亚语学习心得',
+                    content: '分享一些学习经验...',
+                    author: { id: 'user-001', username: 'testuser' },
+                    timestamp: Date.now() - 86400000,
+                    likes: ['user-002'],
+                    replyCount: 3
+                },
+                {
+                    id: 'post-002',
+                    title: '语法问题讨论',
+                    content: '关于动词变位的问题...',
+                    author: { id: 'user-002', username: 'linguist' },
+                    timestamp: Date.now() - 172800000,
+                    likes: ['user-001', 'admin-001'],
+                    replyCount: 5
+                }
+            ];
+            
+            localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
+            
+            document.getElementById('dataStatus').innerHTML = '✅ 测试数据创建成功 (访问统计、帖子数据)';
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function testAnalytics() {
+            const visitData = JSON.parse(localStorage.getItem('visitData') || '{}');
+            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            
+            if (visitData.total && posts.length > 0) {
+                document.getElementById('dataStatus').innerHTML = `✅ 数据统计验证成功 (总访问: ${visitData.total}, 帖子: ${posts.length}个)`;
+                document.getElementById('dataStatus').className = 'status success';
+            } else {
+                document.getElementById('dataStatus').innerHTML = '❌ 数据统计不完整，请先创建测试数据';
+                document.getElementById('dataStatus').className = 'status error';
+            }
+        }
+        
+        function openAdminPage() {
+            window.open('/admin.html', '_blank');
+        }
+        
+        // 页面加载时进行初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('管理功能测试页面已加载');
+        });
+    </script>
+</body>
+</html>
