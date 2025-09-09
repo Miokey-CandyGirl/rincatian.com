@@ -1534,7 +1534,7 @@ function updateDailyWordDisplay(word) {
         linkaitiya: document.getElementById('dailyWordLinkaitiya'),
         pronunciation: document.getElementById('dailyWordPronunciation'),
         chinese: document.getElementById('dailyWordChinese'),
-        type: document.getElementById('dailyWordType',
+        type: document.getElementById('dailyWordType'),
         example: document.getElementById('dailyWordExample'),
         exampleChinese: document.getElementById('dailyWordExampleChinese')
     };
