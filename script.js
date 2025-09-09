@@ -44,6 +44,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
     
     console.log('琳凯蒂亚语社区加载完成！🌟');
+    
+    // 页面加载后弹出QQ社区提示
+    setTimeout(function() {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 99999;
+        `;
+        modal.innerHTML = `
+            <div style="background: #fff; border-radius: 12px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
+                <h2 style="color: #1a237e; margin-bottom: 16px;">QQ社区</h2>
+                <p style="font-size: 1.2rem; color: #333; margin-bottom: 24px;">QQ群号：<b>1234567890</b></p>
+                <button style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="this.closest('div[style*=\'fixed\']').remove()">关闭</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }, 500);
 });
 
 // 页面完全加载后的额外初始化
@@ -1180,7 +1200,7 @@ function createModal(title, content) {
         <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); padding: 0; border-radius: 10px; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
             <div style="background: linear-gradient(45deg, #ffd700, #00bcd4); padding: 15px; border-radius: 10px 10px 0 0; color: #1a237e; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
                 <span>${title}</span>
-                <button onclick="this.closest('div[style*="fixed"]').remove()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #1a237e;">&times;</button>
+                <button onclick="this.closest('div[style*='fixed']').remove()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #1a237e;">&times;</button>
             </div>
             <div style="color: white;">${content}</div>
         </div>
