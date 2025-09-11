@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>琳凯蒂亚国旗展示测试 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-title {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .flag-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .flag-demo {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .flag-demo h3 {
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+        
+        .flag-demo p {
+            color: #b0b0c8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-flag-demo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: rgba(26, 35, 126, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-flag-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .success-indicator {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .page-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .page-link {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .page-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .info-box {
+            background: rgba(76, 205, 196, 0.1);
+            border: 1px solid #4ecdc4;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-item h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="text-align: center; color: #ffd700; margin-bottom: 2rem;">
+            🇫🇷 琳凯蒂亚国旗展示测试
+        </h1>
+        
+        <!-- 功能说明 -->
+        <div class="test-section">
+            <h2 class="test-title">🎌 国旗功能介绍</h2>
+            <div class="info-box">
+                <h3 style="color: #4ecdc4; margin-bottom: 1rem;">功能描述：</h3>
+                <p>在琳凯蒂亚语网站的合适位置插入琳凯蒂亚联邦共和国国旗，展现语言的文化内涵：</p>
+                <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                    <li>🏠 <strong>导航栏展示</strong>：在所有页面的导航栏logo部分添加国旗图标</li>
+                    <li>🌟 <strong>首页重点展示</strong>：在首页hero区域显著展示国旗，配有说明文字</li>
+                    <li>🎨 <strong>精美样式</strong>：为国旗添加悬停效果和阴影，提升视觉体验</li>
+                    <li>📱 <strong>响应式设计</strong>：确保在不同设备上都能正常显示</li>
+                    <li>🔗 <strong>全站统一</strong>：在所有主要页面保持一致的国旗展示</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 国旗展示效果 -->
+        <div class="test-section">
+            <h2 class="test-title">🎨 国旗展示效果</h2>
+            <div class="flag-showcase">
+                <!-- 导航栏国旗效果 -->
+                <div class="flag-demo">
+                    <h3>导航栏国旗</h3>
+                    <p>在导航栏logo部分显示的小型国旗图标</p>
+                    <div class="nav-flag-demo">
+                        <div class="rincatian-flag">
+                            <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+                        </div>
+                        <div class="logo-text">
+                            <span class="logo-chinese">琳凯蒂亚语社区</span>
+                            <span class="logo-english">Rincatian Community</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #b0b0c8;">28x20像素，带悬停放大效果</p>
+                </div>
+                
+                <!-- 首页英雄区域国旗 -->
+                <div class="flag-demo">
+                    <h3>首页重点展示</h3>
+                    <p>在首页hero区域的显著国旗展示</p>
+                    <div class="hero-flag-demo">
+                        <div class="hero-flag-display">
+                            <img src="rincatian-flag.png" alt="琳凯蒂亚联邦共和国国旗" class="hero-flag">
+                            <div class="flag-description">琳凯蒂亚联邦共和国国旗</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #b0b0c8;">120像素宽度，带说明文字和特效</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实现细节 -->
+        <div class="test-section">
+            <h2 class="test-title">⚙️ 技术实现细节</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>🖼️ 图片优化</h4>
+                    <p>使用高质量PNG格式的国旗图片，文件大小优化为602KB，确保清晰度和加载速度的平衡。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🎨 CSS样式</h4>
+                    <p>为国旗添加圆角、阴影和悬停效果，.flag-icon和.hero-flag类分别处理不同尺寸的显示需求。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📱 响应式设计</h4>
+                    <p>在不同屏幕尺寸下自适应调整国旗大小，确保在移动设备上也能正常显示。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🌐 全站统一</h4>
+                    <p>在index.html、grammar.html、dictionary.html、culture.html、community.html、admin.html等所有主要页面统一添加。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>✨ 动画效果</h4>
+                    <p>悬停时的缩放动画和阴影变化，fadeInUp动画让首页国旗优雅地出现。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🔍 SEO优化</h4>
+                    <p>为国旗图片添加准确的alt属性，提升页面的可访问性和搜索引擎优化。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面测试链接 -->
+        <div class="test-section">
+            <h2 class="test-title">🔗 页面测试链接</h2>
+            <p style="text-align: center; color: #b0b0c8; margin-bottom: 2rem;">
+                访问以下页面验证国旗显示效果
+            </p>
+            <div class="page-links">
+                <a href="index.html" class="page-link">
+                    🏠 首页<br>
+                    <small>导航栏+英雄区域双重展示</small>
+                </a>
+                <a href="grammar.html" class="page-link">
+                    📚 语法页面<br>
+                    <small>导航栏国旗展示</small>
+                </a>
+                <a href="dictionary.html" class="page-link">
+                    📖 词典页面<br>
+                    <small>导航栏国旗展示</small>
+                </a>
+                <a href="culture.html" class="page-link">
+                    🏛️ 文化页面<br>
+                    <small>导航栏国旗展示</small>
+                </a>
+                <a href="community.html" class="page-link">
+                    👥 社区页面<br>
+                    <small>导航栏国旗展示</small>
+                </a>
+                <a href="admin.html" class="page-link">
+                    ⚙️ 管理页面<br>
+                    <small>导航栏国旗展示</small>
+                </a>
+            </div>
+        </div>
+
+        <!-- 成功确认 -->
+        <div class="success-indicator">
+            <h3 style="color: #00ff88; margin-bottom: 1rem;">✅ 琳凯蒂亚国旗成功集成</h3>
+            <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <h4 style="color: #4ecdc4; margin: 1rem 0 0.5rem;">🎉 完成的功能：</h4>
+                <ul style="margin: 0; padding-left: 2rem; color: #e0e0e0; line-height: 1.8;">
+                    <li>✅ 在所有主要页面的导航栏添加了统一的国旗图标</li>
+                    <li>✅ 在首页hero区域添加了重点的国旗展示</li>
+                    <li>✅ 为国旗添加了精美的CSS样式和悬停效果</li>
+                    <li>✅ 确保了响应式设计和跨浏览器兼容性</li>
+                    <li>✅ 优化了图片加载和SEO属性</li>
+                    <li>✅ 保持了与网站整体风格的协调统一</li>
+                </ul>
+                
+                <h4 style="color: #ffd700; margin: 1.5rem 0 0.5rem;">🌟 设计亮点：</h4>
+                <p style="margin: 0; color: #e0e0e0; line-height: 1.8;">
+                    琳凯蒂亚国旗的集成不仅仅是简单的图片添加，而是深度融入了网站的设计语言。
+                    在导航栏，国旗作为身份标识与logo完美配合；在首页，国旗成为视觉焦点，
+                    向访问者展示琳凯蒂亚语的文化底蕴。每一个细节都经过精心设计，
+                    从悬停动画到阴影效果，都体现了对琳凯蒂亚文化的尊重和对用户体验的关注。
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎆 练习系统动态效果演示</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .demo-header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            background: rgba(248, 249, 250, 0.8);
+        }
+        
+        .demo-section h3 {
+            color: #495057;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .demo-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+            min-width: 120px;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-fireworks { background: linear-gradient(45deg, #ff6b6b, #ff8e53); }
+        .btn-magic { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .btn-shake { background: linear-gradient(45deg, #ff9a9e, #fecfef); }
+        .btn-complete { background: linear-gradient(45deg, #4ecdc4, #44a08d); }
+        .btn-text { background: linear-gradient(45deg, #96c93d, #00b09b); }
+        
+        .test-area {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .status-display {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .color-demo {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        
+        .instructions {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎆 琳凯蒂亚语练习系统</h1>
+            <h2>✨ 动态效果演示中心 ✨</h2>
+        </div>
+        
+        <div class="instructions">
+            <h3>🎯 使用说明</h3>
+            <p>欢迎来到琳凯蒂亚语练习系统的动态效果演示！点击下方按钮体验各种炫酷的视觉效果：</p>
+            <ul>
+                <li>🎆 <strong>烟花效果</strong>：答对题目时的庆祝动画</li>
+                <li>✨ <strong>魔法效果</strong>：神秘的魔法光芒和粒子</li>
+                <li>⚡ <strong>振动效果</strong>：答错时的提醒动画</li>
+                <li>🎉 <strong>完成庆祝</strong>：全屏烟花和彩虹雨</li>
+                <li>💬 <strong>浮动文字</strong>：动态鼓励信息</li>
+            </ul>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎆 烟花庆祝效果</h3>
+            <p>当学习者答对题目时触发的华丽烟花效果</p>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-fireworks" onclick="testFireworks()">🎆 触发烟花</button>
+                <button class="demo-btn btn-fireworks" onclick="testMultipleFireworks()">🎇 多重烟花</button>
+            </div>
+            <div class="test-area" id="fireworksArea">
+                点击按钮查看烟花效果！
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>✨ 魔法光效系统</h3>
+            <p>营造神秘魔法氛围的光芒和粒子效果</p>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-magic" onclick="testMagicEffect()">✨ 魔法光芒</button>
+                <button class="demo-btn btn-magic" onclick="testMagicSparkle()">🌟 魔法闪烁</button>
+            </div>
+            <div class="test-area" id="magicArea">
+                体验魔法的神秘力量！
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>⚡ 错误提醒效果</h3>
+            <p>答错题目时的温和提醒动画</p>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-shake" onclick="testShakeEffect()">⚡ 震动提醒</button>
+                <button class="demo-btn btn-shake" onclick="testErrorParticles()">❌ 错误粒子</button>
+            </div>
+            <div class="test-area" id="shakeArea">
+                不要害怕犯错，这是学习的一部分！
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎉 完成庆祝系统</h3>
+            <p>完成练习时的盛大庆祝效果</p>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-complete" onclick="testCompletionEffect()">🎉 完成庆祝</button>
+                <button class="demo-btn btn-complete" onclick="testConfettiRain()">🌈 彩虹雨</button>
+            </div>
+            <div class="test-area" id="completeArea">
+                准备好迎接胜利的喜悦吧！
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>💬 动态文字提示</h3>
+            <p>鼓励性的浮动文字效果</p>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-text" onclick="testFloatingText('太棒了！', '#4ecdc4')">👍 正面鼓励</button>
+                <button class="demo-btn btn-text" onclick="testFloatingText('继续加油！', '#ff6b6b')">💪 温馨提醒</button>
+                <button class="demo-btn btn-text" onclick="testRandomText()">🎲 随机文字</button>
+            </div>
+            <div class="test-area" id="textArea">
+                文字的力量是无穷的！
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎨 效果调色板</h3>
+            <p>系统使用的主要颜色主题</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <span class="color-demo" style="background: #ff6b6b;" title="红色 - 错误提醒"></span>
+                <span class="color-demo" style="background: #4ecdc4;" title="青色 - 成功庆祝"></span>
+                <span class="color-demo" style="background: #45b7d1;" title="蓝色 - 信息提示"></span>
+                <span class="color-demo" style="background: #96ceb4;" title="绿色 - 完成状态"></span>
+                <span class="color-demo" style="background: #667eea;" title="紫色 - 魔法效果"></span>
+                <span class="color-demo" style="background: #ffeaa7;" title="黄色 - 特殊效果"></span>
+            </div>
+        </div>
+        
+        <div class="status-display">
+            <strong>系统状态：</strong><span id="systemStatus">准备就绪</span><br>
+            <strong>效果计数：</strong><span id="effectCount">0</span><br>
+            <strong>音效状态：</strong><span id="audioStatus">等待测试</span>
+        </div>
+    </div>
+    
+    <!-- 引入动态效果系统 -->
+    <script src="exercise-effects.js"></script>
+    
+    <script>
+        let effectCounter = 0;
+        
+        function updateStatus(message) {
+            document.getElementById('systemStatus').textContent = message;
+            effectCounter++;
+            document.getElementById('effectCount').textContent = effectCounter;
+        }
+        
+        function testFireworks() {
+            updateStatus('触发烟花效果');
+            const area = document.getElementById('fireworksArea');
+            if (window.showFireworks) {
+                window.showFireworks(area);
+            }
+        }
+        
+        function testMultipleFireworks() {
+            updateStatus('触发多重烟花');
+            const area = document.getElementById('fireworksArea');
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    if (window.showFireworks) {
+                        window.showFireworks(area);
+                    }
+                }, i * 500);
+            }
+        }
+        
+        function testMagicEffect() {
+            updateStatus('触发魔法效果');
+            const area = document.getElementById('magicArea');
+            if (window.showMagicEffect) {
+                window.showMagicEffect(area);
+            }
+        }
+        
+        function testMagicSparkle() {
+            updateStatus('触发魔法闪烁');
+            const area = document.getElementById('magicArea');
+            area.classList.add('magic-sparkle');
+            setTimeout(() => {
+                area.classList.remove('magic-sparkle');
+            }, 1500);
+        }
+        
+        function testShakeEffect() {
+            updateStatus('触发震动效果');
+            const area = document.getElementById('shakeArea');
+            if (window.showShakeEffect) {
+                window.showShakeEffect(area);
+            }
+        }
+        
+        function testErrorParticles() {
+            updateStatus('触发错误粒子');
+            const area = document.getElementById('shakeArea');
+            // 直接创建错误粒子
+            if (window.exerciseEffects) {
+                const rect = area.getBoundingClientRect();
+                for (let i = 0; i < 20; i++) {
+                    window.exerciseEffects.particles.push(new ErrorParticle(
+                        rect.left + rect.width/2,
+                        rect.top + rect.height/2
+                    ));
+                }
+            }
+        }
+        
+        function testCompletionEffect() {
+            updateStatus('触发完成庆祝');
+            if (window.showCompletionEffect) {
+                window.showCompletionEffect();
+            }
+        }
+        
+        function testConfettiRain() {
+            updateStatus('触发彩虹雨');
+            if (window.exerciseEffects) {
+                window.exerciseEffects.createConfettiRain();
+            }
+        }
+        
+        function testFloatingText(text, color) {
+            updateStatus(`显示浮动文字: ${text}`);
+            const area = document.getElementById('textArea');
+            const rect = area.getBoundingClientRect();
+            if (window.showFloatingText) {
+                window.showFloatingText(text, rect.left + rect.width/2, rect.top + rect.height/2, color);
+            }
+        }
+        
+        function testRandomText() {
+            const messages = [
+                '🎉 恭喜通关！',
+                '✨ 魔法觉醒！', 
+                '🏆 完美表现！',
+                '🌟 天才学者！',
+                '🔥 热情满满！',
+                '💎 珍贵品质！'
+            ];
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#667eea', '#ffeaa7'];
+            
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            testFloatingText(message, color);
+        }
+        
+        // 页面加载完成后的初始化
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                updateStatus('动态效果系统已加载');
+                document.getElementById('audioStatus').textContent = '音效系统已准备';
+                
+                // 显示欢迎消息
+                if (window.showFloatingText) {
+                    window.showFloatingText('✨ 欢迎来到魔法世界！', window.innerWidth/2, 100, '#667eea');
+                }
+            }, 1000);
+        });
+        
+        console.log('🎭 动态效果演示页面加载完成');
+    </script>
+</body>
+</html>

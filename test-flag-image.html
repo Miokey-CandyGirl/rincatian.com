@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国旗图片测试 - 琳凯蒂亚语社区</title>
+    <style>
+        body {
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .flag-test {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+        }
+        
+        .flag-test h2 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        
+        .flag-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .flag-nav {
+            width: 28px;
+            height: 20px;
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .flag-hero {
+            width: 120px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .flag-large {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .status-success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+        }
+        
+        .status-error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid #ff4757;
+        }
+        
+        .image-info {
+            background: rgba(76, 205, 196, 0.1);
+            border: 1px solid #4ecdc4;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="color: #ffd700; margin-bottom: 2rem;">🖼️ 琳凯蒂亚国旗图片显示测试</h1>
+        
+        <!-- 原始中文文件名测试 -->
+        <div class="flag-test">
+            <h2>原始中文文件名测试</h2>
+            <p>测试文件：林卡蒂亚联邦共和国国旗.png</p>
+            <div class="flag-display">
+                <div>
+                    <p>导航栏尺寸 (28x20):</p>
+                    <img src="林卡蒂亚联邦共和国国旗.png" alt="琳凯蒂亚国旗" class="flag-nav" 
+                         onload="showStatus('chinese-nav', true)" 
+                         onerror="showStatus('chinese-nav', false)">
+                    <div id="chinese-nav-status" class="status" style="display: none;"></div>
+                </div>
+                
+                <div>
+                    <p>首页英雄尺寸 (120px):</p>
+                    <img src="林卡蒂亚联邦共和国国旗.png" alt="琳凯蒂亚联邦共和国国旗" class="flag-hero"
+                         onload="showStatus('chinese-hero', true)" 
+                         onerror="showStatus('chinese-hero', false)">
+                    <div id="chinese-hero-status" class="status" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 英文文件名测试 -->
+        <div class="flag-test">
+            <h2>英文文件名测试</h2>
+            <p>测试文件：rincatian-flag.png</p>
+            <div class="flag-display">
+                <div>
+                    <p>导航栏尺寸 (28x20):</p>
+                    <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-nav"
+                         onload="showStatus('english-nav', true)" 
+                         onerror="showStatus('english-nav', false)">
+                    <div id="english-nav-status" class="status" style="display: none;"></div>
+                </div>
+                
+                <div>
+                    <p>首页英雄尺寸 (120px):</p>
+                    <img src="rincatian-flag.png" alt="琳凯蒂亚联邦共和国国旗" class="flag-hero"
+                         onload="showStatus('english-hero', true)" 
+                         onerror="showStatus('english-hero', false)">
+                    <div id="english-hero-status" class="status" style="display: none;"></div>
+                </div>
+                
+                <div>
+                    <p>大尺寸显示 (200px):</p>
+                    <img src="rincatian-flag.png" alt="琳凯蒂亚联邦共和国国旗" class="flag-large"
+                         onload="showStatus('english-large', true)" 
+                         onerror="showStatus('english-large', false)">
+                    <div id="english-large-status" class="status" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图片信息 -->
+        <div class="image-info">
+            <h3 style="color: #4ecdc4; margin-bottom: 1rem;">📋 图片文件信息</h3>
+            <ul style="line-height: 1.8;">
+                <li><strong>原始文件：</strong>林卡蒂亚联邦共和国国旗.png (602KB)</li>
+                <li><strong>备用文件：</strong>rincatian-flag.png (602KB)</li>
+                <li><strong>格式：</strong>PNG (支持透明背景)</li>
+                <li><strong>用途：</strong>网站导航栏和首页展示</li>
+                <li><strong>问题排查：</strong>中文文件名可能导致某些环境下的路径解析问题</li>
+            </ul>
+        </div>
+        
+        <!-- 解决方案说明 -->
+        <div class="image-info">
+            <h3 style="color: #ffd700; margin-bottom: 1rem;">🔧 修复方案</h3>
+            <ol style="line-height: 1.8; text-align: left;">
+                <li>创建英文文件名副本：rincatian-flag.png</li>
+                <li>更新所有HTML页面的图片路径为英文文件名</li>
+                <li>保持原始中文文件作为备份</li>
+                <li>测试所有页面的国旗显示效果</li>
+                <li>确保在不同浏览器和服务器环境下都能正常显示</li>
+            </ol>
+        </div>
+        
+        <!-- 测试按钮 -->
+        <div style="margin-top: 2rem;">
+            <button onclick="location.reload()" 
+                    style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; margin: 0 10px;">
+                🔄 重新测试
+            </button>
+            <button onclick="window.open('index.html', '_blank')" 
+                    style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; margin: 0 10px;">
+                🏠 查看首页效果
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function showStatus(id, success) {
+            const statusDiv = document.getElementById(id + '-status');
+            statusDiv.style.display = 'block';
+            
+            if (success) {
+                statusDiv.className = 'status status-success';
+                statusDiv.innerHTML = '✅ 图片加载成功';
+            } else {
+                statusDiv.className = 'status status-error';
+                statusDiv.innerHTML = '❌ 图片加载失败 - 可能是路径问题或文件损坏';
+            }
+        }
+        
+        // 页面加载完成后检查图片状态
+        window.addEventListener('load', function() {
+            console.log('📊 国旗图片测试页面加载完成');
+            
+            // 检查文件是否存在的简单方法
+            setTimeout(() => {
+                const images = document.querySelectorAll('img');
+                let loadedCount = 0;
+                let errorCount = 0;
+                
+                images.forEach(img => {
+                    if (img.complete && img.naturalWidth > 0) {
+                        loadedCount++;
+                    } else {
+                        errorCount++;
+                    }
+                });
+                
+                console.log(`📈 图片加载统计: ${loadedCount} 成功, ${errorCount} 失败`);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

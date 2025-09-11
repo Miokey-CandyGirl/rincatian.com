@@ -30,6 +30,25 @@ function showGrammarSection(sectionId) {
         grammarContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     
+    // 重新初始化星空效果，确保星星继续旋转
+    if (window.initializeStarfield) {
+        setTimeout(() => {
+            // 重新激活星空动画
+            const starfield = document.getElementById('starfield');
+            if (starfield) {
+                const stars = starfield.querySelectorAll('.star');
+                stars.forEach(star => {
+                    // 重新应用旋转动画
+                    const currentAnimation = star.style.animation;
+                    star.style.animation = '';
+                    setTimeout(() => {
+                        star.style.animation = currentAnimation || `twinkle ${Math.random() * 4 + 2}s ease-in-out infinite alternate`;
+                    }, 10);
+                });
+            }
+        }, 100);
+    }
+    
     // 添加切换动画效果
     if (activeSection) {
         activeSection.style.opacity = '0';
@@ -55,7 +74,7 @@ function showGrammarSection(sectionId) {
 function createMagicTransition() {
     const sparkles = document.createElement('div');
     sparkles.className = 'magic-sparkles';
-    sparkles.innerHTML = '✨'.repeat(10);
+    sparkles.innerHTML = '✨'.repeat(0);
     sparkles.style.cssText = `
         position: fixed;
         top: 50%;
@@ -409,6 +428,14 @@ showGrammarSection = function(sectionId) {
 
 // 页面加载时初始化所有功能
 document.addEventListener('DOMContentLoaded', function() {
+    // 确保认证系统正确初始化
+    if (typeof initializeAuthSystem === 'function') {
+        initializeAuthSystem();
+        setTimeout(() => {
+            updateAuthenticationState();
+        }, 100);
+    }
+    
     initializeGrammarAnimations();
     // initializeSearch(); // 移除搜索框功能
     learningProgress.updateProgressIndicator();

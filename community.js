@@ -22,6 +22,14 @@ function ensureCompatibilityLayer() {
         communityData.currentUser = storedCurrentUser;
         communityData.studyGroups = [];
         
+        // 如果没有帖子数据，创建一些示例数据
+        if (storedPosts.length === 0) {
+            const samplePosts = createSamplePosts();
+            communityData.posts = samplePosts;
+            localStorage.setItem('communityPosts', JSON.stringify(samplePosts));
+            console.log('🎆 已创建示例帖子数据');
+        }
+        
         console.log('🔧 兼容层已确保初始化:', {
             users: communityData.users.length,
             posts: communityData.posts.length,
@@ -34,12 +42,73 @@ function ensureCompatibilityLayer() {
         // 如果失败，至少确保对象存在
         communityData = {
             users: [],
-            posts: [],
+            posts: createSamplePosts(),
             studyGroups: [],
             currentUser: null
         };
         return false;
     }
+}
+
+// 创建示例帖子数据
+function createSamplePosts() {
+    return [
+        {
+            id: 'post_sample_001',
+            title: '🌟 欢迎来到琳凯蒂亚语社区！',
+            content: '大家好！欢迎来到琳凯蒂亚语社区。这里是所有爱好者交流学习这门美丽语言的地方。希望大家能多多交流，共同进步！',
+            author: {
+                id: 'admin',
+                username: '管理员',
+                displayName: '光线传说管理员',
+                avatar: '🎆'
+            },
+            category: 'announcement',
+            timestamp: Date.now() - 1000 * 60 * 60 * 24 * 3, // 3天前
+            views: 156,
+            likes: ['user1', 'user2', 'user3'],
+            replyCount: 8,
+            tags: ['欢迎', '社区', '公告'],
+            isPinned: true,
+            status: 'active'
+        },
+        {
+            id: 'post_sample_002',
+            title: '📚 琳凯蒂亚语初学者求助！',
+            content: '我刚开始学习琳凯蒂亚语，对于发音部分有些困惑。有没有经验丰富的小伙伴能给些建议呢？特别是关于音调变化的部分。',
+            author: {
+                id: 'user1',
+                username: '新手小白',
+                displayName: '初学者小明',
+                avatar: '🌱'
+            },
+            category: 'grammar',
+            timestamp: Date.now() - 1000 * 60 * 60 * 12, // 12小时前
+            views: 89,
+            likes: ['user2', 'user4'],
+            replyCount: 5,
+            tags: ['初学者', '发音', '求助'],
+            status: 'active'
+        },
+        {
+            id: 'post_sample_003',
+            title: '🎵 分享一首琳凯蒂亚语原创歌曲',
+            content: '最近尝试用琳凯蒂亚语创作了一首小歌，叫《星光之歌》。虽然还不太成熟，但希望能和大家分享。欢迎大家给出意见和建议！',
+            author: {
+                id: 'user2',
+                username: '音乐爱好者',
+                displayName: '月光诗人',
+                avatar: '🎶'
+            },
+            category: 'culture',
+            timestamp: Date.now() - 1000 * 60 * 60 * 6, // 6小时前
+            views: 67,
+            likes: ['user1', 'user3', 'user5'],
+            replyCount: 3,
+            tags: ['原创', '歌曲', '分享'],
+            status: 'active'
+        }
+    ];
 }
 
 // 立即执行一次确保
@@ -53,26 +122,88 @@ function initCompatibilityLayer() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🌟 琳凯蒂亚语社区页面加载...');
     
-    // 初始化兼容层
-    initCompatibilityLayer();
+    // 确保认证系统正确初始化
+    if (typeof initializeAuthSystem === 'function') {
+        initializeAuthSystem();
+        setTimeout(() => {
+            updateAuthenticationState();
+        }, 100);
+    }
+    
+    // 立即初始化兼容层
+    ensureCompatibilityLayer();
+    
+    // 立即初始化事件监听器
+    initEventListeners();
     
     // 等待社区系统初始化完成
     setTimeout(() => {
-        if (window.communitySystem) {
+        try {
+            // 初始化社区界面
             initCommunityInterface();
+            
+            // 加载初始内容
+            loadInitialContent();
+            
+            // 更新统计数据
+            updateCommunityStats();
+            
             console.log('✅ 社区界面初始化完成');
-        } else {
-            console.error('❌ 社区系统未加载');
+        } catch (error) {
+            console.error('❌ 社区系统初始化错误:', error);
+            
+            // 即使出错也要加载基本内容
+            loadInitialContent();
         }
-    }, 500);
+    }, 200); // 减少等待时间
 });
 
 // 初始化社区界面
 function initCommunityInterface() {
-    initEventListeners();
-    loadInitialContent();
-    updateCommunityStats();
-    startRealTimeUpdates();
+    console.log('🔧 初始化社区界面...');
+    
+    try {
+        // 确保按钮状态正常
+        resetButtonStates();
+        
+        // 加载默认内容
+        loadDiscussions('all');
+        
+        console.log('✅ 社区界面初始化完成');
+    } catch (error) {
+        console.error('❌ 社区界面初始化失败:', error);
+    }
+}
+
+// 重置按钮状态
+function resetButtonStates() {
+    // 重置所有按钮的样式和事件
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        // 确保按钮可点击
+        button.style.pointerEvents = 'auto';
+        button.style.opacity = '1';
+        button.disabled = false;
+        
+        // 清除可能的加载状态
+        button.classList.remove('loading', 'disabled');
+    });
+    
+    // 特别检查筛选按钮
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+        
+        // 重置默认激活状态
+        if (btn.dataset.filter === 'all') {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    console.log('✅ 按钮状态已重置');
 }
 
 // 初始化事件监听器
@@ -82,58 +213,34 @@ function initEventListeners() {
     // 导航标签切换
     const navTabs = document.querySelectorAll('.nav-tab');
     navTabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchTab(tab.dataset.tab);
-        });
+        // 移除旧的事件监听器
+        tab.removeEventListener('click', handleTabClick);
+        // 添加新的事件监听器
+        tab.addEventListener('click', handleTabClick);
     });
     
     // 发布新话题按钮
     const newPostBtn = document.getElementById('newPostBtn');
     if (newPostBtn) {
-        newPostBtn.addEventListener('click', () => {
-            // 检查用户是否已登录，优先使用新认证系统
-            const isLoggedIn = (window.authSystem && window.authSystem.currentUser) || 
-                              (window.communitySystem && window.communitySystem.currentUser) ||
-                              communityData.currentUser;
-            
-            if (isLoggedIn) {
-                showNewPostModal();
-            } else {
-                showLoginPrompt();
-            }
-        });
+        newPostBtn.removeEventListener('click', handleNewPost);
+        newPostBtn.addEventListener('click', handleNewPost);
         console.log('✅ 发帖按钮事件已绑定');
     }
     
     // 筛选按钮 - 使用事件委托避免动态元素问题
     const postsContainer = document.querySelector('.posts-container');
     if (postsContainer) {
-        postsContainer.addEventListener('click', (e) => {
-            // 检查是否点击了筛选按钮
-            if (e.target.classList.contains('filter-btn')) {
-                e.preventDefault();
-                
-                const filterType = e.target.dataset.filter;
-                if (filterType) {
-                    console.log('🔍 筛选按钮被点击:', filterType);
-                    
-                    // 更新按钮状态
-                    const filterBtns = postsContainer.querySelectorAll('.filter-btn');
-                    filterBtns.forEach(btn => btn.classList.remove('active'));
-                    e.target.classList.add('active');
-                    
-                    // 执行筛选
-                    loadDiscussions(filterType);
-                }
-            }
-        });
+        // 移除旧的事件监听器
+        postsContainer.removeEventListener('click', handleFilterClick);
+        // 添加新的事件监听器
+        postsContainer.addEventListener('click', handleFilterClick);
         console.log('✅ 筛选按钮事件委托已绑定');
     }
     
     // 加载更多按钮
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     if (loadMoreBtn) {
+        loadMoreBtn.removeEventListener('click', loadMorePosts);
         loadMoreBtn.addEventListener('click', loadMorePosts);
         console.log('✅ 加载更多按钮事件已绑定');
     }
@@ -141,46 +248,145 @@ function initEventListeners() {
     // 登录按钮
     const loginBtn = document.getElementById('loginBtn');
     if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            if (typeof showNewLoginModal === 'function') {
-                showNewLoginModal();
-            } else if (typeof showLoginModal === 'function') {
-                showLoginModal();
-            } else {
-                showLoginPrompt();
-            }
-        });
+        loginBtn.removeEventListener('click', handleLogin);
+        loginBtn.addEventListener('click', handleLoginBtn);
+        console.log('✅ 登录按钮事件已绑定');
     }
     
     // 注册按钮
     const registerBtn = document.getElementById('registerBtn');
     if (registerBtn) {
-        registerBtn.addEventListener('click', () => {
-            if (typeof showNewRegisterModal === 'function') {
-                showNewRegisterModal();
-            } else if (typeof showRegisterModal === 'function') {
-                showRegisterModal();
-            } else {
-                // 创建简单的注册提示
-                const modal = createModal('registerPromptModal', '注册账号', `
-                    <div class="register-prompt-content">
-                        <div class="prompt-icon">🎆</div>
-                        <p>欢迎加入琳凯蒂亚星球！</p>
-                        <p>注册功能正在开发中，请稍后再试。</p>
-                        <div class="prompt-actions">
-                            <button class="btn btn-primary" onclick="closeModal('registerPromptModal')">
-                                知道了
-                            </button>
-                        </div>
-                    </div>
-                `);
-                document.body.appendChild(modal);
-                showModal('registerPromptModal');
-            }
-        });
+        registerBtn.removeEventListener('click', handleRegister);
+        registerBtn.addEventListener('click', handleRegisterBtn);
+        console.log('✅ 注册按钮事件已绑定');
     }
     
     console.log('✅ 所有事件监听器初始化完成');
+}
+
+// 事件处理函数
+function handleTabClick(e) {
+    e.preventDefault();
+    const tabName = e.target.dataset.tab;
+    if (tabName) {
+        switchTab(tabName);
+    }
+}
+
+function handleNewPost() {
+    // 检查用户是否已登录，优先使用新认证系统
+    const isLoggedIn = (window.authSystem && window.authSystem.currentUser) || 
+                      (window.communitySystem && window.communitySystem.currentUser) ||
+                      communityData.currentUser;
+    
+    if (isLoggedIn) {
+        showNewPostModal();
+    } else {
+        showLoginPrompt();
+    }
+}
+
+function handleFilterClick(e) {
+    // 检查是否点击了筛选按钮
+    if (e.target.classList.contains('filter-btn')) {
+        e.preventDefault();
+        
+        const filterType = e.target.dataset.filter;
+        if (filterType) {
+            console.log('🔍 筛选按钮被点击:', filterType);
+            
+            // 更新按钮状态
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            // 执行筛选
+            loadDiscussions(filterType);
+        }
+    }
+}
+
+function handleLoginBtn() {
+    if (typeof showNewLoginModal === 'function') {
+        showNewLoginModal();
+    } else if (typeof showLoginModal === 'function') {
+        showLoginModal();
+    } else {
+        showLoginPrompt();
+    }
+}
+
+function handleRegisterBtn() {
+    if (typeof showNewRegisterModal === 'function') {
+        showNewRegisterModal();
+    } else if (typeof showRegisterModal === 'function') {
+        showRegisterModal();
+    } else {
+        // 创建简单的注册提示
+        const modal = createModal('registerPromptModal', '注册账号', `
+            <div class="register-prompt-content">
+                <div class="prompt-icon">🎆</div>
+                <p>欢迎加入琳凯蒂亚星球！</p>
+                <p>注册功能正在开发中，请稍后再试。</p>
+                <div class="prompt-actions">
+                    <button class="btn btn-primary" onclick="closeModal('registerPromptModal')">
+                        知道了
+                    </button>
+                </div>
+            </div>
+        `);
+        document.body.appendChild(modal);
+        showModal('registerPromptModal');
+    }
+}
+
+// 初始加载内容
+function loadInitialContent() {
+    console.log('📦 加载初始内容...');
+    
+    try {
+        // 加载讨论列表（默认全部）
+        loadDiscussions('all');
+        
+        // 加载在线用户
+        loadOnlineUsers();
+        
+        // 加载最新动态
+        loadRecentActivity();
+        
+        // 确保首个标签页是激活的
+        const firstTab = document.querySelector('.nav-tab[data-tab="discussions"]');
+        if (firstTab) {
+            firstTab.classList.add('active');
+        }
+        
+        const firstSection = document.getElementById('discussions');
+        if (firstSection) {
+            firstSection.classList.add('active');
+        }
+        
+        console.log('✅ 初始内容加载完成');
+    } catch (error) {
+        console.error('❌ 初始内容加载失败:', error);
+        
+        // 即使出错也要显示基本界面
+        showFallbackContent();
+    }
+}
+
+// 显示备用内容
+function showFallbackContent() {
+    const postsList = document.getElementById('postsList');
+    if (postsList) {
+        postsList.innerHTML = `
+            <div class="no-posts" style="text-align: center; padding: 3rem; background: rgba(255, 255, 255, 0.05); border-radius: 15px; margin: 2rem 0;">
+                <div class="no-posts-icon" style="font-size: 3rem; margin-bottom: 1rem;">🎆</div>
+                <h3 style="color: #ffd700; margin-bottom: 1rem;">欢迎来到琳凯蒂亚语社区！</h3>
+                <p style="color: #e0e0e0; margin-bottom: 2rem;">加入我们一起探索这门神秘的语言吧！</p>
+                <button class="btn btn-primary" onclick="showNewPostModal()" style="background: linear-gradient(45deg, #ffd700, #4ecdc4); color: #1a1a2e; border: none; padding: 1rem 2rem; border-radius: 25px; cursor: pointer; font-weight: 600;">🚀 发布话题</button>
+            </div>
+        `;
+    }
 }
 
 // 标签页切换
@@ -224,96 +430,9 @@ function loadTabContent(tabName) {
     }
 }
 
-// 加载讨论内容
-function loadDiscussions() {
-    console.log('加载讨论列表...');
-    
-    const postsList = document.getElementById('postsList');
-    if (!postsList) return;
-    
-    // 获取当前筛选条件
-    const activeFilter = document.querySelector('.filter-btn.active');
-    const filterType = activeFilter ? activeFilter.dataset.filter : 'all';
-    
-    // 从社区系统获取帖子
-    const posts = window.communitySystem.getPosts({
-        status: 'active',
-        sortBy: filterType === 'latest' ? 'timestamp' : 
-                filterType === 'hot' ? 'likes' : 'timestamp'
-    });
-    
-    postsList.innerHTML = '';
-    
-    if (posts.length === 0) {
-        postsList.innerHTML = `
-            <div class="no-posts">
-                <div class="no-posts-icon">📝</div>
-                <p>还没有帖子，快来发布第一个话题吧！</p>
-                <button class="btn btn-primary" onclick="showNewPostModal()">发布话题</button>
-            </div>
-        `;
-        return;
-    }
-    
-    posts.forEach(post => {
-        const postElement = createPostElement(post);
-        postsList.appendChild(postElement);
-    });
-}
+// 删除重复的 loadDiscussions 函数定义（保留更完整的版本）
 
-// 创建帖子元素
-function createPostElement(post) {
-    const postDiv = document.createElement('div');
-    postDiv.className = 'post-item';
-    postDiv.dataset.postId = post.id;
-    
-    // 置顶标识
-    const pinnedBadge = post.isPinned ? '<span class="post-badge pinned">📌 置顶</span>' : '';
-    
-    // 锁定标识
-    const lockedBadge = post.isLocked ? '<span class="post-badge locked">🔒 锁定</span>' : '';
-    
-    postDiv.innerHTML = `
-        <div class="post-header">
-            <div class="post-avatar">${post.author.avatar}</div>
-            <div class="post-info">
-                <div class="post-title-row">
-                    <h3 class="post-title">${post.title}</h3>
-                    <div class="post-badges">${pinnedBadge}${lockedBadge}</div>
-                </div>
-                <div class="post-meta">
-                    <span class="post-author">${post.author.displayName}</span>
-                    <span class="post-time">${post.timeDisplay}</span>
-                    <span class="post-category">${getCategoryName(post.category)}</span>
-                </div>
-            </div>
-            <div class="post-stats">
-                <span class="stat-item">👁️ ${post.views}</span>
-                <span class="stat-item">❤️ ${post.likes.length}</span>
-                <span class="stat-item">💬 ${post.replyCount}</span>
-            </div>
-        </div>
-        <div class="post-content">${truncateContent(post.content, 200)}</div>
-        <div class="post-footer">
-            <div class="post-tags">
-                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-            </div>
-            <div class="post-actions">
-                <button class="btn btn-small btn-outline" onclick="viewPost('${post.id}')">
-                    <span class="icon">👁️</span> 查看详情
-                </button>
-                <button class="btn btn-small btn-outline like-btn" onclick="togglePostLike('${post.id}')" data-liked="${post.likes.includes(window.communitySystem.currentUser?.id)}">
-                    <span class="icon">❤️</span> ${post.likes.length}
-                </button>
-                <button class="btn btn-small btn-primary" onclick="replyToPost('${post.id}')">
-                    <span class="icon">💬</span> 回复
-                </button>
-            </div>
-        </div>
-    `;
-    
-    return postDiv;
-}
+// 删除重复的 createPostElement 函数定义（保留更完整的版本）
 
 // 查看帖子详情
 function viewPost(postId) {
@@ -910,6 +1029,21 @@ function loadTranslationContent() {
     loadTranslationShowcase();
 }
 
+// 加载星球活动内容
+function loadEventsContent() {
+    console.log('🎪 加载星球活动内容...');
+    loadUpcomingEvents();
+    loadOngoingEvents();
+    loadPastEvents();
+}
+
+// 加载资源分享内容
+function loadResourcesContent() {
+    console.log('📚 加载资源分享内容...');
+    loadResourcesList();
+    setupResourceFilters();
+}
+
 // 加载翻译挑战
 function loadTranslationChallenges() {
     const challengesContainer = document.getElementById('translationChallenges');
@@ -1225,6 +1359,1247 @@ function loadLeaderboard() {
         `;
         leaderboardContainer.appendChild(userElement);
     });
+}
+
+// ================== 星球活动相关函数 ==================
+
+// 加载即将开始的活动
+function loadUpcomingEvents() {
+    const upcomingContainer = document.getElementById('upcomingEvents');
+    if (!upcomingContainer) return;
+    
+    const upcomingEvents = [
+        {
+            id: 'event_001',
+            title: '🎆 琳凯蒂亚语升级庆典',
+            description: '庆祝琳凯蒂亚语网站全面升级，特别举办的社区庆典活动。有丰厚奖品和互动游戏等着你！',
+            startTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2天后
+            endTime: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5天后
+            location: '琳凯蒂亚语社区广场',
+            organizer: '华田中央大学田语学院',
+            participants: 128,
+            maxParticipants: 200,
+            tags: ['庆典', '互动', '奖品'],
+            difficulty: '初级',
+            rewards: ['特别成就徽章', '限定头像框', '500经验值']
+        },
+        {
+            id: 'event_002',
+            title: '🌙 月光诗歌大赛',
+            description: '用琳凯蒂亚语创作你的月光之歌，让美丽的诗句在星空中闪耀。优秀作品将获得专业点评和丰厚奖励！',
+            startTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7天后
+            endTime: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14天后
+            location: '线上提交 + 社区展示',
+            organizer: '月光诗社',
+            participants: 45,
+            maxParticipants: 100,
+            tags: ['诗歌', '创作', '文学'],
+            difficulty: '中级',
+            rewards: ['月光诗人称号', '作品集录', '1000经验值']
+        },
+        {
+            id: 'event_003',
+            title: '✨ 初学者入门集训营',
+            description: '专为琳凯蒂亚语新手设计的入门集训，从发音到语法，从词汇到交流，让你快速掌握这门魔法语言！',
+            startTime: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(), // 10天后
+            endTime: new Date(Date.now() + 17 * 24 * 60 * 60 * 1000).toISOString(), // 17天后
+            location: '在线直播 + 互动练习',
+            organizer: '光线导师团',
+            participants: 89,
+            maxParticipants: 150,
+            tags: ['入门', '集训', '直播'],
+            difficulty: '初级',
+            rewards: ['入门证书', '学习计划', '300经验值']
+        },
+        {
+            id: 'event_004',
+            title: '🌌 琳凯蒂亚语全球交流日',
+            description: '每年一度的爳凯蒂亚语全球交流盛典，连接世界各地的光线使者，共同庆祝这门美丽语言。',
+            startTime: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(), // 20天后
+            endTime: new Date(Date.now() + 22 * 24 * 60 * 60 * 1000).toISOString(), // 22天后
+            location: '全球在线连线',
+            organizer: '琳凯蒂亚语国际促进会',
+            participants: 45,
+            maxParticipants: 500,
+            tags: ['全球', '交流', '庆典'],
+            difficulty: '不限',
+            rewards: ['全球使者徽章', '纪念品', '1000经验值'],
+            highlights: '特邀《光线传说》作者参与，将有神秘嘉宾和惊喜环节。'
+        }
+    ];
+    
+    upcomingContainer.innerHTML = '';
+    
+    upcomingEvents.forEach(event => {
+        const eventElement = createEventElement(event, 'upcoming');
+        upcomingContainer.appendChild(eventElement);
+    });
+}
+
+// 加载正在进行的活动
+function loadOngoingEvents() {
+    const ongoingContainer = document.getElementById('ongoingEvents');
+    if (!ongoingContainer) return;
+    
+    const ongoingEvents = [
+        {
+            id: 'event_101',
+            title: '🔥 光线传说粉丝艺术大赛',
+            description: '展示你的艺术才华！绘画、设计、手工、摄影……只要与《光线传说》相关，都可以参赛！',
+            startTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3天前开始
+            endTime: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4天后结束
+            location: '社区展示厅',
+            organizer: '光线艺术家联盟',
+            participants: 76,
+            maxParticipants: 120,
+            tags: ['艺术', '展示', '创作'],
+            difficulty: '不限',
+            status: '进行中',
+            progress: 65, // 进度百分比
+            rewards: ['艺术家称号', '作品展示', '800经验值']
+        },
+        {
+            id: 'event_102',
+            title: '🎯 心灵感应互动挑战',
+            description: '每日一个小挑战，通过琳凯蒂亚语与其他光线使者交流互动，提升语言水平和心灵連系。',
+            startTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1天前开始
+            endTime: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(), // 6天后结束
+            location: '社区互动区',
+            organizer: '心灵导师团',
+            participants: 234,
+            maxParticipants: 300,
+            tags: ['互动', '挑战', '交流'],
+            difficulty: '全阶段',
+            status: '热烈进行中',
+            progress: 40,
+            rewards: ['心灵使者徽章', '特殊聊天框', '600经验值']
+        },
+        {
+            id: 'event_103',
+            title: '🌙 星空冥想与语言体验',
+            description: '结合琳凯蒂亚语学习与冥想练习，在宁静的氛围中深度体验这门语言的神秘力量。',
+            startTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3天前开始
+            endTime: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4天后结束
+            location: '虚拟冥想室',
+            organizer: '星空导师团',
+            participants: 67,
+            maxParticipants: 100,
+            tags: ['冥想', '体验', '灵性'],
+            difficulty: '中级',
+            status: '深度进行中',
+            progress: 70,
+            rewards: ['星空导师认证', '冥想音频', '500经验值']
+        },
+        {
+            id: 'event_104',
+            title: '🎨 创意写作工坊',
+            description: '用琳凯蒂亚语发挥你的创意，写下属于你的光线传奇故事，让想象力在星空中翱翔。',
+            startTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5天前开始
+            endTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2天后结束
+            location: '创意工作室',
+            organizer: '文学创作社',
+            participants: 156,
+            maxParticipants: 200,
+            tags: ['创意', '写作', '文学'],
+            difficulty: '中高级',
+            status: '激情创作中',
+            progress: 85,
+            rewards: ['文学创作家徽章', '作品发表', '800经验值']
+        }
+    ];
+    
+    ongoingContainer.innerHTML = '';
+    
+    ongoingEvents.forEach(event => {
+        const eventElement = createEventElement(event, 'ongoing');
+        ongoingContainer.appendChild(eventElement);
+    });
+}
+
+// 加载往期活动
+function loadPastEvents() {
+    const pastContainer = document.getElementById('pastEvents');
+    if (!pastContainer) return;
+    
+    const pastEvents = [
+        {
+            id: 'event_201',
+            title: '🏆 第一届琳凯蒂亚语翻译大赛',
+            description: '历史性的第一届翻译大赛已完美落下帷幕，感谢所有参赛者的热情参与！',
+            startTime: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+            endTime: new Date(Date.now() - 23 * 24 * 60 * 60 * 1000).toISOString(),
+            location: '线上竞赛平台',
+            organizer: '翻译家協会',
+            participants: 156,
+            maxParticipants: 200,
+            tags: ['翻译', '竞赛', '历史'],
+            difficulty: '中高级',
+            status: '已结束',
+            winners: ['月光翻译家', '星辰语言家', '彩虹学者'],
+            highlights: '共收到182份优秀作品，创下参赛的历史新高！'
+        },
+        {
+            id: 'event_202',
+            title: '🌈 光线传说二周年庆典',
+            description: '庆祝《光线传说》发布两周年，回顾一路走来的精彩历程。',
+            startTime: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+            endTime: new Date(Date.now() - 57 * 24 * 60 * 60 * 1000).toISOString(),
+            location: '社区广场 + 线上直播',
+            organizer: '光线传说官方',
+            participants: 445,
+            maxParticipants: 500,
+            tags: ['庆典', '周年', '回顾'],
+            difficulty: '不限',
+            status: '已结束',
+            highlights: '历史上参与人数最多的社区活动，共同见证了琳凯蒂亚语的成长！'
+        },
+        {
+            id: 'event_203',
+            title: '🎭 第一届琳凯蒂亚语戏剧节',
+            description: '首届琳凯蒂亚语戏剧节圆满落幕，精彩的表演和创意让每个人都印象深刻。',
+            startTime: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+            endTime: new Date(Date.now() - 87 * 24 * 60 * 60 * 1000).toISOString(),
+            location: '虚拟戏剧院',
+            organizer: '琳凯蒂亚戏剧社',
+            participants: 234,
+            maxParticipants: 300,
+            tags: ['戏剧', '表演', '艺术'],
+            difficulty: '不限',
+            status: '已结束',
+            winners: ['星光剧团', '月亮表演家', '彩虹诗人'],
+            highlights: '共上演了15部原创作品，展现了琳凯蒂亚语的艺术魅力！'
+        },
+        {
+            id: 'event_204',
+            title: '🌍 第一届国际琳凯蒂亚语交流大会',
+            description: '全球琳凯蒂亚语学习者和爱好者的盛大聚会，为这门语言的国际化奠定了基础。',
+            startTime: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
+            endTime: new Date(Date.now() - 117 * 24 * 60 * 60 * 1000).toISOString(),
+            location: '全球多地连线',
+            organizer: '国际语言交流协会',
+            participants: 678,
+            maxParticipants: 1000,
+            tags: ['国际', '交流', '历史'],
+            difficulty: '不限',
+            status: '已结束',
+            highlights: '来自23个国家和地区的参与者，标志着琳凯蒂亚语正式走向世界！'
+        },
+        {
+            id: 'event_205',
+            title: '🎄 星光冬日庆典',
+            description: '在琳凯蒂亚星球的冬日节日，大家一起度过了温馨而难忘的时光。',
+            startTime: new Date(Date.now() - 150 * 24 * 60 * 60 * 1000).toISOString(),
+            endTime: new Date(Date.now() - 147 * 24 * 60 * 60 * 1000).toISOString(),
+            location: '线上庆典厅',
+            organizer: '社区管理团',
+            participants: 389,
+            maxParticipants: 400,
+            tags: ['冬日', '庆典', '温馨'],
+            difficulty: '不限',
+            status: '已结束',
+            highlights: '特别设置了“感恩时刻”环节，大家用琳凯蒂亚语分享了一年来的收获和感动。'
+        }
+    ];
+    
+    pastContainer.innerHTML = '';
+    
+    pastEvents.forEach(event => {
+        const eventElement = createEventElement(event, 'past');
+        pastContainer.appendChild(eventElement);
+    });
+}
+
+// 创建活动元素 - 增强版
+function createEventElement(event, type) {
+    const eventDiv = document.createElement('div');
+    eventDiv.className = 'event-item';
+    
+    // 获取状态显示
+    const statusInfo = getEventStatusInfo(event, type);
+    const timeInfo = getEventTimeInfo(event, type);
+    
+    eventDiv.innerHTML = `
+        <div class="event-card">
+            <div class="event-header">
+                <div class="event-title">${event.title}</div>
+                <div class="event-status ${statusInfo.class}">${statusInfo.text}</div>
+            </div>
+            
+            <div class="event-description">${event.description}</div>
+            
+            <div class="event-details">
+                <div class="event-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">📅 时间</span>
+                        <span class="meta-value">${timeInfo}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">📍 地点</span>
+                        <span class="meta-value">${event.location}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">💼 主办</span>
+                        <span class="meta-value">${event.organizer}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">👥 参与</span>
+                        <span class="meta-value">${event.participants}/${event.maxParticipants}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">🏆 难度</span>
+                        <span class="meta-value">${event.difficulty}</span>
+                    </div>
+                </div>
+                
+                ${event.progress !== undefined ? `
+                    <div class="event-progress">
+                        <div class="progress-label">活动进度: ${event.progress}%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${event.progress}%"></div>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="event-tags">
+                    ${event.tags.map(tag => `<span class="event-tag">${tag}</span>`).join('')}
+                </div>
+                
+                ${event.rewards ? `
+                    <div class="event-rewards">
+                        <div class="rewards-label">🎁 奖励：</div>
+                        <div class="rewards-list">
+                            ${event.rewards.map(reward => `<span class="reward-item">${reward}</span>`).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                ${event.highlights ? `
+                    <div class="event-highlights">
+                        <div class="highlights-label">✨ 亮点：</div>
+                        <div class="highlights-text">${event.highlights}</div>
+                    </div>
+                ` : ''}
+                
+                ${event.winners ? `
+                    <div class="event-winners">
+                        <div class="winners-label">🏆 获胜者：</div>
+                        <div class="winners-list">
+                            ${event.winners.map(winner => `<span class="winner-name">${winner}</span>`).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+            
+            <div class="event-actions">
+                ${getEventActions(event, type)}
+            </div>
+        </div>
+    `;
+    
+    // 添加交互效果
+    addEventInteractions(eventDiv, event);
+    
+    return eventDiv;
+}
+
+// 添加活动交互效果
+function addEventInteractions(eventDiv, event) {
+    const eventCard = eventDiv.querySelector('.event-card');
+    
+    // 鼠标悬停动画
+    eventCard.addEventListener('mouseenter', () => {
+        // 添加光效
+        eventCard.style.boxShadow = '0 20px 50px rgba(255, 215, 0, 0.2), 0 10px 25px rgba(0, 0, 0, 0.4)';
+        
+        // 进度条动画
+        const progressFill = eventCard.querySelector('.progress-fill');
+        if (progressFill) {
+            const currentWidth = progressFill.style.width;
+            progressFill.style.width = '0%';
+            setTimeout(() => {
+                progressFill.style.width = currentWidth;
+            }, 100);
+        }
+    });
+    
+    eventCard.addEventListener('mouseleave', () => {
+        eventCard.style.boxShadow = '';
+    });
+    
+    // 按钮点击效果
+    const buttons = eventCard.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // 波纹效果
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+}
+
+// 波纹动画 CSS
+if (!document.querySelector('#ripple-animation')) {
+    const style = document.createElement('style');
+    style.id = 'ripple-animation';
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// 获取活动状态信息
+function getEventStatusInfo(event, type) {
+    switch (type) {
+        case 'upcoming':
+            return { class: 'status-upcoming', text: '即将开始' };
+        case 'ongoing':
+            return { class: 'status-ongoing', text: event.status || '进行中' };
+        case 'past':
+            return { class: 'status-past', text: '已结束' };
+        default:
+            return { class: '', text: '' };
+    }
+}
+
+// 获取活动时间信息
+function getEventTimeInfo(event, type) {
+    const startDate = new Date(event.startTime);
+    const endDate = new Date(event.endTime);
+    
+    if (type === 'upcoming') {
+        const daysUntil = Math.ceil((startDate - Date.now()) / (1000 * 60 * 60 * 24));
+        return `${daysUntil}天后开始 (${startDate.toLocaleDateString()})`;
+    } else if (type === 'ongoing') {
+        const daysLeft = Math.ceil((endDate - Date.now()) / (1000 * 60 * 60 * 24));
+        return `还剩 ${daysLeft} 天 (${endDate.toLocaleDateString()}结束)`;
+    } else {
+        return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+    }
+}
+
+// 获取活动操作按钮
+function getEventActions(event, type) {
+    switch (type) {
+        case 'upcoming':
+            return `
+                <button class="btn btn-primary" onclick="joinEvent('${event.id}')">🌟 报名参加</button>
+                <button class="btn btn-outline" onclick="viewEventDetail('${event.id}')">👁️ 查看详情</button>
+            `;
+        case 'ongoing':
+            return `
+                <button class="btn btn-secondary" onclick="participateEvent('${event.id}')">🏃 立即参与</button>
+                <button class="btn btn-outline" onclick="viewEventDetail('${event.id}')">👁️ 查看详情</button>
+            `;
+        case 'past':
+            return `
+                <button class="btn btn-outline" onclick="viewEventDetail('${event.id}')">📄 查看回顾</button>
+                <button class="btn btn-outline" onclick="viewEventHighlights('${event.id}')">✨ 精彩回放</button>
+            `;
+        default:
+            return '';
+    }
+}
+
+// ================== 资源分享相关函数 ==================
+
+// 加载资源列表
+function loadResourcesList() {
+    const resourcesContainer = document.getElementById('resourcesList');
+    if (!resourcesContainer) return;
+    
+    const resources = [
+        {
+            id: 'res_001',
+            title: '📚 琳凯蒂亚语初学者完整教程',
+            description: '从零开始学习琳凯蒂亚语的完整教程，包含发音、语法、词汇和实用会话。',
+            author: '华田中央大学田语学院',
+            category: 'grammar',
+            type: 'PDF文档',
+            size: '12.5 MB',
+            downloads: 1247,
+            rating: 4.9,
+            tags: ['基础教程', '系统学习', '初学者'],
+            uploadTime: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初级',
+            language: '中文',
+            preview: '包含50个章节，200+练习题，音频发音指导。',
+            features: ['图文并茂', '音频辅助', '练习题库', '進度跟踪']
+        },
+        {
+            id: 'res_002',
+            title: '🎧 琳凯蒂亚语标准发音指南',
+            description: '专业的发音教学音频，由原著作者亲自录制，包含所有音素和语调变化。',
+            author: '光线传说作者',
+            category: 'media',
+            type: 'MP3音频包',
+            size: '156 MB',
+            downloads: 892,
+            rating: 5.0,
+            tags: ['发音', '标准', '音频'],
+            uploadTime: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '琳凯蒂亚语',
+            preview: '包含48个字母发音，200+常用词汇，50个经典句子。',
+            features: ['清晰音质', '慢速重复', '对比练习', '下载支持']
+        },
+        {
+            id: 'res_003',
+            title: '📋 日常会话1000句精选',
+            description: '精心收集的日常最实用的琳凯蒂亚语会话，包含发音、中文翻译和使用场景。',
+            author: '交流大师',
+            category: 'vocabulary',
+            type: 'Excel表格',
+            size: '2.8 MB',
+            downloads: 1534,
+            rating: 4.8,
+            tags: ['会话', '实用', '词汇表'],
+            uploadTime: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初中级',
+            language: '双语',
+            preview: '按主题分类：问候、购物、用餐、旅行、工作等。',
+            features: ['主题分类', '发音标注', '场景说明', '随时更新']
+        },
+        {
+            id: 'res_004',
+            title: '🛠️ 琳凯蒂亚语在线练习工具',
+            description: '在线互动式练习工具，支持语法练习、词汇测试、口语练习和听力训练。',
+            author: '智能学习实验室',
+            category: 'tools',
+            type: '在线工具',
+            size: '在线使用',
+            downloads: 3247, // 使用次数
+            rating: 4.7,
+            tags: ['在线工具', '互动练习', 'AI辅助'],
+            uploadTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '多语言',
+            preview: '支持自适应难度调整，实时反馈，学习进度跟踪。',
+            features: ['自适应难度', 'AI评分', '进度跟踪', '社交学习']
+        },
+        {
+            id: 'res_005',
+            title: '📄 语法速查手册',
+            description: '便携式语法参考手册，包含所有重要语法点和例句，适合随时查阅。',
+            author: '语法专家组',
+            category: 'grammar',
+            type: 'PDF手册',
+            size: '4.2 MB',
+            downloads: 967,
+            rating: 4.6,
+            tags: ['语法', '手册', '快速查找'],
+            uploadTime: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '中高级',
+            language: '中文',
+            preview: '按语法类别细分，带有索引和书签，便于快速定位。',
+            features: ['细分类别', '快速索引', '例句丰富', '离线可用']
+        },
+        {
+            id: 'res_006',
+            title: '🎵 琳凯蒂亚语歌曲合集',
+            description: '由社区成员创作的美丽琳凯蒂亚语歌曲，让你在音乐中感受语言的魅力。',
+            author: '音乐创作社',
+            category: 'media',
+            type: 'MP3合集',
+            size: '89 MB',
+            downloads: 723,
+            rating: 4.9,
+            tags: ['音乐', '歌曲', '艺术'],
+            uploadTime: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '不限',
+            language: '琳凯蒂亚语',
+            preview: '包含12首原创歌曲，涵盖民谣、流行、古典风格。',
+            features: ['原创作品', '多风格', '专业制作', '歌词同步']
+        },
+        {
+            id: 'res_007',
+            title: '🎨 琳凯蒂亚语文字艺术创作集',
+            description: '精美的琳凯蒂亚语书法作品和文字设计，展现语言的视觉美感和艺术魅力。',
+            author: '文字艺术工作室',
+            category: 'media',
+            type: '图片集',
+            size: '156 MB',
+            downloads: 445,
+            rating: 4.8,
+            tags: ['艺术', '书法', '设计', '视觉'],
+            uploadTime: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '不限',
+            language: '琳凯蒂亚语',
+            preview: '包含50+精美书法作品，多种字体风格，高清图片格式。',
+            features: ['高清画质', '多种字体', '创意设计', '可打印']
+        },
+        {
+            id: 'res_008',
+            title: '📖 琳凯蒂亚语故事集「星光传说」',
+            description: '原创琳凯蒂亚语短篇故事合集，帮助学习者在有趣的故事中提高阅读理解能力。',
+            author: '故事创作团',
+            category: 'vocabulary',
+            type: 'PDF电子书',
+            size: '8.7 MB',
+            downloads: 867,
+            rating: 4.7,
+            tags: ['故事', '阅读', '文学', '练习'],
+            uploadTime: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '中级',
+            language: '双语对照',
+            preview: '收录15个精彩故事，每个故事配有词汇注释和理解练习。',
+            features: ['双语对照', '词汇注释', '理解练习', '声音朗读']
+        },
+        {
+            id: 'res_009',
+            title: '🧩 琳凯蒂亚语语法游戏合集',
+            description: '寓教于乐的语法学习游戏，通过游戏化的方式让语法学习变得轻松有趣。',
+            author: '教育游戏开发组',
+            category: 'exercises',
+            type: '在线游戏',
+            size: '在线使用',
+            downloads: 2156,
+            rating: 4.6,
+            tags: ['游戏', '语法', '互动', '趣味'],
+            uploadTime: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初中级',
+            language: '多语言',
+            preview: '包含拼图、填空、匹配等多种游戏类型，覆盖所有主要语法点。',
+            features: ['游戏化学习', '进度保存', '排行榜', '成就系统']
+        },
+        {
+            id: 'res_010',
+            title: '🔤 琳凯蒂亚语字母练习册',
+            description: '专门设计的字母书写练习册，帮助初学者掌握正确的字母书写方法和笔顺。',
+            author: '华田中央大学田语学院',
+            category: 'exercises',
+            type: 'PDF练习册',
+            size: '15.3 MB',
+            downloads: 1756,
+            rating: 4.9,
+            tags: ['字母', '书写', '练习', '基础'],
+            uploadTime: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初级',
+            language: '中文指导',
+            preview: '48页精心设计的练习页面，包含字母描红、笔顺演示和书写练习。',
+            features: ['笔顺演示', '描红练习', '标准字体', '打印友好']
+        },
+        {
+            id: 'res_011',
+            title: '🌟 琳凯蒂亚语魔法咒语大全',
+            description: '收集《光线传奇》世界中的经典魔法咒语，学习神秘而优美的琳凯蒂亚语咒文。',
+            author: '魔法研究协会',
+            category: 'vocabulary',
+            type: '电子手册',
+            size: '6.8 MB',
+            downloads: 2845,
+            rating: 5.0,
+            tags: ['魔法', '咒语', '文化', '经典'],
+            uploadTime: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '中高级',
+            language: '琳凯蒂亚语原文',
+            preview: '收录100+经典咒语，包含发音指导、含义解释和使用背景。',
+            features: ['原文收录', '发音指导', '文化背景', '使用场景']
+        },
+        {
+            id: 'res_012',
+            title: '🎯 琳凯蒂亚语水平测试题库',
+            description: '标准化的琳凯蒂亚语水平测试题，帮助学习者准确评估自己的语言水平。',
+            author: '语言测试中心',
+            category: 'exercises',
+            type: '题库系统',
+            size: '在线使用',
+            downloads: 1432,
+            rating: 4.5,
+            tags: ['测试', '评估', '标准', '题库'],
+            uploadTime: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '多语言界面',
+            preview: '包含听力、阅读、语法、词汇四大模块，自动评分和详细解析。',
+            features: ['自动评分', '详细解析', '水平报告', '学习建议']
+        }
+    ];
+    
+    displayResources(resources);
+}
+
+// 显示资源列表
+function displayResources(resources) {
+    const resourcesContainer = document.getElementById('resourcesList');
+    if (!resourcesContainer) return;
+    
+    resourcesContainer.innerHTML = '';
+    
+    resources.forEach(resource => {
+        const resourceElement = createResourceElement(resource);
+        resourcesContainer.appendChild(resourceElement);
+    });
+}
+
+// 创建资源元素 - 增强版
+function createResourceElement(resource) {
+    const resourceDiv = document.createElement('div');
+    resourceDiv.className = 'resource-item';
+    
+    const categoryIcon = getResourceCategoryIcon(resource.category);
+    const ratingStars = generateStarRating(resource.rating);
+    const difficultyColor = getDifficultyColor(resource.difficulty);
+    
+    resourceDiv.innerHTML = `
+        <div class="resource-card">
+            <div class="resource-header">
+                <div class="resource-icon">${categoryIcon}</div>
+                <div class="resource-type">${resource.type}</div>
+            </div>
+            
+            <div class="resource-title">${resource.title}</div>
+            <div class="resource-description">${resource.description}</div>
+            
+            <div class="resource-preview">
+                <strong>🔍 内容预览：</strong>
+                <p>${resource.preview}</p>
+            </div>
+            
+            ${resource.features ? `
+                <div class="resource-features">
+                    <div class="features-label">✨ 特性：</div>
+                    <div class="features-list">
+                        ${resource.features.map(feature => `<span class="feature-item">${feature}</span>`).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div class="resource-meta">
+                <div class="resource-meta-item">
+                    <span class="meta-value">${resource.author}</span>
+                    <span class="meta-label">作者</span>
+                </div>
+                <div class="resource-meta-item">
+                    <span class="meta-value" style="color: ${difficultyColor}">${resource.difficulty}</span>
+                    <span class="meta-label">难度</span>
+                </div>
+                <div class="resource-meta-item">
+                    <span class="meta-value">${resource.size}</span>
+                    <span class="meta-label">大小</span>
+                </div>
+                <div class="resource-meta-item">
+                    <span class="meta-value">${formatNumber(resource.downloads)}</span>
+                    <span class="meta-label">下载</span>
+                </div>
+            </div>
+            
+            <div class="resource-rating">
+                <div class="rating-stars">${ratingStars}</div>
+                <span class="rating-value">${resource.rating.toFixed(1)}</span>
+                <span class="rating-count">(基于 ${Math.floor(resource.downloads / 10)} 个评价)</span>
+            </div>
+            
+            <div class="resource-actions">
+                <button class="btn btn-primary" onclick="downloadResource('${resource.id}')">
+                    💾 下载资源
+                </button>
+                <button class="btn btn-outline" onclick="previewResource('${resource.id}')">
+                    👁️ 预览
+                </button>
+                <button class="btn btn-secondary" onclick="favoriteResource('${resource.id}')">
+                    ❤️ 收藏
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // 添加交互效果
+    addResourceInteractions(resourceDiv, resource);
+    
+    return resourceDiv;
+}
+
+// 添加资源交互效果
+function addResourceInteractions(resourceDiv, resource) {
+    const resourceCard = resourceDiv.querySelector('.resource-card');
+    
+    // 鼠标悬停动画
+    resourceCard.addEventListener('mouseenter', () => {
+        resourceCard.style.boxShadow = '0 20px 50px rgba(76, 205, 196, 0.2), 0 10px 25px rgba(0, 0, 0, 0.4)';
+        
+        // 资源图标动画
+        const icon = resourceCard.querySelector('.resource-icon');
+        if (icon) {
+            icon.style.transform = 'scale(1.1) rotate(5deg)';
+        }
+        
+        // 特性标签动画
+        const features = resourceCard.querySelectorAll('.feature-item');
+        features.forEach((feature, index) => {
+            setTimeout(() => {
+                feature.style.transform = 'translateY(-2px)';
+            }, index * 50);
+        });
+    });
+    
+    resourceCard.addEventListener('mouseleave', () => {
+        resourceCard.style.boxShadow = '';
+        
+        const icon = resourceCard.querySelector('.resource-icon');
+        if (icon) {
+            icon.style.transform = '';
+        }
+        
+        const features = resourceCard.querySelectorAll('.feature-item');
+        features.forEach(feature => {
+            feature.style.transform = '';
+        });
+    });
+    
+    // 按钮点击效果
+    const buttons = resourceCard.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // 波纹效果
+            createRippleEffect(this, e);
+        });
+    });
+}
+
+// 创建波纹效果
+function createRippleEffect(element, event) {
+    const ripple = document.createElement('span');
+    const rect = element.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+    `;
+    
+    element.appendChild(ripple);
+    
+    setTimeout(() => {
+        ripple.remove();
+    }, 600);
+}
+
+// 获取难度颜色
+function getDifficultyColor(difficulty) {
+    const colorMap = {
+        '初级': '#00b894',
+        '中级': '#fdcb6e',
+        '中高级': '#e17055',
+        '高级': '#d63031',
+        '全阶段': '#4ecdc4',
+        '不限': '#b0b0c8'
+    };
+    return colorMap[difficulty] || '#4ecdc4';
+}
+
+// 格式化数字
+function formatNumber(num) {
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+}
+
+// 资源操作函数
+function downloadResource(resourceId) {
+    console.log('下载资源:', resourceId);
+    showNotification('💾 开始下载资源...', 'info');
+    
+    // 模拟下载进度
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            showNotification('✅ 资源下载完成！', 'success');
+        }
+    }, 200);
+}
+
+function previewResource(resourceId) {
+    console.log('预览资源:', resourceId);
+    showNotification('👁️ 正在加载资源预览...', 'info');
+    // 这里可以添加预览模态框逻辑
+}
+
+function favoriteResource(resourceId) {
+    console.log('收藏资源:', resourceId);
+    showNotification('❤️ 已添加到收藏夹！', 'success');
+}
+
+// 获取资源分类图标
+function getResourceCategoryIcon(category) {
+    const icons = {
+        'grammar': '📝',
+        'vocabulary': '📚',
+        'exercises': '🎯',
+        'tools': '🛠️',
+        'media': '🎧'
+    };
+    return icons[category] || '📄';
+}
+
+// 生成星级评分
+function generateStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    
+    let stars = '';
+    for (let i = 0; i < fullStars; i++) {
+        stars += '⭐';
+    }
+    if (hasHalfStar) {
+        stars += '🌟';
+    }
+    for (let i = 0; i < emptyStars; i++) {
+        stars += '☆';
+    }
+    
+    return stars;
+}
+
+// 设置资源筛选器
+function setupResourceFilters() {
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    if (!categoryTabs.length) return;
+    
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 更新活跃状态
+            categoryTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // 筛选资源
+            const category = tab.dataset.category;
+            filterResources(category);
+        });
+    });
+}
+
+// 筛选资源
+function filterResources(category) {
+    // 这里可以根据分类筛选资源
+    console.log('🔍 筛选资源分类:', category);
+    
+    // 如果是“全部”，显示所有资源
+    if (category === 'all') {
+        loadResourcesList();
+        return;
+    }
+    
+    // 根据分类筛选显示
+    // 获取所有资源数据
+    const allResources = [
+        // 语法相关资源
+        {
+            id: 'res_001',
+            title: '📚 琳凯蒂亚语初学者完整教程',
+            description: '从零开始学习琳凯蒂亚语的完整教程，包含发音、语法、词汇和实用会话。',
+            author: '华田中央大学田语学院',
+            category: 'grammar',
+            type: 'PDF文档',
+            size: '12.5 MB',
+            downloads: 1247,
+            rating: 4.9,
+            tags: ['基础教程', '系统学习', '初学者'],
+            uploadTime: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初级',
+            language: '中文',
+            preview: '包含50个章节，200+练习题，音频发音指导。',
+            features: ['图文并茂', '音频辅助', '练习题库', '进度跟踪']
+        },
+        {
+            id: 'res_005',
+            title: '📄 语法速查手册',
+            description: '便携式语法参考手册，包含所有重要语法点和例句，适合随时查阅。',
+            author: '语法专家组',
+            category: 'grammar',
+            type: 'PDF手册',
+            size: '4.2 MB',
+            downloads: 967,
+            rating: 4.6,
+            tags: ['语法', '手册', '快速查找'],
+            uploadTime: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '中高级',
+            language: '中文',
+            preview: '按语法类别细分，带有索引和书签，便于快速定位。',
+            features: ['细分类别', '快速索引', '例句丰富', '离线可用']
+        },
+        // 音视频资源
+        {
+            id: 'res_002',
+            title: '🎧 琳凯蒂亚语标准发音指南',
+            description: '专业的发音教学音频，由原著作者亲自录制，包含所有音素和语调变化。',
+            author: '光线传说作者',
+            category: 'media',
+            type: 'MP3音频包',
+            size: '156 MB',
+            downloads: 892,
+            rating: 5.0,
+            tags: ['发音', '标准', '音频'],
+            uploadTime: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '琳凯蒂亚语',
+            preview: '包含48个字母发音，200+常用词汇，50个经典句子。',
+            features: ['清晰音质', '慢速重复', '对比练习', '下载支持']
+        },
+        // 词汇相关资源
+        {
+            id: 'res_003',
+            title: '📋 日常会话1000句精选',
+            description: '精心收集的日常最实用的琳凯蒂亚语会话，包含发音、中文翻译和使用场景。',
+            author: '交流大师',
+            category: 'vocabulary',
+            type: 'Excel表格',
+            size: '2.8 MB',
+            downloads: 1534,
+            rating: 4.8,
+            tags: ['会话', '实用', '词汇表'],
+            uploadTime: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初中级',
+            language: '双语',
+            preview: '按主题分类：问候、购物、用餐、旅行、工作等。',
+            features: ['主题分类', '发音标注', '场景说明', '随时更新']
+        },
+        // 学习工具
+        {
+            id: 'res_004',
+            title: '🛠️ 琳凯蒂亚语在线练习工具',
+            description: '在线互动式练习工具，支持语法练习、词汇测试、口语练习和听力训练。',
+            author: '智能学习实验室',
+            category: 'tools',
+            type: '在线工具',
+            size: '在线使用',
+            downloads: 3247,
+            rating: 4.7,
+            tags: ['在线工具', '互动练习', 'AI辅助'],
+            uploadTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '多语言',
+            preview: '支持自适应难度调整，实时反馈，学习进度跟踪。',
+            features: ['自适应难度', 'AI评分', '进度跟踪', '社交学习']
+        },
+        // 练习题相关资源
+        {
+            id: 'res_009',
+            title: '🧩 琳凯蒂亚语语法游戏合集',
+            description: '寓教于乐的语法学习游戏，通过游戏化的方式让语法学习变得轻松有趣。',
+            author: '教育游戏开发组',
+            category: 'exercises',
+            type: '在线游戏',
+            size: '在线使用',
+            downloads: 2156,
+            rating: 4.6,
+            tags: ['游戏', '语法', '互动', '趣味'],
+            uploadTime: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初中级',
+            language: '多语言',
+            preview: '包含拼图、填空、匹配等多种游戏类型，覆盖所有主要语法点。',
+            features: ['游戏化学习', '进度保存', '排行榜', '成就系统']
+        },
+        {
+            id: 'res_010',
+            title: '🔤 琳凯蒂亚语字母练习册',
+            description: '专门设计的字母书写练习册，帮助初学者掌握正确的字母书写方法和笔顺。',
+            author: '华田中央大学田语学院',
+            category: 'exercises',
+            type: 'PDF练习册',
+            size: '15.3 MB',
+            downloads: 1756,
+            rating: 4.9,
+            tags: ['字母', '书写', '练习', '基础'],
+            uploadTime: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '初级',
+            language: '中文指导',
+            preview: '48页精心设计的练习页面，包含字母描红、笔顺演示和书写练习。',
+            features: ['笔顺演示', '描红练习', '标准字体', '打印友好']
+        },
+        {
+            id: 'res_012',
+            title: '🎯 琳凯蒂亚语水平测试题库',
+            description: '标准化的琳凯蒂亚语水平测试题，帮助学习者准确评估自己的语言水平。',
+            author: '语言测试中心',
+            category: 'exercises',
+            type: '题库系统',
+            size: '在线使用',
+            downloads: 1432,
+            rating: 4.5,
+            tags: ['测试', '评估', '标准', '题库'],
+            uploadTime: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '全阶段',
+            language: '多语言界面',
+            preview: '包含听力、阅读、语法、词汇四大模块，自动评分和详细解析。',
+            features: ['自动评分', '详细解析', '水平报告', '学习建议']
+        }
+    ];
+    
+    // 根据分类筛选资源
+    const filteredResources = allResources.filter(resource => resource.category === category);
+    
+    // 显示筛选结果
+    displayResources(filteredResources);
+    
+    showNotification(`已筛选出 ${filteredResources.length} 个${getCategoryDisplayName(category)}资源`, 'info');
+}
+
+// 获取分类显示名称
+function getCategoryDisplayName(category) {
+    const names = {
+        'grammar': '语法资料',
+        'vocabulary': '词汇表',
+        'exercises': '练习题',
+        'tools': '学习工具',
+        'media': '音视频'
+    };
+    return names[category] || '未知分类';
+}
+
+// ================== 活动和资源交互函数 ==================
+
+// 参加活动
+function joinEvent(eventId) {
+    console.log('🎆 加入活动:', eventId);
+    
+    // 检查用户是否登录
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser);
+    
+    if (!currentUser) {
+        showNotification('请先登录后再报名参加活动！', 'warning');
+        return;
+    }
+    
+    // 模拟报名成功
+    showNotification('🎉 报名成功！我们会在活动开始前通知您。', 'success');
+    
+    // 这里可以添加实际的报名逻辑
+}
+
+// 参与活动
+function participateEvent(eventId) {
+    console.log('🏃 参与活动:', eventId);
+    
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser);
+    
+    if (!currentUser) {
+        showNotification('请先登录后再参与活动！', 'warning');
+        return;
+    }
+    
+    showNotification('🌟 正在跳转到活动参与页面...', 'info');
+    
+    // 这里可以跳转到具体的活动参与页面
+}
+
+// 查看活动详情
+function viewEventDetail(eventId) {
+    console.log('👁️ 查看活动详情:', eventId);
+    showNotification('正在加载活动详情...', 'info');
+    
+    // 这里可以显示活动详情模态框
+}
+
+// 查看活动亮点
+function viewEventHighlights(eventId) {
+    console.log('✨ 查看活动亮点:', eventId);
+    showNotification('正在加载精彩回放...', 'info');
+    
+    // 这里可以显示活动精彩内容
+}
+
+// 下载资源
+function downloadResource(resourceId) {
+    console.log('📥 下载资源:', resourceId);
+    
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser);
+    
+    if (!currentUser) {
+        showNotification('请先登录后再下载资源！', 'warning');
+        return;
+    }
+    
+    showNotification('🚀 下载已开始，请稍候...', 'success');
+    
+    // 这里可以实现实际的下载逻辑
+}
+
+// 预览资源
+function previewResource(resourceId) {
+    console.log('👁️ 预览资源:', resourceId);
+    showNotification('正在加载预览...', 'info');
+    
+    // 这里可以显示资源预览模态框
+}
+
+// 分享资源
+function shareResource(resourceId) {
+    console.log('🔗 分享资源:', resourceId);
+    
+    // 复制分享链接到剪贴板
+    const shareUrl = `${window.location.origin}/community.html#resource-${resourceId}`;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showNotification('📋 分享链接已复制到剪贴板！', 'success');
+        }).catch(() => {
+            showNotification('复制失败，请手动复制链接', 'error');
+        });
+    } else {
+        showNotification(`分享链接：${shareUrl}`, 'info');
+    }
+}
+
+// 评分资源
+function rateResource(resourceId) {
+    console.log('⭐ 评分资源:', resourceId);
+    
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser);
+    
+    if (!currentUser) {
+        showNotification('请先登录后再进行评分！', 'warning');
+        return;
+    }
+    
+    // 这里可以显示评分模态框
+    showNotification('评分功能即将上线，敬请期待！', 'info');
 }
 
 // 处理登录

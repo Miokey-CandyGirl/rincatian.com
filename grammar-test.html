@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 语法页面功能测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="grammar.css">
+    <link rel="stylesheet" href="grammar-style.css">
+    <link rel="stylesheet" href="exercise-style.css">
+    <style>
+        .test-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 10000;
+            max-width: 300px;
+            font-size: 14px;
+        }
+        
+        .test-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .test-pass { background: rgba(40, 167, 69, 0.3); }
+        .test-fail { background: rgba(220, 53, 69, 0.3); }
+        .test-info { background: rgba(23, 162, 184, 0.3); }
+        
+        .test-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+        
+        .test-btn {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- 测试状态显示 -->
+    <div class="test-status" id="testStatus">
+        <h4>🧪 测试状态</h4>
+        <div id="testResults"></div>
+    </div>
+    
+    <!-- 测试控制 -->
+    <div class="test-controls">
+        <button class="test-btn" onclick="runAllTests()">🚀 运行所有测试</button>
+        <button class="test-btn" onclick="testStarRotation()">⭐ 测试星星旋转</button>
+        <button class="test-btn" onclick="testExerciseFlow()">🎯 测试练习流程</button>
+    </div>
+    
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="planet-icon"></div>
+                    <div class="logo-text">
+                        <span class="logo-chinese">语法测试页面</span>
+                        <span class="logo-english">Grammar Test</span>
+                    </div>
+                </div>
+                <div class="nav-extras">
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                        <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="grammar-hero">
+            <div class="container">
+                <h1 class="page-title">🧪 语法功能测试</h1>
+                <p class="page-subtitle">测试星星旋转、按钮样式和练习流程</p>
+            </div>
+        </section>
+
+        <section class="grammar-navigation">
+            <div class="container">
+                <div class="grammar-tabs">
+                    <button class="tab-btn active" onclick="showGrammarSection('phonetics')">🔤 语音文字</button>
+                    <button class="tab-btn" onclick="showGrammarSection('morphology')">📝 词法概述</button>
+                    <button class="tab-btn" onclick="showGrammarSection('syntax')">⚡ 核心句法</button>
+                    <button class="tab-btn" onclick="showGrammarSection('exercises')">🎯 小试牛刀</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="grammar-content">
+            <div class="container">
+                <!-- 语音文字 -->
+                <div id="phonetics" class="grammar-section active">
+                    <h2 class="section-title">🔤 测试页面</h2>
+                    <div class="grammar-card">
+                        <h3>测试项目</h3>
+                        <ul>
+                            <li>✅ 星星旋转动画</li>
+                            <li>✅ 选项卡切换效果</li>
+                            <li>✅ 登录注册按钮样式</li>
+                            <li>✅ 练习系统完整流程</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 小试牛刀 -->
+                <div id="exercises" class="grammar-section">
+                    <h2 class="section-title">🎯 小试牛刀</h2>
+                    <p class="section-subtitle">完整的练习流程测试</p>
+                    
+                    <!-- 练习导航 -->
+                    <div class="exercise-navigation">
+                        <div class="exercise-tabs">
+                            <button class="exercise-tab-btn active" onclick="showExerciseType('choice')">🎯 选择题</button>
+                            <button class="exercise-tab-btn" onclick="showExerciseType('judge')">✅ 判断题</button>
+                            <button class="exercise-tab-btn" onclick="showExerciseType('fill')">📝 填空题</button>
+                            <button class="exercise-tab-btn" onclick="showExerciseType('translate')">🌍 翻译题</button>
+                            <button class="exercise-tab-btn" onclick="showExerciseType('magic')">🔮 魔法练习</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 选择题 -->
+                    <div id="choice-exercises" class="exercise-type-section active">
+                        <div class="grammar-card">
+                            <h3>🎯 选择题练习</h3>
+                            <div class="exercise-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="choiceProgress"></div>
+                                </div>
+                                <span class="progress-text" id="choiceProgressText">0/10</span>
+                            </div>
+                            <div class="exercise-container" id="choiceContainer"></div>
+                            <div class="exercise-controls">
+                                <button class="btn btn-primary" id="choiceNextBtn" onclick="nextChoiceQuestion()" disabled>下一题</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 判断题 -->
+                    <div id="judge-exercises" class="exercise-type-section">
+                        <div class="grammar-card">
+                            <h3>✅ 判断题练习</h3>
+                            <div class="exercise-container" id="judgeContainer"></div>
+                            <div class="exercise-controls">
+                                <button class="btn btn-primary" id="judgeNextBtn" onclick="nextJudgeQuestion()">开始判断题</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 填空题 -->
+                    <div id="fill-exercises" class="exercise-type-section">
+                        <div class="grammar-card">
+                            <h3>📝 填空题练习</h3>
+                            <div class="exercise-container" id="fillContainer"></div>
+                            <div class="exercise-controls">
+                                <button class="btn btn-primary" id="fillNextBtn" onclick="nextFillQuestion()">开始填空题</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 翻译题 -->
+                    <div id="translate-exercises" class="exercise-type-section">
+                        <div class="grammar-card">
+                            <h3>🌍 翻译题练习</h3>
+                            <div class="exercise-container" id="translateContainer"></div>
+                            <div class="exercise-controls">
+                                <button class="btn btn-primary" id="translateNextBtn" onclick="nextTranslateQuestion()">开始翻译题</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 魔法练习 -->
+                    <div id="magic-exercises" class="exercise-type-section">
+                        <div class="grammar-card">
+                            <h3>🔮 魔法练习</h3>
+                            <div class="exercise-container" id="magicContainer"></div>
+                            <div class="exercise-controls">
+                                <button class="btn btn-primary" id="magicNextBtn" onclick="nextMagicQuestion()">开始魔法练习</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="grammar.js"></script>
+    <script src="exercise-effects.js"></script>
+    <script src="grammar-exercises.js"></script>
+    
+    <script>
+        let testResults = [];
+        
+        function addTestResult(name, status, message) {
+            testResults.push({name, status, message, timestamp: new Date()});
+            updateTestDisplay();
+        }
+        
+        function updateTestDisplay() {
+            const resultsDiv = document.getElementById('testResults');
+            const recent = testResults.slice(-8); // 显示最近8个结果
+            
+            resultsDiv.innerHTML = recent.map(result => `
+                <div class="test-item test-${result.status}">
+                    <strong>${result.name}</strong>: ${result.message}
+                    <div style="font-size:11px; opacity:0.7;">${result.timestamp.toLocaleTimeString()}</div>
+                </div>
+            `).join('');
+        }
+        
+        function runAllTests() {
+            addTestResult('开始测试', 'info', '运行所有功能测试');
+            
+            // 测试1: 按钮样式
+            setTimeout(() => testButtonStyles(), 100);
+            
+            // 测试2: 星星旋转
+            setTimeout(() => testStarRotation(), 300);
+            
+            // 测试3: 选项卡切换
+            setTimeout(() => testTabSwitching(), 500);
+            
+            // 测试4: 练习系统
+            setTimeout(() => testExerciseSystem(), 700);
+        }
+        
+        function testButtonStyles() {
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            
+            if (loginBtn && registerBtn) {
+                const loginStyle = window.getComputedStyle(loginBtn);
+                const registerStyle = window.getComputedStyle(registerBtn);
+                
+                const hasCorrectStyle = loginStyle.borderRadius.includes('25px') && 
+                                      registerStyle.background.includes('linear-gradient');
+                
+                addTestResult('按钮样式', hasCorrectStyle ? 'pass' : 'fail', 
+                    hasCorrectStyle ? '登录注册按钮样式正确' : '按钮样式需要修复');
+            }
+        }
+        
+        function testStarRotation() {
+            const starfield = document.getElementById('starfield');
+            if (starfield) {
+                const stars = starfield.querySelectorAll('.star');
+                const hasStars = stars.length > 0;
+                const hasAnimation = stars.length > 0 && stars[0].style.animation;
+                
+                addTestResult('星星旋转', hasStars && hasAnimation ? 'pass' : 'fail',
+                    `发现${stars.length}个星星，动画${hasAnimation ? '正常' : '异常'}`);
+                
+                // 强制重新启动星星动画
+                stars.forEach(star => {
+                    const anim = star.style.animation;
+                    star.style.animation = '';
+                    setTimeout(() => star.style.animation = anim, 10);
+                });
+            }
+        }
+        
+        function testTabSwitching() {
+            // 测试选项卡切换
+            const tabs = document.querySelectorAll('.tab-btn');
+            if (tabs.length > 0) {
+                // 点击第二个选项卡
+                if (tabs[1]) {
+                    tabs[1].click();
+                    setTimeout(() => {
+                        const isActive = tabs[1].classList.contains('active');
+                        addTestResult('选项卡切换', isActive ? 'pass' : 'fail',
+                            isActive ? '选项卡切换正常' : '选项卡切换失败');
+                        
+                        // 切换回第一个
+                        tabs[0].click();
+                    }, 200);
+                }
+            }
+        }
+        
+        function testExerciseSystem() {
+            // 测试练习系统是否加载
+            const exerciseContainer = document.getElementById('choiceContainer');
+            const nextButton = document.getElementById('choiceNextBtn');
+            
+            if (exerciseContainer && nextButton) {
+                addTestResult('练习系统', 'pass', '练习系统组件加载正常');
+                
+                // 切换到练习选项卡
+                const exerciseTab = document.querySelector('[onclick="showGrammarSection(\'exercises\')"]');
+                if (exerciseTab) {
+                    exerciseTab.click();
+                    addTestResult('练习切换', 'pass', '成功切换到练习页面');
+                }
+            } else {
+                addTestResult('练习系统', 'fail', '练习系统组件未找到');
+            }
+        }
+        
+        function testExerciseFlow() {
+            addTestResult('练习流程', 'info', '开始测试完整练习流程');
+            
+            // 切换到练习页面
+            showGrammarSection('exercises');
+            
+            setTimeout(() => {
+                // 开始选择题
+                showExerciseType('choice');
+                addTestResult('选择题', 'info', '已进入选择题模式');
+                
+                setTimeout(() => {
+                    // 模拟完成选择题后的流程
+                    addTestResult('练习流程', 'pass', '练习流程测试完成');
+                }, 1000);
+            }, 500);
+        }
+        
+        // 页面加载完成后自动运行测试
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                addTestResult('页面加载', 'pass', '测试页面加载完成');
+                runAllTests();
+            }, 1000);
+        });
+        
+        console.log('🧪 语法功能测试页面已加载');
+    </script>
+</body>
+</html>

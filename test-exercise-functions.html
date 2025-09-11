@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习系统测试页面</title>
+    <link rel="stylesheet" href="exercise-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        #test-results {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        #console-output {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 2px 0;
+            padding: 5px;
+            background: #444;
+            border-left: 3px solid #007cba;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 琳凯蒂亚语练习系统测试</h1>
+    
+    <div id="test-results">
+        <h2>🎯 测试结果：</h2>
+        <ul id="results-list"></ul>
+    </div>
+    
+    <!-- 模拟练习区域的HTML结构 -->
+    <div class="exercise-section">
+        <h2>🎨 小试牛刀</h2>
+        
+        <div class="exercise-tabs">
+            <button class="exercise-tab-btn active" onclick="showExerciseType('choice')">🎯 选择题</button>
+            <button class="exercise-tab-btn" onclick="showExerciseType('judge')">✅ 判断题</button>
+            <button class="exercise-tab-btn" onclick="showExerciseType('fill')">📝 填空题</button>
+            <button class="exercise-tab-btn" onclick="showExerciseType('translate')">🌍 翻译题</button>
+            <button class="exercise-tab-btn" onclick="showExerciseType('magic')">🔮 魔法练习</button>
+        </div>
+        
+        <div class="exercise-content">
+            <!-- 选择题区域 -->
+            <div id="choice-exercises" class="exercise-type-section active">
+                <div class="exercise-header">
+                    <h3>🎯 选择题</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="choiceProgress"></div>
+                        </div>
+                        <span class="progress-text" id="choiceProgressText">0/3</span>
+                    </div>
+                </div>
+                
+                <div class="exercise-container" id="choiceContainer">
+                    <!-- 这里将由JavaScript动态生成题目内容 -->
+                </div>
+                
+                <div class="exercise-controls">
+                    <button class="btn btn-primary" id="choiceNextBtn" onclick="nextChoiceQuestion()" disabled>下一题</button>
+                </div>
+            </div>
+            
+            <!-- 其他练习类型区域 -->
+            <div id="judge-exercises" class="exercise-type-section">
+                <h3>✅ 判断题</h3>
+                <p>判断题尚未实现...</p>
+            </div>
+            
+            <div id="fill-exercises" class="exercise-type-section">
+                <h3>📝 填空题</h3>
+                <p>填空题尚未实现...</p>
+            </div>
+            
+            <div id="translate-exercises" class="exercise-type-section">
+                <h3>🌍 翻译题</h3>
+                <p>翻译题尚未实现...</p>
+            </div>
+            
+            <div id="magic-exercises" class="exercise-type-section">
+                <h3>🔮 魔法练习</h3>
+                <p>魔法练习尚未实现...</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="console-output">
+        <h2>📜 控制台输出：</h2>
+        <div id="console-log"></div>
+    </div>
+
+    <script>
+        // 拦截console.log输出并显示在页面上
+        const originalLog = console.log;
+        const consoleDiv = document.getElementById('console-log');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.textContent = args.join(' ');
+            consoleDiv.appendChild(logEntry);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        };
+        
+        function addResult(test, status) {
+            const resultsList = document.getElementById('results-list');
+            const listItem = document.createElement('li');
+            listItem.className = status === 'PASS' ? 'pass' : 'fail';
+            listItem.innerHTML = `<strong>${test}:</strong> ${status}`;
+            resultsList.appendChild(listItem);
+        }
+        
+        console.log('=== 开始测试练习系统函数 ===');
+        
+        // 在加载grammar-exercises.js之前测试
+        console.log('加载脚本前测试:');
+        addResult('showExerciseType存在性', typeof window.showExerciseType === 'function' ? 'PASS' : 'FAIL');
+        addResult('nextChoiceQuestion存在性', typeof window.nextChoiceQuestion === 'function' ? 'PASS' : 'FAIL');
+        addResult('selectChoice存在性', typeof window.selectChoice === 'function' ? 'PASS' : 'FAIL');
+    </script>
+    
+    <!-- 加载练习系统脚本 -->
+    <script src="grammar-exercises.js?v=2.0"></script>
+    
+    <script>
+        // 脚本加载后测试
+        console.log('加载脚本后测试:');
+        addResult('showExerciseType存在性 (加载后)', typeof window.showExerciseType === 'function' ? 'PASS' : 'FAIL');
+        addResult('nextChoiceQuestion存在性 (加载后)', typeof window.nextChoiceQuestion === 'function' ? 'PASS' : 'FAIL');
+        addResult('selectChoice存在性 (加载后)', typeof window.selectChoice === 'function' ? 'PASS' : 'FAIL');
+        addResult('ExerciseSystem存在性', typeof ExerciseSystem === 'object' ? 'PASS' : 'FAIL');
+        
+        // 测试DOM元素
+        addResult('练习区域存在', document.querySelector('.exercise-section') ? 'PASS' : 'FAIL');
+        addResult('choice-exercises元素存在', document.getElementById('choice-exercises') ? 'PASS' : 'FAIL');
+        addResult('choiceContainer元素存在', document.getElementById('choiceContainer') ? 'PASS' : 'FAIL');
+        addResult('choiceNextBtn元素存在', document.getElementById('choiceNextBtn') ? 'PASS' : 'FAIL');
+        
+        console.log('=== 测试完成 ===');
+        
+        // 自动初始化练习系统
+        if (typeof ExerciseSystem !== 'undefined' && ExerciseSystem.init) {
+            console.log('自动初始化练习系统...');
+            ExerciseSystem.init();
+        }
+    </script>
+</body>
+</html>

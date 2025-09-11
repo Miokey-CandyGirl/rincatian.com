@@ -1,6 +1,14 @@
 // 文化页面交互脚本
 
 document.addEventListener('DOMContentLoaded', function() {
+    // 确保认证系统正确初始化
+    if (typeof initializeAuthSystem === 'function') {
+        initializeAuthSystem();
+        setTimeout(() => {
+            updateAuthenticationState();
+        }, 100);
+    }
+    
     // 标签页切换功能
     const tabLinks = document.querySelectorAll('.tab-link');
     const sections = document.querySelectorAll('.culture-section');

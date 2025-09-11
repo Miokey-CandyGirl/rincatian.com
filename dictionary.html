@@ -16,6 +16,9 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
+                <div class="rincatian-flag">
+                    <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+                </div>
                 <div class="planet-icon"></div>
                 <div class="logo-text">
                     <span class="logo-chinese">琳凯蒂亚语社区</span>
@@ -92,18 +95,19 @@
             <!-- 快速导航 -->
             <nav class="dictionary-nav">
                 <div class="nav-tabs">
-                    <button class="nav-tab active" data-tab="standard">标准词汇</button>
-                    <button class="nav-tab" data-tab="grammar">语法词汇</button>
+                    <button class="nav-tab active" data-tab="collect">词汇收集</button>
                     <button class="nav-tab" data-tab="alphabet">字母发音</button>
-                    <button class="nav-tab" data-tab="phrases">常用短语</button>
-                    <button class="nav-tab" data-tab="numbers">数词系统</button>
+                    <button class="nav-tab" data-tab="closewords">有限词汇</button>
+                    <button class="nav-tab" data-tab="openwords">标准词汇</button>
+                    <button class="nav-tab" data-tab="original">原有词汇</button>
+                    <button class="nav-tab" data-tab="phrase">常用语句</button>
                 </div>
             </nav>
 
-            <!-- 标准词汇页面 -->
-            <section id="standard" class="dictionary-section active">
+            <!-- 词汇收集页面 -->
+            <section id="collect" class="dictionary-section active">
                 <div class="section-header">
-                    <h2>标准词汇</h2>
+                    <h2>词汇收集</h2>
                     <div class="header-actions">
                         <div class="word-count">
                             共收录 <span id="wordCount">0</span> 个词汇
@@ -113,7 +117,7 @@
                             添加单词
                         </button>
                     </div>
-                    <div class="section-desc">探索琳凯蒂亚语的核心词汇体系</div>
+                    <div class="section-desc">大家一起来为琳凯蒂亚语出份力吧！</div>
                 </div>
 
                 <div class="alphabet-filter">
@@ -135,44 +139,7 @@
                 </div>
             </section>
 
-            <!-- 语法词汇页面 -->
-            <section id="grammar" class="dictionary-section">
-                <div class="section-header">
-                    <h2>语法词汇</h2>
-                    <p class="section-desc">琳凯蒂亚语语法体系中的核心词汇</p>
-                </div>
-
-                <div class="grammar-categories">
-                    <div class="category-group">
-                        <h3>助词系统</h3>
-                        <div class="grammar-grid" id="particleList">
-                            <!-- 助词列表 -->
-                        </div>
-                    </div>
-
-                    <div class="category-group">
-                        <h3>代词系统</h3>
-                        <div class="grammar-grid" id="pronounList">
-                            <!-- 代词列表 -->
-                        </div>
-                    </div>
-
-                    <div class="category-group">
-                        <h3>连词系统</h3>
-                        <div class="grammar-grid" id="conjunctionList">
-                            <!-- 连词列表 -->
-                        </div>
-                    </div>
-
-                    <div class="category-group">
-                        <h3>能愿前止词</h3>
-                        <div class="grammar-grid" id="modalList">
-                            <!-- 能愿前止词列表 -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            
             <!-- 字母发音页面 -->
             <section id="alphabet" class="dictionary-section">
                 <div class="section-header">
@@ -197,11 +164,1107 @@
                 </div>
             </section>
 
-            <!-- 常用短语页面 -->
-            <section id="phrases" class="dictionary-section">
+            <!-- 有限词汇页面 -->
+            <section id="closewords" class="dictionary-section">
                 <div class="section-header">
-                    <h2>常用短语</h2>
-                    <p class="section-desc">日常交流中的实用琳凯蒂亚语表达</p>
+                    <h2>有限词汇</h2>
+                    <p class="section-desc">探索琳凯蒂亚语的核心有限词类：代词、数词、连词、助词、抒情词</p>
+                </div>
+
+                <div class="finite-word-tabs">
+                    <button class="finite-tab active" data-category="pronouns">🧑 代词系统</button>
+                    <button class="finite-tab" data-category="numerals">🔢 数词系统</button>
+                    <button class="finite-tab" data-category="conjunctions">🔗 连词系统</button>
+                    <button class="finite-tab" data-category="particles">✨ 助词系统</button>
+                    <button class="finite-tab" data-category="emotives">🎵 抒情词系统</button>
+                </div>
+
+                <div class="finite-word-content">
+                    <!-- 代词系统 -->
+                    <div id="pronouns" class="finite-category active">
+                        <h3 class="category-title">🧑 代词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>人称代词</h4>
+                            <div class="pronoun-table-container">
+                                <table class="pronoun-table">
+                                    <thead>
+                                        <tr>
+                                            <th>类型</th>
+                                            <th>第一人称</th>
+                                            <th>第二人称</th>
+                                            <th>第三人称（男）</th>
+                                            <th>第三人称（女）</th>
+                                            <th>第三人称（物）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="row-label">基本型</td>
+                                            <td><span class="linkaitiya">wi</span> 我</td>
+                                            <td><span class="linkaitiya">ni</span> 你</td>
+                                            <td><span class="linkaitiya">hi</span> 他</td>
+                                            <td><span class="linkaitiya">ŝi</span> 她</td>
+                                            <td><span class="linkaitiya">ji</span> 它</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">复数型</td>
+                                            <td><span class="linkaitiya">win</span> 我们</td>
+                                            <td><span class="linkaitiya">nin</span> 你们</td>
+                                            <td><span class="linkaitiya">hin</span> 他们</td>
+                                            <td><span class="linkaitiya">ŝin</span> 她们</td>
+                                            <td><span class="linkaitiya">jin</span> 它们</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">物主型</td>
+                                            <td><span class="linkaitiya">wia</span> 我的</td>
+                                            <td><span class="linkaitiya">nia</span> 你的</td>
+                                            <td><span class="linkaitiya">hia</span> 他的</td>
+                                            <td><span class="linkaitiya">ŝia</span> 她的</td>
+                                            <td><span class="linkaitiya">jia</span> 它的</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">反身型</td>
+                                            <td><span class="linkaitiya">wiẑi</span> 我自己</td>
+                                            <td><span class="linkaitiya">niẑi</span> 你自己</td>
+                                            <td><span class="linkaitiya">hiẑi</span> 他自己</td>
+                                            <td><span class="linkaitiya">ŝiẑi</span> 她自己</td>
+                                            <td><span class="linkaitiya">jiẑi</span> 它自己</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>指示代词</h4>
+                            <div class="demonstrative-grid">
+                                <div class="demo-item">
+                                    <span class="demo-type">近指</span>
+                                    <span class="linkaitiya">ko</span> 这、这个
+                                </div>
+                                <div class="demo-item">
+                                    <span class="demo-type">近指复数</span>
+                                    <span class="linkaitiya">kon</span> 这些
+                                </div>
+                                <div class="demo-item">
+                                    <span class="demo-type">远指</span>
+                                    <span class="linkaitiya">go</span> 那、那个
+                                </div>
+                                <div class="demo-item">
+                                    <span class="demo-type">远指复数</span>
+                                    <span class="linkaitiya">gon</span> 那些
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>疑问代词</h4>
+                            <div class="question-grid">
+                                <div class="question-item">
+                                    <span class="linkaitiya">nei</span> 谁
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">neko</span> 什么
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">nexi</span> 何时
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">nelo</span> 何地
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">seeli</span> 如何
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">nānde</span> 为什么
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">nānno</span> 什么样的
+                                </div>
+                                <div class="question-item">
+                                    <span class="linkaitiya">dosē</span> 多少
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数词系统 -->
+                    <div id="numerals" class="finite-category">
+                        <h3 class="category-title">🔢 数词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>基数词（0-22）</h4>
+                            <div class="numeral-grid">
+                                <div class="numeral-item"><span class="linkaitiya">nu</span> 0</div>
+                                <div class="numeral-item"><span class="linkaitiya">i</span> 1</div>
+                                <div class="numeral-item"><span class="linkaitiya">nim</span> 2</div>
+                                <div class="numeral-item"><span class="linkaitiya">sâm</span> 3</div>
+                                <div class="numeral-item"><span class="linkaitiya">fōl</span> 4</div>
+                                <div class="numeral-item"><span class="linkaitiya">ven</span> 5</div>
+                                <div class="numeral-item"><span class="linkaitiya">lêm</span> 6</div>
+                                <div class="numeral-item"><span class="linkaitiya">qim</span> 7</div>
+                                <div class="numeral-item"><span class="linkaitiya">fa</span> 8</div>
+                                <div class="numeral-item"><span class="linkaitiya">jôl</span> 9</div>
+                                <div class="numeral-item"><span class="linkaitiya">ŝim</span> 10</div>
+                                <div class="numeral-item"><span class="linkaitiya">cen</span> 100</div>
+                                <div class="numeral-item"><span class="linkaitiya">kio</span> 1000</div>
+                                <div class="numeral-item"><span class="linkaitiya">wan</span> 10000</div>
+                                <div class="numeral-item"><span class="linkaitiya">mion</span> 1000000</div>
+                                <div class="numeral-item"><span class="linkaitiya">yom</span> 100000000</div>
+                                <div class="numeral-item"><span class="linkaitiya">bion</span> 1000000000</div>
+                                <div class="numeral-item"><span class="linkaitiya">ĉuē</span> 1000000000000</div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>数词词缀</h4>
+                            <div class="numeral-affixes">
+                                <div class="affix-item">
+                                    <span class="affix-type">负数词</span>
+                                    <span class="linkaitiya">fu-</span> 负几
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">正数词</span>
+                                    <span class="linkaitiya">ẑeŋ-</span> 正几
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">序数词</span>
+                                    <span class="linkaitiya">di-</span> 第-
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">分数词</span>
+                                    <span class="linkaitiya">ape</span> -分之-
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">倍数词</span>
+                                    <span class="linkaitiya">-bām</span> -倍
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">概数词</span>
+                                    <span class="linkaitiya">haŋ-</span> 大约、左右
+                                </div>
+                                <div class="affix-item">
+                                    <span class="affix-type">小数词</span>
+                                    <span class="linkaitiya">do</span> 几点几
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>量词相关</h4>
+                            <div class="quantity-words">
+                                <div class="quantity-item"><span class="linkaitiya">seego</span> 特别多</div>
+                                <div class="quantity-item"><span class="linkaitiya">pluẑē</span> 好几个</div>
+                                <div class="quantity-item"><span class="linkaitiya">neniom</span> 毫无</div>
+                                <div class="quantity-item"><span class="linkaitiya">seetoη</span> 全部、所有</div>
+                                <div class="quantity-item"><span class="linkaitiya">amaso</span> 一大堆</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 连词系统 -->
+                    <div id="conjunctions" class="finite-category">
+                        <h3 class="category-title">🔗 连词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>联合关系</h4>
+                            <div class="conjunction-list">
+                                <div class="conj-item">
+                                    <span class="linkaitiya">hâ</span> 和、与、且
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">kowe</span> 此外
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">giza</span> 总之
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">ole</span> 并且、而且
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>对立关系</h4>
+                            <div class="conjunction-list">
+                                <div class="conj-item">
+                                    <span class="linkaitiya">kona</span> 或者、还是
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">sedo</span> 但是
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">nes……cenes</span> 既不……也不……
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">vakan</span> 尽管
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">nega</span> 相反
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>因果关系</h4>
+                            <div class="conjunction-list">
+                                <div class="conj-item">
+                                    <span class="linkaitiya">qavi</span> 因为
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">gosi</span> 所以
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">silo</span> 因此、那么
+                                </div>
+                                <div class="conj-item">
+                                    <span class="linkaitiya">kuni…silo…</span> 如此……以至于……
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>其他关系</h4>
+                            <div class="conjunction-list">
+                                <div class="conj-item">
+                                    <span class="conj-type">条件关系</span>
+                                    <span class="linkaitiya">rugo</span> 假设
+                                </div>
+                                <div class="conj-item">
+                                    <span class="conj-type">目的关系</span>
+                                    <span class="linkaitiya">poroŋ</span> 为了
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 助词系统 -->
+                    <div id="particles" class="finite-category">
+                        <h3 class="category-title">✨ 助词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>主语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'ô</span> 施语为可自发动作（wô的缩写）
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'j</span> 施语为不可自发动作（jio的缩写）
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'l</span> 事物性质、状态、抽象概念做施语（lio的缩写）
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'fo</span> 句子充当主语时使用
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>宾语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'ô</span> 间接宾语助词
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'ō</span> 直接宾语助词（通常省略）
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">fō</span> 句子充当宾语时使用
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>定语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'a</span> 定语提示助词
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'da</span> 句子充当定语时使用
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'xa</span> 时间词作定语
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'ka</span> 地点词作定语
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>状语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'u</span> 状语提示助词
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'du</span> 句子充当状语时使用
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'xu</span> 时间词作状语
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'ku</span> 地点词作状语
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'peyoŋ</span> 方式状语
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'gu</span> 频率状语
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'gun</span> 多次频率状语
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>补语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'r</span> 补语提示助词
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">ve</span> 句子充当补语时使用
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>目的状语助词</h4>
+                            <div class="particle-list">
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'poroŋ</span> 计划实现的目的
+                                </div>
+                                <div class="particle-item">
+                                    <span class="linkaitiya">'poni</span> 已经实现的目的
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 抒情词系统 -->
+                    <div id="emotives" class="finite-category">
+                        <h3 class="category-title">🎵 抒情词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>强调词</h4>
+                            <div class="emotive-list">
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">ce</span> 强调词（非常、很）
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">eca</span> 强调形容词
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">hoseela</span> 强调名词或形容词（多么）
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">hoseeli</span> 强调动词或副词（多么）
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>牵词（领语）</h4>
+                            <div class="emotive-list">
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">celoŋ</span> 请
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">nuden</span> 禁止
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">den</span> 允许
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">duhaden</span> 不许、不要
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">haden</span> 建议
+                                </div>
+                                <div class="emotive-item">
+                                    <span class="linkaitiya">nen</span> 难道
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>止词（结语）</h4>
+                            <div class="stop-words-section">
+                                <div class="stop-category">
+                                    <h5>陈述句结语</h5>
+                                    <div class="stop-words">
+                                        <span class="linkaitiya">teyo</span> 新动作出现
+                                        <span class="linkaitiya">qoyo</span> 确认本来如此
+                                        <span class="linkaitiya">meyo</span> 显而易见动作
+                                        <span class="linkaitiya">leyo</span> 到达某种状态
+                                        <span class="linkaitiya">yo</span> 基本陈述
+                                    </div>
+                                </div>
+                                <div class="stop-category">
+                                    <h5>疑问句结语</h5>
+                                    <div class="stop-words">
+                                        <span class="linkaitiya">ne</span> 一般疑问
+                                        <span class="linkaitiya">ane</span> 半信半疑（吧）
+                                        <span class="linkaitiya">nie</span> 委婉语气（啦）
+                                        <span class="linkaitiya">ya</span> 可爱语气
+                                    </div>
+                                </div>
+                                <div class="stop-category">
+                                    <h5>感叹句结语</h5>
+                                    <div class="stop-words">
+                                        <span class="linkaitiya">handêga</span> 喜悦
+                                        <span class="linkaitiya">heka</span> 痛楚悲哀
+                                        <span class="linkaitiya">nēnga</span> 诧异
+                                        <span class="linkaitiya">cesioŋga</span> 惊讶
+                                        <span class="linkaitiya">ga</span> 基本感叹
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 标准词汇页面 -->
+            <section id="openwords" class="dictionary-section">
+                <div class="section-header">
+                    <h2>标准词汇</h2>
+                    <p class="section-desc">探索琳凯蒂亚语的无限词类：名词、动词、形容词、副词、声叹词的词法规则</p>
+                </div>
+
+                <div class="open-word-tabs">
+                    <button class="open-tab active" data-category="roots">🌱 常用标准词根</button>
+                    <button class="open-tab" data-category="nouns">🏠 名词系统</button>
+                    <button class="open-tab" data-category="verbs">⚙️ 动词系统</button>
+                    <button class="open-tab" data-category="adjectives">🎨 形容词系统</button>
+                    <button class="open-tab" data-category="adverbs">🌀 副词系统</button>
+                    <button class="open-tab" data-category="interjections">🔊 声叹词系统</button>
+                </div>
+
+                <div class="open-word-content">
+                    <!-- 常用标准词根系统 -->
+                    <div id="roots" class="open-category active">
+                        <h3 class="category-title">🌱 常用标准词根系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>生物与自然类</h4>
+                            <div class="word-roots-grid">
+                                <div class="root-item">
+                                    <span class="linkaitiya">šafo</span> 羊、绵羊
+                                    <span class="root-usage">家畜羊类，提供羊毛和肉食</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">berdo</span> 鸟、飞鸟
+                                    <span class="root-usage">能够飞行的鸟类动物</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">loŋ</span> 龙、巨龙
+                                    <span class="root-usage">传说中的巨龙，象征力量与智慧</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">sango</span> 血、血液
+                                    <span class="root-usage">生物体内的血液，象征生命力</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">viando</span> 肉、肉类
+                                    <span class="root-usage">动物的肉类，用作食物</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">ligno</span> 木、树、木材
+                                    <span class="root-usage">树木或木材，建筑和制作的基本材料</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">pruē</span> 春、春天
+                                    <span class="root-usage">四季中的春季，象征新生与希望</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>物品与工具类</h4>
+                            <div class="word-roots-grid">
+                                <div class="root-item">
+                                    <span class="linkaitiya">šelo</span> 贝、钱、货币
+                                    <span class="root-usage">商业交易中的基本货币单位</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">pulu</span> 羽、扇、羽毛
+                                    <span class="root-usage">鸟类的羽毛，也指扇子类工具</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">elixir</span> 丹、药剂、炼金术品
+                                    <span class="root-usage">魔法药剂或炼金术制品，具有特殊功效</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">čilo</span> 刀、刃具
+                                    <span class="root-usage">切割工具或武器</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">čēno</span> 车、车辆
+                                    <span class="root-usage">交通工具，用于运输人或物</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">kiwa</span> 瓦、瓦片
+                                    <span class="root-usage">建筑屋顶的覆盖材料</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>抽象概念类</h4>
+                            <div class="word-roots-grid">
+                                <div class="root-item">
+                                    <span class="linkaitiya">qigen</span> 今、今天、现在
+                                    <span class="root-usage">当前的时间，今日</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">kolor</span> 色、颜色
+                                    <span class="root-usage">物体表面反射光线产生的视觉效果</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">formo</span> 形、形状、形式
+                                    <span class="root-usage">物体的外观形状或抽象形式</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">senco</span> 义、意义、含义
+                                    <span class="root-usage">词语或事物的含义和意义</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">pajo</span> 页、页面
+                                    <span class="root-usage">书籍或文档的一页</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>动作与行为类</h4>
+                            <div class="word-roots-grid">
+                                <div class="root-item">
+                                    <span class="linkaitiya">rodu</span> 产、生产、产生
+                                    <span class="root-usage">制造、生产或产生某物</span>
+                                </div>
+                                <div class="root-item">
+                                    <span class="linkaitiya">depon</span> 存、存放、保存
+                                    <span class="root-usage">将物品存放或保存在某处</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 名词系统 -->
+                    <div id="nouns" class="open-category active">
+                        <h3 class="category-title">🏠 名词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>转义词尾规则</h4>
+                            <div class="word-endings">
+                                <div class="ending-item">
+                                    <span class="ending-type">原生名词</span>
+                                    <span class="linkaitiya">-∅</span> 无词尾（原生形式）
+                                </div>
+                                <div class="ending-item">
+                                    <span class="ending-type">转义名词</span>
+                                    <span class="linkaitiya">-o</span> 名词词尾
+                                </div>
+                                <div class="ending-item">
+                                    <span class="ending-type">集体复数</span>
+                                    <span class="linkaitiya">-on</span> 表示集体属性
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>复数规则与例词</h4>
+                            <div class="examples">
+                                <div class="example-item">
+                                    <span class="linkaitiya">soseon</span> → 学生们（集体）
+                                </div>
+                                <div class="example-item">
+                                    <span class="linkaitiya">nim soseo</span> → 两个学生（数量）
+                                </div>
+                                <div class="example-item">
+                                    <span class="linkaitiya">inon</span> → 人群、大众
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 动词系统 -->
+                    <div id="verbs" class="open-category">
+                        <h3 class="category-title">⚙️ 动词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>16种体态词尾</h4>
+                            <div class="verb-aspects">
+                                <table class="aspect-table">
+                                    <thead>
+                                        <tr>
+                                            <th>体\态</th>
+                                            <th>主动</th>
+                                            <th>被动</th>
+                                            <th>使动</th>
+                                            <th>迫动</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="row-label">一般</td>
+                                            <td><span class="linkaitiya">-e</span></td>
+                                            <td><span class="linkaitiya">-ē</span></td>
+                                            <td><span class="linkaitiya">-ê</span></td>
+                                            <td><span class="linkaitiya">-û</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">计划</td>
+                                            <td><span class="linkaitiya">-ge</span></td>
+                                            <td><span class="linkaitiya">-gē</span></td>
+                                            <td><span class="linkaitiya">-gê</span></td>
+                                            <td><span class="linkaitiya">-gû</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">进行</td>
+                                            <td><span class="linkaitiya">-ze</span></td>
+                                            <td><span class="linkaitiya">-zē</span></td>
+                                            <td><span class="linkaitiya">-zê</span></td>
+                                            <td><span class="linkaitiya">-zû</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-label">完成</td>
+                                            <td><span class="linkaitiya">-le</span></td>
+                                            <td><span class="linkaitiya">-lē</span></td>
+                                            <td><span class="linkaitiya">-lê</span></td>
+                                            <td><span class="linkaitiya">-lû</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 形容词系统 -->
+                    <div id="adjectives" class="open-category">
+                        <h3 class="category-title">🎨 形容词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>转义词尾规则</h4>
+                            <div class="adjective-endings">
+                                <div class="ending-item">
+                                    <span class="ending-type">弱形容词</span>
+                                    <span class="linkaitiya">-i</span> 弱情感、含蓄；状态形容词
+                                </div>
+                                <div class="ending-item">
+                                    <span class="ending-type">强形容词</span>
+                                    <span class="linkaitiya">-a</span> 强烈、夸张、鲜明；性质形容词
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>形容词比较级</h4>
+                            <div class="comparison-degrees">
+                                <table class="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>原级</th>
+                                            <th>相同级</th>
+                                            <th>比较级</th>
+                                            <th>最高级</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="linkaitiya">-i 或 -a</span></td>
+                                            <td><span class="linkaitiya">-yixoli</span></td>
+                                            <td><span class="linkaitiya">-tē</span></td>
+                                            <td><span class="linkaitiya">-sā</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 副词系统 -->
+                    <div id="adverbs" class="open-category">
+                        <h3 class="category-title">🌀 副词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>转义词尾规则</h4>
+                            <div class="adverb-endings">
+                                <div class="ending-item">
+                                    <span class="ending-type">修饰动词形容词</span>
+                                    <span class="linkaitiya">-u</span> 通常修饰动词或形容词
+                                </div>
+                                <div class="ending-item">
+                                    <span class="ending-type">修饰其他成分</span>
+                                    <span class="linkaitiya">-li</span> 通常修饰其他成分或句子
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 声叹词系统 -->
+                    <div id="interjections" class="open-category">
+                        <h3 class="category-title">🔊 声叹词系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>词尾规则</h4>
+                            <div class="interjection-rule">
+                                <p>声叹词（拟声词、拟态词、叹词）统一词尾为<span class="linkaitiya">-h</span>，做独立成分。</p>
+                            </div>
+                            <div class="examples">
+                                <div class="example-item">
+                                    <span class="linkaitiya">diŋdoŋh</span> → 叮咚
+                                </div>
+                                <div class="example-item">
+                                    <span class="linkaitiya">kilāh</span> → 闪耀的样子
+                                </div>
+                                <div class="example-item">
+                                    <span class="linkaitiya">ah</span> → 啊
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 原有词汇页面 -->
+            <section id="original" class="dictionary-section">
+                <div class="section-header">
+                    <h2>原有词汇</h2>
+                    <p class="section-desc">琳凯蒂亚语创作的原始词汇：类似于成语的语言压缩包</p>
+                </div>
+
+                <div class="original-word-tabs">
+                    <button class="original-tab active" data-category="time">⏰ 时间表达</button>
+                    <button class="original-tab" data-category="greetings">👋 问候用语</button>
+                    <button class="original-tab" data-category="suffix">🔧 词缀系统</button>
+                    <button class="original-tab" data-category="phrases">🎆 魔法用语</button>
+                </div>
+
+                <div class="original-word-content">
+                    <!-- 时间表达系统 -->
+                    <div id="time" class="original-category active">
+                        <h3 class="category-title">⏰ 时间表达系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>星期表达</h4>
+                            <div class="time-grid">
+                                <div class="time-item">
+                                    <span class="linkaitiya">gezïyōbi</span> 星期一
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">kayōbi</span> 星期二
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">sēyōbi</span> 星期三
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">mokuyōbi</span> 星期四
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">kinyōbi</span> 星期五
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">doyōbi</span> 星期六
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">niĉiyōbi</span> 星期日
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">sin</span> 一星期、一周
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">sinmum</span> 周末
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>月份表达</h4>
+                            <div class="time-grid">
+                                <div class="time-item">
+                                    <span class="linkaitiya">êmi</span> 一月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">tomi</span> 二月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">jêmi</span> 三月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">kanmi</span> 四月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">lïōmi</span> 五月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">vêmi</span> 六月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">libêmi</span> 七月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">sgomi</span> 八月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">semi</span> 九月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">kâmi</span> 十月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">emi</span> 十一月
+                                </div>
+                                <div class="time-item">
+                                    <span class="linkaitiya">pimi</span> 十二月
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>时间副词</h4>
+                            <div class="time-adverbs">
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">θuu</span> 过去（助动词）
+                                </div>
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">zïli</span> 现在（助动词）
+                                </div>
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">joli</span> 将来（助动词）
+                                </div>
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">kogomade</span> 自始至终
+                                </div>
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">yixiōli</span> 总是、一直
+                                </div>
+                                <div class="adverb-item">
+                                    <span class="linkaitiya">bioli</span> 即将、马上、快
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 问候用语系统 -->
+                    <div id="greetings" class="original-category">
+                        <h3 class="category-title">👋 问候用语系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>日常问候</h4>
+                            <div class="phrase-examples">
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun</span>
+                                    <span class="meaning">你好</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun ni</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun win</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun hin</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun ŝin</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun jin</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun niẑi</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun hiẑi</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun ŝiẑi</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">kun jiẑi</span>
+                                    <span class="meaning">你好（对方）</span>
+                                    <span class="type">日常问候</span>
+                                </div>
+                            </div>
+                            <div class="phrase-note">
+                                <p><strong>原有词特点：</strong>原有词类似于成语的语言压缩包，能用简洁的形式表达复杂的意思，体现了琳凯蒂亚语的优雅和智慧。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 词缀系统 -->
+                    <div id="suffix" class="original-category">
+                        <h3 class="category-title">🔧 词缀系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>名词词缀</h4>
+                            <div class="suffix-examples">
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-o</span>
+                                    <span class="meaning">名词词尾</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-on</span>
+                                    <span class="meaning">集体复数</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>形容词词缀</h4>
+                            <div class="suffix-examples">
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-i</span>
+                                    <span class="meaning">弱形容词</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-a</span>
+                                    <span class="meaning">强形容词</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>副词词缀</h4>
+                            <div class="suffix-examples">
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-u</span>
+                                    <span class="meaning">修饰动词形容词</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-li</span>
+                                    <span class="meaning">修饰其他成分</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-group">
+                            <h4>动词词缀</h4>
+                            <div class="suffix-examples">
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-e</span>
+                                    <span class="meaning">一般</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-ē</span>
+                                    <span class="meaning">被动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-ê</span>
+                                    <span class="meaning">使动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-û</span>
+                                    <span class="meaning">迫动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-ge</span>
+                                    <span class="meaning">计划</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-gē</span>
+                                    <span class="meaning">被动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-gê</span>
+                                    <span class="meaning">使动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-gû</span>
+                                    <span class="meaning">迫动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-ze</span>
+                                    <span class="meaning">进行</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-zē</span>
+                                    <span class="meaning">被动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-zê</span>
+                                    <span class="meaning">使动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-zû</span>
+                                    <span class="meaning">迫动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-le</span>
+                                    <span class="meaning">完成</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-lē</span>
+                                    <span class="meaning">被动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-lê</span>
+                                    <span class="meaning">使动</span>
+                                </div>
+                                <div class="suffix-example">
+                                    <span class="linkaitiya">-lû</span>
+                                    <span class="meaning">迫动</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 魔法用语系统 -->
+                    <div id="phrases" class="original-category">
+                        <h3 class="category-title">🎆 魔法用语系统</h3>
+                        
+                        <div class="subcategory-group">
+                            <h4>经典魔法成语</h4>
+                            <div class="phrase-examples">
+                                <div class="phrase-example">
+                                    <span class="linkaitiya">gaŋ-d-yodene</span>
+                                    <span class="meaning">说的也是</span>
+                                    <span class="type">语言压缩包</span>
+                                </div>
+                            </div>
+                            <div class="phrase-note">
+                                <p><strong>原有词特点：</strong>原有词类似于成语的语言压缩包，能用简洁的形式表达复杂的意思，体现了琳凯蒂亚语的优雅和智慧。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 常用语句页面 -->
+            <section id="phrase" class="dictionary-section">
+                <div class="section-header">
+                    <h2>常用语句</h2>
+                    <p class="section-desc">琳凯蒂亚语常用的词、短语、句子</p>
+                    <div class="phrase-actions">
+                        <button class="btn btn-primary" id="addCategoryBtn" onclick="showCreateCategoryModal()">
+                            <span class="icon">➕</span>
+                            添加自定义分类
+                        </button>
+                    </div>
                 </div>
 
                 <div class="phrases-categories">
@@ -235,36 +1298,6 @@
                 </div>
             </section>
 
-            <!-- 数词系统页面 -->
-            <section id="numbers" class="dictionary-section">
-                <div class="section-header">
-                    <h2>数词系统</h2>
-                    <p class="section-desc">琳凯蒂亚语完整的数词体系</p>
-                </div>
-
-                <div class="numbers-sections">
-                    <div class="number-group">
-                        <h3>基数词（0-22）</h3>
-                        <div class="numbers-grid" id="cardinalNumbers">
-                            <!-- 基数词 -->
-                        </div>
-                    </div>
-
-                    <div class="number-group">
-                        <h3>数词词缀</h3>
-                        <div class="suffix-list" id="numberSuffixes">
-                            <!-- 数词词缀 -->
-                        </div>
-                    </div>
-
-                    <div class="number-group">
-                        <h3>量名词系统</h3>
-                        <div class="measure-list" id="measureWords">
-                            <!-- 量名词 -->
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- 词汇详情模态框 -->

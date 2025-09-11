@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="grammar.css">
     <link rel="stylesheet" href="grammar-style.css">
     <link rel="stylesheet" href="exercise-style.css">
+
     <link rel="icon" href="logo.png" type="image/png">
 </head>
 <body>
@@ -17,6 +18,9 @@
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
+                    <div class="rincatian-flag">
+                        <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+                    </div>
                     <div class="planet-icon"></div>
                     <div class="logo-text">
                         <span class="logo-chinese">琳凯蒂亚语社区</span>
@@ -1138,7 +1142,7 @@
                 </div>
 
                 <!-- 小试牛刀 -->
-                <div id="exercises" class="grammar-section">
+                <div id="exercises" class="grammar-section exercise-section">
                     <h2 class="section-title">🎯 小试牛刀</h2>
                     <p class="section-subtitle">通过互动练习检验你的琳凯蒂亚语掌握程度</p>
                     
@@ -1165,7 +1169,7 @@
                             </div>
                             <div class="exercise-container" id="choiceContainer"></div>
                             <div class="exercise-controls">
-                                <button class="btn btn-primary" id="choiceNextBtn" onclick="nextChoiceQuestion()" disabled>下一题</button>
+                                <button class="btn btn-primary" id="choiceNextBtn" onclick="nextChoiceQuestion()">下一题</button>
                                 <button class="btn btn-success exercise-submit" onclick="submitChoiceExercise()" style="display:none;">🎉 提交答案</button>
                             </div>
                         </div>
@@ -1183,7 +1187,7 @@
                             </div>
                             <div class="exercise-container" id="judgeContainer"></div>
                             <div class="exercise-controls">
-                                <button class="btn btn-primary" id="judgeNextBtn" onclick="nextJudgeQuestion()" disabled>下一题</button>
+                                <button class="btn btn-primary" id="judgeNextBtn" onclick="nextJudgeQuestion()">下一题</button>
                                 <button class="btn btn-success exercise-submit" onclick="submitJudgeExercise()" style="display:none;">🎉 提交答案</button>
                             </div>
                         </div>
@@ -1201,7 +1205,7 @@
                             </div>
                             <div class="exercise-container" id="fillContainer"></div>
                             <div class="exercise-controls">
-                                <button class="btn btn-primary" id="fillNextBtn" onclick="nextFillQuestion()" disabled>下一题</button>
+                                <button class="btn btn-primary" id="fillNextBtn" onclick="nextFillQuestion()">下一题</button>
                                 <button class="btn btn-success exercise-submit" onclick="submitFillExercise()" style="display:none;">🎉 提交答案</button>
                             </div>
                         </div>
@@ -1219,7 +1223,7 @@
                             </div>
                             <div class="exercise-container" id="translateContainer"></div>
                             <div class="exercise-controls">
-                                <button class="btn btn-primary" id="translateNextBtn" onclick="nextTranslateQuestion()" disabled>下一题</button>
+                                <button class="btn btn-primary" id="translateNextBtn" onclick="nextTranslateQuestion()">下一题</button>
                                 <button class="btn btn-success exercise-submit" onclick="submitTranslateExercise()" style="display:none;">🎉 提交答案</button>
                             </div>
                         </div>
@@ -1237,7 +1241,7 @@
                             </div>
                             <div class="exercise-container" id="magicContainer"></div>
                             <div class="exercise-controls">
-                                <button class="btn btn-primary" id="magicNextBtn" onclick="nextMagicQuestion()" disabled>下一题</button>
+                                <button class="btn btn-primary" id="magicNextBtn" onclick="nextMagicQuestion()">下一题</button>
                                 <button class="btn btn-success exercise-submit" onclick="submitMagicExercise()" style="display:none;">🎉 提交答案</button>
                             </div>
                         </div>
@@ -1295,8 +1299,8 @@
             </div>
             <div class="footer-section">
                 <h4>联系我们</h4>
-                <p>📧 邮箱：778181360@qq.com</p>
-                <p>👥 QQ群：1234567890</p>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：515385616</p>
                 <div class="institution">
                     <h5>华田中央大学田语学院</h5>
                     <p>专业的琳凯蒂亚语研究与教学机构</p>
@@ -1304,7 +1308,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有</p>
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
             <p>华田中央大学田语学院 版权所有</p>
         </div>
     </footer>
@@ -1313,6 +1317,8 @@
     <script src="content-manager.js"></script>
     <script src="script.js"></script>
     <script src="grammar.js"></script>
+    <script src="exercise-effects.js"></script>
     <script src="grammar-exercises.js"></script>
+
 </body>
 </html>

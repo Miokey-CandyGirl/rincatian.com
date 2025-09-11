@@ -374,6 +374,60 @@ class AuthSystem {
         return { success: true, message: '用户已删除' };
     }
 
+    // 更新用户个人资料（用户修改自己的信息）
+    updateProfile(updateData) {
+        if (!this.currentUser) {
+            throw new Error('请先登录');
+        }
+
+        const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+        if (userIndex === -1) {
+            throw new Error('用户不存在');
+        }
+
+        // 用户可以修改的字段
+        const allowedFields = ['username', 'email', 'avatar', 'profile'];
+        const filteredUpdate = {};
+        
+        Object.keys(updateData).forEach(key => {
+            if (allowedFields.includes(key)) {
+                filteredUpdate[key] = updateData[key];
+            }
+        });
+
+        // 检查用户名是否已被其他用户占用
+        if (filteredUpdate.username && filteredUpdate.username !== this.currentUser.username) {
+            const existingUser = this.users.find(u => u.username === filteredUpdate.username && u.id !== this.currentUser.id);
+            if (existingUser) {
+                throw new Error('用户名已被占用');
+            }
+        }
+
+        // 检查邮箱是否已被其他用户占用
+        if (filteredUpdate.email && filteredUpdate.email !== this.currentUser.email) {
+            const existingUser = this.users.find(u => u.email === filteredUpdate.email && u.id !== this.currentUser.id);
+            if (existingUser) {
+                throw new Error('邮箱已被占用');
+            }
+            
+            // 验证邮箱格式
+            if (!this.isValidEmail(filteredUpdate.email)) {
+                throw new Error('邮箱格式不正确');
+            }
+        }
+
+        // 更新用户信息
+        Object.assign(this.users[userIndex], filteredUpdate);
+        
+        // 更新当前用户缓存
+        Object.assign(this.currentUser, filteredUpdate);
+        localStorage.setItem('linkaitiya_current_user', JSON.stringify(this.currentUser));
+        
+        this.saveUsers();
+
+        return { success: true, message: '个人资料已更新' };
+    }
+
     // 修改密码
     changePassword(oldPassword, newPassword) {
         if (!this.currentUser) {

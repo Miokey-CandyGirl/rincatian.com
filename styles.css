@@ -633,6 +633,57 @@ main {
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
+/* 琳凯蒂亚国旗样式 */
+.rincatian-flag {
+    display: flex;
+    align-items: center;
+}
+
+.flag-icon {
+    width: 28px;
+    height: 20px;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.flag-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* 首页英雄区域国旗展示 */
+.hero-flag-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-flag {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.hero-flag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.3);
+}
+
+.flag-description {
+    color: var(--crystal-cyan);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    opacity: 0.9;
+    font-style: italic;
+}
+
 .logo-text {
     display: flex;
     flex-direction: column;

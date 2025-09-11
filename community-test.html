@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星球活动和资源分享 - 样式优化预览</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-title {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="text-align: center; color: #ffd700; margin-bottom: 2rem;">🎆 星球活动和资源分享样式优化预览</h1>
+        
+        <!-- 星球活动测试 -->
+        <div class="test-section">
+            <h2 class="test-title">🌟 星球活动样式效果</h2>
+            <div class="events-grid">
+                <!-- 即将开始的活动 -->
+                <div class="event-item">
+                    <div class="event-card">
+                        <div class="event-header">
+                            <div class="event-type upcoming">即将开始</div>
+                            <div class="event-time">
+                                <div class="time-info">
+                                    <span class="time-value">2</span>
+                                    <span class="time-unit">天后</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="event-title">🌟 琳凯蒂亚语入门挑战赛</div>
+                        <div class="event-description">为期一周的入门级挑战活动，包含发音、基础词汇和简单语法练习。</div>
+                        
+                        <div class="event-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">📍</span>
+                                <span class="meta-text">在线活动</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">👥</span>
+                                <span class="meta-text">已报名 156 人</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">🏆</span>
+                                <span class="meta-text">奖励: 500积分</span>
+                            </div>
+                        </div>
+                        
+                        <div class="event-actions">
+                            <button class="btn btn-primary">🎆 立即报名</button>
+                            <button class="btn btn-outline">📝 查看详情</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 进行中的活动 -->
+                <div class="event-item">
+                    <div class="event-card">
+                        <div class="event-header">
+                            <div class="event-type ongoing">进行中</div>
+                            <div class="event-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                                <span class="progress-text">65% 完成</span>
+                            </div>
+                        </div>
+                        
+                        <div class="event-title">🎯 语法大师挑战</div>
+                        <div class="event-description">深入学习琳凯蒂亚语的高级语法结构，包括时态变化和语态系统。</div>
+                        
+                        <div class="event-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">⏰</span>
+                                <span class="meta-text">剩余 3 天</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">🎮</span>
+                                <span class="meta-text">正在参与 89 人</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">📈</span>
+                                <span class="meta-text">难度: 中级</span>
+                            </div>
+                        </div>
+                        
+                        <div class="event-actions">
+                            <button class="btn btn-primary">🚀 继续参与</button>
+                            <button class="btn btn-outline">📊 查看排行</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 资源分享测试 -->
+        <div class="test-section">
+            <h2 class="test-title">📚 资源分享样式效果</h2>
+            
+            <!-- 分类标签 -->
+            <div class="resource-categories">
+                <div class="category-tabs">
+                    <button class="category-tab active">全部</button>
+                    <button class="category-tab">语法资料</button>
+                    <button class="category-tab">词汇表</button>
+                    <button class="category-tab">练习题</button>
+                    <button class="category-tab">学习工具</button>
+                    <button class="category-tab">音视频</button>
+                </div>
+            </div>
+            
+            <!-- 资源列表 -->
+            <div class="resources-list">
+                <div class="resource-item">
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <div class="resource-icon">📚</div>
+                            <div class="resource-type">PDF文档</div>
+                        </div>
+                        
+                        <div class="resource-title">📚 琳凯蒂亚语初学者完整教程</div>
+                        <div class="resource-description">从零开始学习琳凯蒂亚语的完整教程，包含发音、语法、词汇和实用会话。</div>
+                        
+                        <div class="resource-preview">
+                            <strong>🔍 内容预览：</strong>
+                            <p>包含50个章节，200+练习题，音频发音指导。</p>
+                        </div>
+                        
+                        <div class="resource-features">
+                            <div class="features-label">✨ 特性：</div>
+                            <div class="features-list">
+                                <span class="feature-item">图文并茂</span>
+                                <span class="feature-item">音频辅助</span>
+                                <span class="feature-item">练习题库</span>
+                                <span class="feature-item">进度跟踪</span>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <span class="meta-value">华田中央大学田语学院</span>
+                                <span class="meta-label">作者</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value" style="color: #00b894">初级</span>
+                                <span class="meta-label">难度</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value">12.5 MB</span>
+                                <span class="meta-label">大小</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value">1.2K</span>
+                                <span class="meta-label">下载</span>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-rating">
+                            <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+                            <span class="rating-value">4.9</span>
+                            <span class="rating-count">(基于 124 个评价)</span>
+                        </div>
+                        
+                        <div class="resource-actions">
+                            <button class="btn btn-primary">💾 下载资源</button>
+                            <button class="btn btn-outline">👁️ 预览</button>
+                            <button class="btn btn-secondary">❤️ 收藏</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-item">
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <div class="resource-icon">🎧</div>
+                            <div class="resource-type">MP3音频包</div>
+                        </div>
+                        
+                        <div class="resource-title">🎧 琳凯蒂亚语标准发音指南</div>
+                        <div class="resource-description">专业的发音教学音频，由原著作者亲自录制，包含所有音素和语调变化。</div>
+                        
+                        <div class="resource-preview">
+                            <strong>🔍 内容预览：</strong>
+                            <p>包含48个字母发音，200+常用词汇，50个经典句子。</p>
+                        </div>
+                        
+                        <div class="resource-features">
+                            <div class="features-label">✨ 特性：</div>
+                            <div class="features-list">
+                                <span class="feature-item">清晰音质</span>
+                                <span class="feature-item">慢速重复</span>
+                                <span class="feature-item">对比练习</span>
+                                <span class="feature-item">下载支持</span>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <span class="meta-value">光线传说作者</span>
+                                <span class="meta-label">作者</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value" style="color: #4ecdc4">全阶段</span>
+                                <span class="meta-label">难度</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value">156 MB</span>
+                                <span class="meta-label">大小</span>
+                            </div>
+                            <div class="resource-meta-item">
+                                <span class="meta-value">892</span>
+                                <span class="meta-label">下载</span>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-rating">
+                            <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+                            <span class="rating-value">5.0</span>
+                            <span class="rating-count">(基于 89 个评价)</span>
+                        </div>
+                        
+                        <div class="resource-actions">
+                            <button class="btn btn-primary">💾 下载资源</button>
+                            <button class="btn btn-outline">👁️ 预览</button>
+                            <button class="btn btn-secondary">❤️ 收藏</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 交互效果说明 -->
+        <div class="test-section">
+            <h2 class="test-title">✨ 交互效果说明</h2>
+            <div style="line-height: 1.8; color: #e0e0e0;">
+                <h3 style="color: #4ecdc4; margin-bottom: 1rem;">🎆 星球活动优化特性：</h3>
+                <ul style="margin-bottom: 1.5rem;">
+                    <li>🌟 毛玻璃效果背景，增强视觉层次感</li>
+                    <li>🎨 渐变边框和悬停动画效果</li>
+                    <li>📊 动态进度条显示和动画效果</li>
+                    <li>🏷️ 不同状态的活动使用不同颜色标识</li>
+                    <li>📱 响应式设计，适配移动设备</li>
+                    <li>🎯 按钮波纹效果和悬停反馈</li>
+                </ul>
+                
+                <h3 style="color: #ffd700; margin-bottom: 1rem;">📚 资源分享优化特性：</h3>
+                <ul>
+                    <li>🔍 分类筛选功能，支持按类型快速查找</li>
+                    <li>💎 资源卡片毛玻璃效果和光影动画</li>
+                    <li>⭐ 星级评分显示和详细资源信息</li>
+                    <li>🏷️ 特性标签动画和悬停效果</li>
+                    <li>📥 完整的资源操作功能（下载、预览、收藏）</li>
+                    <li>🌊 波纹点击效果增强交互体验</li>
+                    <li>📐 Grid布局自适应不同屏幕尺寸</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 简单的交互效果演示
+        document.addEventListener('DOMContentLoaded', function() {
+            // 分类标签切换效果
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 按钮点击波纹效果
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            console.log('🎆 星球活动和资源分享样式优化预览页面已加载！');
+        });
+    </script>
+</body>
+</html>

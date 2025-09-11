@@ -45,28 +45,43 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('琳凯蒂亚语社区加载完成！🌟');
     
-    // 页面加载后弹出QQ社区提示
+    // 页面加载后弹出QQ社区提示（仅在首页显示）
     setTimeout(function() {
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.5);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 99999;
-        `;
-        modal.innerHTML = `
-            <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
-                <h2 style="color: #ffd700; margin-bottom: 16px;">QQ社区</h2>
-                <p style="font-size: 1.2rem; color: #fff; margin-bottom: 24px;">QQ群号：<b style='color:#ffd700;'>515385616</b></p>
-                <button id="qqModalCloseBtn" style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;">关闭</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        // 绑定关闭事件
-        document.getElementById('qqModalCloseBtn').onclick = function() {
-            modal.remove();
-        };
+        // 检查当前页面是否为首页
+        const currentPage = window.location.pathname;
+        const isHomePage = currentPage === '/' || currentPage.endsWith('/index.html') || currentPage.endsWith('/index.htm') || currentPage === '/index' || (currentPage === '/' + '' && window.location.href.endsWith('/'));
+        
+        // 也可以通过检查页面标题或特定元素来判断
+        const pageTitle = document.title;
+        const isHomePageByTitle = pageTitle.includes('琳凯蒂亚语社区') && !pageTitle.includes('语法') && !pageTitle.includes('词典') && !pageTitle.includes('文化') && !pageTitle.includes('社区') && !pageTitle.includes('管理');
+        
+        // 只在首页显示QQ社区提示框
+        if (isHomePage || isHomePageByTitle || window.location.href.includes('index.html') || (!window.location.href.includes('.html') && window.location.pathname === '/')) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0; left: 0; width: 100vw; height: 100vh;
+                background: rgba(0,0,0,0.5);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 99999;
+            `;
+            modal.innerHTML = `
+                <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
+                    <h2 style="color: #ffd700; margin-bottom: 16px;">QQ社区</h2>
+                    <p style="font-size: 1.2rem; color: #fff; margin-bottom: 24px;">QQ群号：<b style='color:#ffd700;'>515385616</b></p>
+                    <button id="qqModalCloseBtn" style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;">关闭</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            // 绑定关闭事件
+            document.getElementById('qqModalCloseBtn').onclick = function() {
+                modal.remove();
+            };
+            
+            console.log('QQ社区提示框已显示（仅在首页）');
+        } else {
+            console.log('当前不是首页，跳过QQ社区提示框显示');
+        }
     }, 500);
 });
 
@@ -897,23 +912,45 @@ function createNewModal(title, content) {
         <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); padding: 0; border-radius: 10px; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
             <div style="background: linear-gradient(45deg, #ffd700, #00bcd4); padding: 15px; border-radius: 10px 10px 0 0; color: #1a237e; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
                 <span>${title}</span>
-                <button onclick="closeModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #1a237e;">&times;</button>
+                <button class="close-new-modal-btn" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #1a237e;">&times;</button>
             </div>
             <div style="color: white;">${content}</div>
         </div>
     `;
     
+    // 绑定关闭按钮事件
+    const closeBtn = modal.querySelector('.close-new-modal-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('个人中心模态框关闭按钮被点击');
+            closeNewModal();
+        });
+    }
+    
     // 点击背景关闭
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            closeModal();
+            console.log('个人中心模态框背景被点击');
+            closeNewModal();
         }
     });
     
     return modal;
 }
 
-// 关闭模态框
+// 关闭新模态框
+function closeNewModal() {
+    console.log('关闭新模态框被调用');
+    const modals = document.querySelectorAll('.new-modal');
+    modals.forEach(modal => {
+        console.log('移除模态框元素');
+        modal.remove();
+    });
+}
+
+// 原有的 closeModal 函数（保持兼容性）
 function closeModal() {
     const modals = document.querySelectorAll('.new-modal');
     modals.forEach(modal => modal.remove());
@@ -1025,6 +1062,515 @@ function handleNewLogout() {
     }
 }
 
+// 显示用户详细信息
+function showUserDetailedInfo() {
+    if (!window.authSystem.currentUser) return;
+    
+    const user = window.authSystem.currentUser;
+    const joinDate = new Date(user.joinDate).toLocaleDateString('zh-CN');
+    const joinTime = new Date(user.joinDate).toLocaleTimeString('zh-CN');
+    const tianDate = calculateTianDate();
+    
+    // 获取用户统计信息
+    const userStats = getUserStats(user);
+    
+    // 关闭当前模态框
+    closeNewModal();
+    
+    // 显示详细信息模态框
+    const modal = createNewModal('我的信息', `
+        <div style="padding: 20px; max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <!-- 用户头像和基本信息 -->
+            <div style="text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(255, 215, 0, 0.3);">
+                <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #ffd700, #7b1fa2, #4ecdc4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 15px; color: white; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">
+                    ${user.avatar}
+                </div>
+                <h2 style="color: #ffd700; margin: 10px 0; font-size: 1.5rem;">${user.username}</h2>
+                <p style="color: #4ecdc4; margin: 5px 0; font-weight: 500;">${user.rank}</p>
+                <p style="color: #b0b0c8; font-size: 0.9rem;">${user.role}</p>
+            </div>
+            
+            <!-- 注册信息 -->
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2rem; border-left: 3px solid #ffd700; padding-left: 10px;">📝 注册信息</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 10px 15px; align-items: center;">
+                        <span style="color: #4ecdc4; font-weight: 500;">邮箱：</span>
+                        <span style="color: #e0e0e0;">${user.email}</span>
+                        <span style="color: #4ecdc4; font-weight: 500;">用户ID：</span>
+                        <span style="color: #e0e0e0; font-family: monospace;">#${user.id}</span>
+                        <span style="color: #4ecdc4; font-weight: 500;">加入日期：</span>
+                        <span style="color: #e0e0e0;">${joinDate} ${joinTime}</span>
+                        <span style="color: #4ecdc4; font-weight: 500;">田历日期：</span>
+                        <span style="color: #e0e0e0;">华田${tianDate.year}年${tianDate.month}月${tianDate.day}日</span>
+                        <span style="color: #4ecdc4; font-weight: 500;">在线天数：</span>
+                        <span style="color: #e0e0e0;">${userStats.daysOnline} 天</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 成就系统 -->
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2rem; border-left: 3px solid #ffd700; padding-left: 10px;">🏆 成就与等级</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div style="text-align: center; padding: 10px; background: rgba(76, 205, 196, 0.1); border-radius: 8px; border: 1px solid rgba(76, 205, 196, 0.3);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #4ecdc4;">${userStats.totalPoints}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">经验值</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #ffd700;">${userStats.level}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">等级</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: rgba(123, 31, 162, 0.1); border-radius: 8px; border: 1px solid rgba(123, 31, 162, 0.3);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #7b1fa2;">${userStats.achievementCount}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">成就</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 成就徽章 -->
+                    <div style="margin-top: 15px;">
+                        <h4 style="color: #4ecdc4; margin-bottom: 10px; font-size: 1rem;">最新成就：</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${userStats.achievements.map(achievement => `
+                                <span style="background: linear-gradient(45deg, ${achievement.color}, ${achievement.colorSecond}); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 4px;">
+                                    ${achievement.icon} ${achievement.name}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 活动统计 -->
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2rem; border-left: 3px solid #ffd700; padding-left: 10px;">📊 活动统计</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px;">
+                        <div style="text-align: center; padding: 10px; background: rgba(255, 107, 107, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.3rem; font-weight: bold; color: #ff6b6b;">${userStats.totalPosts}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">发帖数</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: rgba(78, 205, 196, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.3rem; font-weight: bold; color: #4ecdc4;">${userStats.totalComments}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">评论数</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.3rem; font-weight: bold; color: #ffd700;">${userStats.likesReceived}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">获赞数</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: rgba(156, 39, 176, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.3rem; font-weight: bold; color: #9c27b0;">${userStats.totalViews}</div>
+                            <div style="font-size: 0.8rem; color: #b0b0c8;">总浏览</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 最近发帖记录 -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2rem; border-left: 3px solid #ffd700; padding-left: 10px;">📝 最近发帖</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); max-height: 200px; overflow-y: auto;">
+                    ${userStats.recentPosts.length > 0 ? 
+                        userStats.recentPosts.map(post => `
+                            <div style="padding: 10px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border-left: 3px solid #4ecdc4;">
+                                <div style="color: #e0e0e0; font-weight: 500; margin-bottom: 5px;">${post.title}</div>
+                                <div style="color: #b0b0c8; font-size: 0.8rem; display: flex; justify-content: space-between;">
+                                    <span>${post.date}</span>
+                                    <span>👍 ${post.likes} 赞 · 💬 ${post.comments} 评论</span>
+                                </div>
+                            </div>
+                        `).join('') : 
+                        '<p style="color: #b0b0c8; text-align: center; padding: 20px;">还没有发布过帖子，快去社区分享您的想法吧！</p>'
+                    }
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <button onclick="showEditProfile()" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500;">编辑个人信息</button>
+                <button onclick="showNewProfile()" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500;">返回个人中心</button>
+                <button onclick="closeNewModal()" style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">关闭</button>
+            </div>
+        </div>
+    `);
+    
+    document.body.appendChild(modal);
+}
+
+// 获取用户统计信息
+function getUserStats(user) {
+    // 模拟用户统计数据（实际应用中会从数据库获取）
+    const joinDays = Math.floor((Date.now() - new Date(user.joinDate).getTime()) / (1000 * 60 * 60 * 24));
+    const level = Math.floor((user.points || 100) / 100) + 1;
+    
+    // 模拟成就系统
+    const allAchievements = [
+        { name: '新手上路', icon: '🌟', color: '#4ecdc4', colorSecond: '#44a08d', condition: () => true },
+        { name: '初次发帖', icon: '📝', color: '#ff6b6b', colorSecond: '#ee5a24', condition: () => joinDays >= 1 },
+        { name: '社区新星', icon: '⭐', color: '#ffd700', colorSecond: '#f39c12', condition: () => joinDays >= 7 },
+        { name: '活跃用户', icon: '🔥', color: '#9c27b0', colorSecond: '#8e24aa', condition: () => joinDays >= 30 },
+        { name: '资深探索者', icon: '🏆', color: '#ff9800', colorSecond: '#f57c00', condition: () => level >= 5 }
+    ];
+    
+    const achievements = allAchievements.filter(achievement => achievement.condition());
+    
+    // 模拟发帖记录
+    const recentPosts = [
+        {
+            title: '琳凯蒂亚语学习心得分享',
+            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toLocaleDateString('zh-CN'),
+            likes: Math.floor(Math.random() * 20) + 5,
+            comments: Math.floor(Math.random() * 10) + 2
+        },
+        {
+            title: '关于琳凯蒂亚语语法的几个疑问',
+            date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toLocaleDateString('zh-CN'),
+            likes: Math.floor(Math.random() * 15) + 3,
+            comments: Math.floor(Math.random() * 8) + 1
+        },
+        {
+            title: '新人报到，请多关照',
+            date: new Date(user.joinDate).toLocaleDateString('zh-CN'),
+            likes: Math.floor(Math.random() * 25) + 8,
+            comments: Math.floor(Math.random() * 12) + 3
+        }
+    ].slice(0, joinDays >= 1 ? (joinDays >= 7 ? 3 : 2) : (joinDays >= 0 ? 1 : 0));
+    
+    return {
+        totalPoints: user.points || 100,
+        level: level,
+        achievementCount: achievements.length,
+        achievements: achievements,
+        daysOnline: Math.min(joinDays, 30), // 最多显示30天
+        totalPosts: recentPosts.length,
+        totalComments: Math.floor(Math.random() * 50) + 10,
+        likesReceived: recentPosts.reduce((sum, post) => sum + post.likes, 0),
+        totalViews: Math.floor(Math.random() * 500) + 100,
+        recentPosts: recentPosts
+    };
+}
+
+// 显示编辑个人信息页面
+function showEditProfile() {
+    if (!window.authSystem.currentUser) return;
+    
+    const user = window.authSystem.currentUser;
+    
+    // 关闭当前模态框
+    closeNewModal();
+    
+    // 显示编辑模态框
+    const modal = createNewModal('编辑个人信息', `
+        <div style="padding: 20px; max-width: 500px; max-height: 80vh; overflow-y: auto;">
+            <form id="editProfileForm" style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- 头像选择 -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <div id="selectedAvatar" style="width: 80px; height: 80px; background: linear-gradient(45deg, #ffd700, #7b1fa2, #4ecdc4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 10px; color: white; cursor: pointer; transition: transform 0.3s ease;" onclick="toggleAvatarSelector()">
+                            ${user.avatar}
+                        </div>
+                        <p style="color: #4ecdc4; font-size: 0.9rem; margin: 0;">点击头像选择新的</p>
+                    </div>
+                    
+                    <!-- 头像选择器 -->
+                    <div id="avatarSelector" style="display: none; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                        ${['🚀', '🌟', '🌌', '🔥', '✨', '🏆', '💫', '🌈', '🎙️', '📚', '🎭', '🎨', '🎵', '🔮', '🌃', '🎄', '🐱', '🦄', '💉', '🌸', '🍃', '🌊', '🌋', '🌏'].map(emoji => `
+                            <div class="avatar-option" style="width: 40px; height: 40px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;" onclick="selectAvatar('${emoji}')">
+                                ${emoji}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- 基本信息 -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1rem; border-left: 3px solid #ffd700; padding-left: 10px;">📝 基本信息</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">用户名：</label>
+                        <input type="text" id="editUsername" value="${user.username}" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;"
+                               placeholder="请输入用户名">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">邮箱地址：</label>
+                        <input type="email" id="editEmail" value="${user.email}" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;"
+                               placeholder="请输入邮箱地址">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">个人简介：</label>
+                        <textarea id="editBio" 
+                                  style="width: 100%; height: 80px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px; resize: vertical;"
+                                  placeholder="介绍一下您自己...">${user.profile?.bio || ''}</textarea>
+                    </div>
+                </div>
+                
+                <!-- 学习偏好 -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1rem; border-left: 3px solid #ffd700; padding-left: 10px;">🎯 学习偏好</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">学习目标：</label>
+                        <select id="editLearningGoal" 
+                                style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;">
+                            <option value="basic" ${(user.profile?.learningGoal || 'basic') === 'basic' ? 'selected' : ''}>基础入门</option>
+                            <option value="intermediate" ${(user.profile?.learningGoal) === 'intermediate' ? 'selected' : ''}>进阶学习</option>
+                            <option value="advanced" ${(user.profile?.learningGoal) === 'advanced' ? 'selected' : ''}>高级深入</option>
+                            <option value="fluent" ${(user.profile?.learningGoal) === 'fluent' ? 'selected' : ''}>流利掌握</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">学习方式：</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                                <input type="checkbox" id="learningMethodSelf" ${(user.profile?.learningMethods || []).includes('self') ? 'checked' : ''} style="margin-right: 8px;">
+                                自学探索
+                            </label>
+                            <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                                <input type="checkbox" id="learningMethodGroup" ${(user.profile?.learningMethods || []).includes('group') ? 'checked' : ''} style="margin-right: 8px;">
+                                小组学习
+                            </label>
+                            <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                                <input type="checkbox" id="learningMethodPractice" ${(user.profile?.learningMethods || []).includes('practice') ? 'checked' : ''} style="margin-right: 8px;">
+                                实践练习
+                            </label>
+                            <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                                <input type="checkbox" id="learningMethodDiscussion" ${(user.profile?.learningMethods || []).includes('discussion') ? 'checked' : ''} style="margin-right: 8px;">
+                                讨论交流
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 通知设置 -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1rem; border-left: 3px solid #ffd700; padding-left: 10px;">🔔 通知设置</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                            <input type="checkbox" id="notifyNewPosts" ${(user.profile?.notifications?.newPosts !== false) ? 'checked' : ''} style="margin-right: 8px;">
+                            新帖子通知
+                        </label>
+                        <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                            <input type="checkbox" id="notifyReplies" ${(user.profile?.notifications?.replies !== false) ? 'checked' : ''} style="margin-right: 8px;">
+                            回复通知
+                        </label>
+                        <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                            <input type="checkbox" id="notifyAchievements" ${(user.profile?.notifications?.achievements !== false) ? 'checked' : ''} style="margin-right: 8px;">
+                            成就通知
+                        </label>
+                        <label style="display: flex; align-items: center; color: #e0e0e0; cursor: pointer;">
+                            <input type="checkbox" id="notifyUpdates" ${(user.profile?.notifications?.updates !== false) ? 'checked' : ''} style="margin-right: 8px;">
+                            系统更新通知
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 密码修改 -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1rem; border-left: 3px solid #ffd700; padding-left: 10px;">🔒 修改密码</h3>
+                    <p style="color: #b0b0c8; font-size: 0.9rem; margin-bottom: 15px;">如果不需要修改密码，请留空以下字段</p>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">原密码：</label>
+                        <input type="password" id="oldPassword" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;"
+                               placeholder="请输入原密码">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">新密码：</label>
+                        <input type="password" id="newPassword" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;"
+                               placeholder="请输入新密码（至少6个字符）">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #4ecdc4; font-weight: 500; display: block; margin-bottom: 5px;">确认新密码：</label>
+                        <input type="password" id="confirmPassword" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; font-size: 14px;"
+                               placeholder="请再次输入新密码">
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <button type="button" onclick="handleProfileUpdate()" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">保存修改</button>
+                    <button type="button" onclick="showUserDetailedInfo()" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 500;">取消</button>
+                    <button type="button" onclick="closeNewModal()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">关闭</button>
+                </div>
+            </form>
+        </div>
+    `);
+    
+    document.body.appendChild(modal);
+}
+
+// 切换头像选择器显示
+function toggleAvatarSelector() {
+    const selector = document.getElementById('avatarSelector');
+    if (selector) {
+        const isHidden = selector.style.display === 'none';
+        selector.style.display = isHidden ? 'grid' : 'none';
+    }
+}
+
+// 选择头像
+function selectAvatar(emoji) {
+    const selectedAvatar = document.getElementById('selectedAvatar');
+    if (selectedAvatar) {
+        selectedAvatar.textContent = emoji;
+        selectedAvatar.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            selectedAvatar.style.transform = 'scale(1)';
+        }, 200);
+    }
+    
+    // 隐藏选择器
+    const selector = document.getElementById('avatarSelector');
+    if (selector) {
+        selector.style.display = 'none';
+    }
+    
+    // 高亮选中的头像
+    const avatarOptions = document.querySelectorAll('.avatar-option');
+    avatarOptions.forEach(option => {
+        option.style.border = '2px solid transparent';
+    });
+    
+    const selectedOption = Array.from(avatarOptions).find(option => option.textContent.trim() === emoji);
+    if (selectedOption) {
+        selectedOption.style.border = '2px solid #ffd700';
+    }
+}
+
+// 处理个人信息更新
+function handleProfileUpdate() {
+    try {
+        // 获取表单数据
+        const username = document.getElementById('editUsername').value.trim();
+        const email = document.getElementById('editEmail').value.trim();
+        const bio = document.getElementById('editBio').value.trim();
+        const avatar = document.getElementById('selectedAvatar').textContent.trim();
+        const learningGoal = document.getElementById('editLearningGoal').value;
+        
+        // 获取学习方式
+        const learningMethods = [];
+        if (document.getElementById('learningMethodSelf').checked) learningMethods.push('self');
+        if (document.getElementById('learningMethodGroup').checked) learningMethods.push('group');
+        if (document.getElementById('learningMethodPractice').checked) learningMethods.push('practice');
+        if (document.getElementById('learningMethodDiscussion').checked) learningMethods.push('discussion');
+        
+        // 获取通知设置
+        const notifications = {
+            newPosts: document.getElementById('notifyNewPosts').checked,
+            replies: document.getElementById('notifyReplies').checked,
+            achievements: document.getElementById('notifyAchievements').checked,
+            updates: document.getElementById('notifyUpdates').checked
+        };
+        
+        // 获取密码信息
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        // 验证基本信息
+        if (!username) {
+            alert('用户名不能为空！');
+            return;
+        }
+        
+        if (!email) {
+            alert('邮箱地址不能为空！');
+            return;
+        }
+        
+        // 验证邮箱格式
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('请输入正确的邮箱格式！');
+            return;
+        }
+        
+        // 密码验证（如果要修改密码）
+        if (oldPassword || newPassword || confirmPassword) {
+            if (!oldPassword) {
+                alert('请输入原密码！');
+                return;
+            }
+            
+            if (!newPassword) {
+                alert('请输入新密码！');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('新密码至少需要6个字符！');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('两次输入的新密码不一致！');
+                return;
+            }
+        }
+        
+        // 准备更新数据
+        const updateData = {
+            username: username,
+            email: email,
+            avatar: avatar,
+            profile: {
+                bio: bio,
+                learningGoal: learningGoal,
+                learningMethods: learningMethods,
+                notifications: notifications
+            }
+        };
+        
+        // 更新个人资料
+        const result = window.authSystem.updateProfile(updateData);
+        
+        if (result.success) {
+            // 如果需要修改密码
+            if (oldPassword && newPassword) {
+                try {
+                    const passwordResult = window.authSystem.changePassword(oldPassword, newPassword);
+                    if (passwordResult.success) {
+                        showNewWelcomeMessage('个人资料和密码已成功更新！');
+                    } else {
+                        alert('个人资料已更新，但密码修改失败：' + passwordResult.message);
+                    }
+                } catch (error) {
+                    alert('个人资料已更新，但密码修改失败：' + error.message);
+                }
+            } else {
+                showNewWelcomeMessage('个人资料已成功更新！');
+            }
+            
+            // 关闭编辑模态框，返回详细信息页面
+            setTimeout(() => {
+                showUserDetailedInfo();
+            }, 1000);
+            
+            // 更新全局UI
+            updateAuthenticationState();
+            
+        } else {
+            alert('更新失败：' + result.message);
+        }
+        
+    } catch (error) {
+        console.error('更新个人信息错误:', error);
+        alert('更新失败：' + error.message);
+    }
+}
+
 // 显示新个人资料
 function showNewProfile() {
     if (!window.authSystem.currentUser) return;
@@ -1046,11 +1592,12 @@ function showNewProfile() {
                 <p><strong>加入日期：</strong> ${joinDate}</p>
                 <p><strong>当前田历：</strong> 华田${tianDate.year}年${tianDate.month}月${tianDate.day}日</p>
             </div>
-            ${(user.role === 'admin' || user.role === '管理员' || user.username === '琳凯蒂亚') ? 
-                '<div style="margin-top: 20px;"><a href="admin.html" style="background: #ff9800; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: inline-block;">管理后台</a></div>' : 
-                ''}
-            <div style="margin-top: 20px;">
-                <button onclick="handleNewLogout(); closeModal();" style="background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">退出登录</button>
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <button onclick="showUserDetailedInfo()" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">我的信息</button>
+                ${(user.role === 'admin' || user.role === '管理员' || user.username === '琳凯蒂亚') ? 
+                    '<a href="admin.html" style="background: #ff9800; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: inline-block; text-align: center;">管理后台</a>' : 
+                    ''}
+                <button onclick="handleNewLogout(); closeNewModal();" style="background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">退出登录</button>
             </div>
         </div>
     `);

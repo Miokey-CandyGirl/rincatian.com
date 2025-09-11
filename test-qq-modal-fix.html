@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ社区提示框修复测试 - 琳凯蒂亚语</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .test-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-title {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .log-item {
+            margin-bottom: 0.5rem;
+            padding: 0.2rem 0;
+        }
+        
+        .page-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .page-link {
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffd700;
+            text-decoration: none;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .page-link:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .status-success { color: #00ff88; }
+        .status-error { color: #ff4757; }
+        .status-warning { color: #ffa502; }
+        .status-info { color: #3742fa; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="text-align: center; color: #ffd700; margin-bottom: 2rem;">🔧 QQ社区提示框修复测试</h1>
+        
+        <!-- 修复说明 -->
+        <div class="test-section">
+            <h2 class="test-title">🛠️ 修复说明</h2>
+            <div style="background: rgba(76, 205, 196, 0.1); border: 1px solid #4ecdc4; padding: 1rem; border-radius: 8px;">
+                <h3 style="color: #4ecdc4; margin-bottom: 0.5rem;">问题：</h3>
+                <p>在每次切换到首页和语法页面时都会出现QQ社区提示框</p>
+                
+                <h3 style="color: #4ecdc4; margin-bottom: 0.5rem; margin-top: 1rem;">解决方案：</h3>
+                <p>修改 script.js 中的QQ社区提示框代码，添加页面检测逻辑，只在首页显示</p>
+                
+                <h3 style="color: #4ecdc4; margin-bottom: 0.5rem; margin-top: 1rem;">检测方式：</h3>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    <li>URL路径检测（/index.html、/、/index等）</li>
+                    <li>页面标题检测（是否为首页标题）</li>
+                    <li>文件名检测（是否包含index.html）</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 当前页面检测 -->
+        <div class="test-section">
+            <h2 class="test-title">📊 当前页面检测结果</h2>
+            <div id="pageDetectionResults">
+                <p>正在检测当前页面...</p>
+            </div>
+        </div>
+
+        <!-- 页面测试链接 -->
+        <div class="test-section">
+            <h2 class="test-title">🌐 页面测试</h2>
+            <p>点击以下链接测试不同页面的QQ社区提示框显示情况：</p>
+            <div class="page-links">
+                <a href="index.html" class="page-link">🏠 首页（应该显示）</a>
+                <a href="grammar.html" class="page-link">📚 语法页面（不应显示）</a>
+                <a href="dictionary.html" class="page-link">📖 词典页面（不应显示）</a>
+                <a href="culture.html" class="page-link">🏛️ 文化页面（不应显示）</a>
+                <a href="community.html" class="page-link">💬 社区页面（不应显示）</a>
+            </div>
+        </div>
+
+        <!-- 测试日志 -->
+        <div class="test-section">
+            <h2 class="test-title">📝 测试日志</h2>
+            <div id="testLog" class="log-container">
+                正在初始化测试系统...
+            </div>
+            <button class="test-button" onclick="clearLog()">🗑️ 清空日志</button>
+            <button class="test-button" onclick="testPageDetection()">🧪 重新检测页面</button>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // 日志记录函数
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.innerHTML = `[${timestamp}] ${icon} ${message}`;
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            console.log(`[QQ社区测试] ${message}`);
+        }
+
+        // 测试页面检测逻辑
+        function testPageDetection() {
+            log('🔍 开始测试页面检测逻辑...', 'info');
+            
+            const currentPage = window.location.pathname;
+            const pageTitle = document.title;
+            const currentURL = window.location.href;
+            
+            log(`当前路径: ${currentPage}`, 'info');
+            log(`页面标题: ${pageTitle}`, 'info');
+            log(`完整URL: ${currentURL}`, 'info');
+            
+            // 复制script.js中的检测逻辑
+            const isHomePage = currentPage === '/' || currentPage.endsWith('/index.html') || currentPage.endsWith('/index.htm') || currentPage === '/index' || (currentPage === '/' + '' && window.location.href.endsWith('/'));
+            const isHomePageByTitle = pageTitle.includes('琳凯蒂亚语社区') && !pageTitle.includes('语法') && !pageTitle.includes('词典') && !pageTitle.includes('文化') && !pageTitle.includes('社区') && !pageTitle.includes('管理');
+            const shouldShowModal = isHomePage || isHomePageByTitle || window.location.href.includes('index.html') || (!window.location.href.includes('.html') && window.location.pathname === '/');
+            
+            log(`URL检测结果: ${isHomePage ? '✅' : '❌'} ${isHomePage ? '是首页' : '不是首页'}`, isHomePage ? 'success' : 'error');
+            log(`标题检测结果: ${isHomePageByTitle ? '✅' : '❌'} ${isHomePageByTitle ? '是首页' : '不是首页'}`, isHomePageByTitle ? 'success' : 'error');
+            log(`最终判断: ${shouldShowModal ? '✅' : '❌'} ${shouldShowModal ? '应该显示QQ社区提示框' : '不应该显示QQ社区提示框'}`, shouldShowModal ? 'success' : 'warning');
+            
+            // 更新页面检测结果显示
+            updatePageDetectionDisplay(shouldShowModal, {
+                currentPage,
+                pageTitle,
+                currentURL,
+                isHomePage,
+                isHomePageByTitle
+            });
+        }
+
+        // 更新页面检测结果显示
+        function updatePageDetectionDisplay(shouldShowModal, details) {
+            const resultsDiv = document.getElementById('pageDetectionResults');
+            
+            resultsDiv.innerHTML = `
+                <div style="background: ${shouldShowModal ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 165, 2, 0.1)'}; border: 1px solid ${shouldShowModal ? '#00ff88' : '#ffa502'}; padding: 1rem; border-radius: 8px;">
+                    <h3 style="color: ${shouldShowModal ? '#00ff88' : '#ffa502'}; margin-bottom: 0.5rem;">
+                        ${shouldShowModal ? '✅ 应该显示QQ社区提示框' : '⚠️ 不应该显示QQ社区提示框'}
+                    </h3>
+                    <div style="font-size: 0.9rem; color: #e0e0e0;">
+                        <p><strong>当前路径：</strong> ${details.currentPage}</p>
+                        <p><strong>页面标题：</strong> ${details.pageTitle}</p>
+                        <p><strong>URL检测：</strong> <span style="color: ${details.isHomePage ? '#00ff88' : '#ff4757'};">${details.isHomePage ? '通过' : '未通过'}</span></p>
+                        <p><strong>标题检测：</strong> <span style="color: ${details.isHomePageByTitle ? '#00ff88' : '#ff4757'};">${details.isHomePageByTitle ? '通过' : '未通过'}</span></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 清空日志
+        function clearLog() {
+            document.getElementById('testLog').innerHTML = '';
+            log('测试日志已清空');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('📱 QQ社区提示框修复测试页面已加载');
+            
+            setTimeout(() => {
+                testPageDetection(); 
+                log('✅ 初始检测完成');
+            }, 100);
+        });
+
+        // 监听是否有QQ社区提示框出现
+        const originalCreateElement = document.createElement;
+        document.createElement = function(...args) {
+            const element = originalCreateElement.apply(this, args);
+            
+            // 如果创建的是QQ社区提示框相关的div
+            if (args[0] === 'div' && element.style) {
+                const originalSetAttribute = element.setAttribute;
+                element.setAttribute = function(name, value) {
+                    if (name === 'style' && value && value.includes('z-index: 99999')) {
+                        log('🎯 检测到QQ社区提示框创建！', 'success');
+                    }
+                    return originalSetAttribute.call(this, name, value);
+                };
+                
+                const originalStyleSetter = element.style;
+                Object.defineProperty(element, 'style', {
+                    get: function() {
+                        return originalStyleSetter;
+                    },
+                    set: function(value) {
+                        if (value && value.includes && value.includes('z-index: 99999')) {
+                            log('🎯 检测到QQ社区提示框样式设置！', 'success');
+                        }
+                        originalStyleSetter = value;
+                    }
+                });
+            }
+            
+            return element;
+        };
+    </script>
+</body>
+</html>
