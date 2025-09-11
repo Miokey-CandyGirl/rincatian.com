@@ -26,7 +26,9 @@ function showGrammarSection(sectionId) {
     
     // 滚动到内容区域
     const grammarContent = document.querySelector('.grammar-content');
-    grammarContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (grammarContent) {
+        grammarContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     
     // 添加切换动画效果
     if (activeSection) {
@@ -39,6 +41,37 @@ function showGrammarSection(sectionId) {
             activeSection.style.transform = 'translateY(0)';
         }, 50);
     }
+    
+    // 创建魔法切换特效
+    createMagicTransition();
+    
+    // 记录学习进度
+    if (typeof learningProgress !== 'undefined') {
+        learningProgress.markSectionVisited(sectionId);
+    }
+}
+
+// 魔法切换特效
+function createMagicTransition() {
+    const sparkles = document.createElement('div');
+    sparkles.className = 'magic-sparkles';
+    sparkles.innerHTML = '✨'.repeat(10);
+    sparkles.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        animation: sparkleRotate 1s ease-out;
+        pointer-events: none;
+        z-index: 1000;
+    `;
+    
+    document.body.appendChild(sparkles);
+    
+    setTimeout(() => {
+        sparkles.remove();
+    }, 1000);
 }
 
 // 练习答案检查功能
@@ -377,7 +410,7 @@ showGrammarSection = function(sectionId) {
 // 页面加载时初始化所有功能
 document.addEventListener('DOMContentLoaded', function() {
     initializeGrammarAnimations();
-    initializeSearch();
+    // initializeSearch(); // 移除搜索框功能
     learningProgress.updateProgressIndicator();
     
     // 添加键盘快捷键
