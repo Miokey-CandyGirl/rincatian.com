@@ -32,6 +32,124 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // 故事标签切换功能
+    const storyTabs = document.querySelectorAll('.story-tab');
+    const storyContents = document.querySelectorAll('.story-content');
+    
+    function switchStoryTab(targetStory) {
+        // 移除所有活动状态
+        storyTabs.forEach(tab => tab.classList.remove('active'));
+        storyContents.forEach(content => content.classList.remove('active'));
+        
+        // 添加活动状态到目标元素
+        const targetTab = document.querySelector(`[data-story="${targetStory}"]`);
+        const targetContent = document.getElementById(targetStory);
+        
+        if (targetTab && targetContent) {
+            targetTab.classList.add('active');
+            targetContent.classList.add('active');
+            
+            // 添加动画效果
+            targetContent.style.opacity = '0';
+            targetContent.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                targetContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                targetContent.style.opacity = '1';
+                targetContent.style.transform = 'translateY(0)';
+            }, 50);
+        }
+    }
+    
+    // 点击故事标签切换
+    storyTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetStory = this.getAttribute('data-story');
+            
+            // 先切换到传说故事标签页（如果不在该页面）
+            if (!document.getElementById('legends').classList.contains('active')) {
+                switchTab('legends');
+                // 等待标签页切换完成后再切换故事
+                setTimeout(() => {
+                    switchStoryTab(targetStory);
+                    scrollToStorySection(targetStory);
+                }, 100);
+            } else {
+                // 已经在传说故事页面，直接切换故事
+                switchStoryTab(targetStory);
+                scrollToStorySection(targetStory);
+            }
+        });
+    });
+    
+    // 滚动到故事区域的函数
+    function scrollToStorySection(targetStory) {
+        setTimeout(() => {
+            const targetElement = document.getElementById(targetStory);
+            const legendsSection = document.getElementById('legends');
+            
+            if (targetElement && legendsSection) {
+                // 计算偏移量（考虑固定导航栏高度）
+                const navbar = document.querySelector('.navbar');
+                const cultureNav = document.querySelector('.culture-nav');
+                
+                let totalOffset = 20; // 基础间距
+                if (navbar) totalOffset += navbar.offsetHeight;
+                if (cultureNav) totalOffset += cultureNav.offsetHeight;
+                
+                // 直接使用传说故事区域的位置
+                const targetTop = legendsSection.offsetTop;
+                
+                // 平滑滚动到目标位置
+                window.scrollTo({
+                    top: Math.max(0, targetTop - totalOffset),
+                    behavior: 'smooth'
+                });
+                
+                // 更新URL hash（不触发页面跳转）
+                history.replaceState(null, null, `#legends-${targetStory}`);
+            }
+        }, 200); // 等待动画完成
+    }
+    
+    // 初始化故事标签（默认选中前传）
+    if (document.querySelector('.story-tabs')) {
+        switchStoryTab('prequel');
+    }
+    
+    // 豆瓣阅读按钮交互
+    const doubanBtn = document.getElementById('doubanReadingBtn');
+    if (doubanBtn) {
+        doubanBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 显示确认对话框
+            const confirmed = confirm('📚 您即将进入豆瓣阅读查看《光线传奇之彩虹水晶》完整版小说。\n\n点击“确定”将在新窗口中打开豆瓣阅读网站。');
+            
+            if (confirmed) {
+                // 这里可以替换为实际的豆瓣阅读链接
+                const doubanUrl = 'https://read.douban.com/column/71054869/?dcs=search'; // 更换为实际链接
+                window.open(doubanUrl, '_blank');
+                
+                // 添加点击动画效果
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            }
+        });
+        
+        // 悬停效果增强
+        doubanBtn.addEventListener('mouseenter', function() {
+            this.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.5), 0 0 20px rgba(76, 205, 196, 0.3)';
+        });
+        
+        doubanBtn.addEventListener('mouseleave', function() {
+            this.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.3)';
+        });
+    }
+    
     // 处理页面加载时的hash
     function handleHashChange() {
         const hash = window.location.hash.substring(1);
@@ -445,6 +563,8 @@ function initTianCalendar() {
         const prevBtn = document.getElementById('prevMonth');
         const nextBtn = document.getElementById('nextMonth');
         const todayBtn = document.getElementById('todayBtn');
+        const prevYearBtn = document.getElementById('prevYear');
+        const nextYearBtn = document.getElementById('nextYear');
         
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
@@ -454,6 +574,7 @@ function initTianCalendar() {
                     currentDisplayYear--;
                 }
                 updateCalendarDisplay();
+                updateCurrentYearDisplay();
             });
         }
         
@@ -465,6 +586,7 @@ function initTianCalendar() {
                     currentDisplayYear++;
                 }
                 updateCalendarDisplay();
+                updateCurrentYearDisplay();
             });
         }
         
@@ -474,8 +596,85 @@ function initTianCalendar() {
                 currentDisplayYear = today.year;
                 currentDisplayMonth = today.month;
                 updateCalendarDisplay();
+                updateCurrentYearDisplay();
             });
         }
+        
+        // 年份切换按钮事件
+        if (prevYearBtn) {
+            prevYearBtn.addEventListener('click', () => {
+                currentDisplayYear--;
+                updateCalendarDisplay();
+                updateCurrentYearDisplay();
+                
+                // 添加点击动画效果
+                prevYearBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    prevYearBtn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        if (nextYearBtn) {
+            nextYearBtn.addEventListener('click', () => {
+                currentDisplayYear++;
+                updateCalendarDisplay();
+                updateCurrentYearDisplay();
+                
+                // 添加点击动画效果
+                nextYearBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    nextYearBtn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        // 初始化年份显示
+        updateCurrentYearDisplay();
+        
+        // 添加键盘快捷键支持（仅在田历标签页激活时）
+        document.addEventListener('keydown', function(e) {
+            // 检查是否在田历标签页
+            const calendarSection = document.getElementById('calendar');
+            if (!calendarSection || !calendarSection.classList.contains('active')) {
+                return;
+            }
+            
+            // 检查是否在输入框中，如果是则不处理快捷键
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+            
+            switch(e.key.toLowerCase()) {
+                case 'w':
+                    e.preventDefault();
+                    // 上一年
+                    if (prevYearBtn) prevYearBtn.click();
+                    break;
+                case 's':
+                    e.preventDefault();
+                    // 下一年
+                    if (nextYearBtn) nextYearBtn.click();
+                    break;
+                case 'a':
+                    e.preventDefault();
+                    // 上个月
+                    if (prevBtn) prevBtn.click();
+                    break;
+                case 'd':
+                    e.preventDefault();
+                    // 下个月
+                    if (nextBtn) nextBtn.click();
+                    break;
+                case 'Home':
+                case 't':
+                case 'T':
+                    e.preventDefault();
+                    // 回到今天
+                    if (todayBtn) todayBtn.click();
+                    break;
+            }
+        });
     }
     
     // 更新日历显示
@@ -588,6 +787,26 @@ function initTianCalendar() {
             <strong>今天：</strong>${yearPrefix}${displayYear}年${today.month}月${today.day}日<br>
             <strong>公历：</strong>${todayGregorian.getFullYear()}年${todayGregorian.getMonth() + 1}月${todayGregorian.getDate()}日
         `;
+    }
+    
+    // 更新当前年份显示
+    function updateCurrentYearDisplay() {
+        const currentYearElement = document.getElementById('currentYearValue');
+        if (!currentYearElement) return;
+        
+        const yearPrefix = currentDisplayYear < 1 ? '田元前' : '华田';
+        const displayYear = currentDisplayYear < 1 ? Math.abs(currentDisplayYear) : currentDisplayYear;
+        
+        currentYearElement.textContent = `${yearPrefix}${displayYear}年`;
+        
+        // 添加年份更新动画效果
+        currentYearElement.style.transform = 'scale(1.1)';
+        currentYearElement.style.opacity = '0.8';
+        
+        setTimeout(() => {
+            currentYearElement.style.transform = 'scale(1)';
+            currentYearElement.style.opacity = '1';
+        }, 200);
     }
     
     // 只在田历标签页存在时初始化

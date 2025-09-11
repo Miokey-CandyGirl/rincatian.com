@@ -346,41 +346,447 @@
 
             <!-- 传说故事 -->
             <section id="legends" class="culture-section">
-                <h2>传说故事</h2>
+                <h2>《光线传奇》故事</h2>
                 
-                <div class="legend-timeline">
-                    <div class="legend-item">
-                        <div class="legend-icon">🌟</div>
-                        <div class="legend-content">
-                            <h3>星球的诞生</h3>
-                            <p>传说琳凯蒂亚星球诞生于彩虹的中心，七色光芒汇聚成这个充满魔法的世界。</p>
-                        </div>
+                <div class="story-navigation">
+                    <div class="story-tabs">
+                        <button class="story-tab active" data-story="prequel">前传：琳凯蒂亚的星光</button>
+                        <button class="story-tab" data-story="episode1">第一集：彩虹落地的瞬间</button>
+                        <button class="story-tab" data-story="episode2">第二集：微光里的适应</button>
+                        <button class="story-tab" data-story="episode3">第三集：学籍簿上的金发小公主</button>
+                        <button class="story-tab" data-story="episode4">第四集：儿时伙伴的重逢</button>
+                        <button class="story-tab" data-story="episode5">第五集：在暴风雨中的少女</button>
+                        <button class="story-tab" data-story="episode6">第六集：雨中的寻找</button>
                     </div>
                     
-                    <div class="legend-item">
-                        <div class="legend-icon">⚔️</div>
-                        <div class="legend-content">
-                            <h3>云雨时空的叛乱</h3>
-                            <p>18年前，云雨和时空因贪婪力量而背叛星帝，攻击星法塔，最终被镇压关入星光石牢狱。</p>
-                        </div>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <div class="legend-icon">🚪</div>
-                        <div class="legend-content">
-                            <h3>星门之约</h3>
-                            <p>为了历练和成长，星帝将妙可等光线使者送往地球，等待她们觉醒真正的力量。</p>
-                        </div>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <div class="legend-icon">🌈</div>
-                        <div class="legend-content">
-                            <h3>彩虹水晶的散落</h3>
-                            <p>妙可在地球遭受袭击，七颗彩虹水晶散落人间，需要重新找回才能恢复完整力量。</p>
+                    <div class="reading-promotion">
+                        <div class="promotion-content">
+                            <div class="promotion-icon">
+                                <span class="douban-icon">📖</span>
+                            </div>
+                            <div class="promotion-text">
+                                <h4>想要阅读完整版故事？</h4>
+                                <p>以下仅为故事概要，完整版《光线传奇之彩虹水晶》现已在<strong>豆瓣阅读</strong>平台发布！</p>
+                                <div class="promotion-features">
+                                    <span class="feature-tag">✨ 详细人物刻画</span>
+                                    <span class="feature-tag">🌈 精彩战斗场面</span>
+                                    <span class="feature-tag">💫 丰富情感描写</span>
+                                </div>
+                            </div>
+                            <div class="promotion-action">
+                                <a href="#" class="douban-reading-btn" id="doubanReadingBtn">
+                                    <span class="btn-icon">📚</span>
+                                    <span class="btn-text">前往豆瓣阅读</span>
+                                    <span class="btn-arrow">→</span>
+                                </a>
+                                <p class="promotion-note">点击即可跳转到豆瓣阅读查看完整版小说</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 前传故事 -->
+                <div id="prequel" class="story-content active">
+                    <div class="story-header">
+                        <h3>前传：琳凯蒂亚的星光（18年前）</h3>
+                        <div class="story-time">时间：琳凯蒂亚历法，18年前</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🌟 奇幻星球琳凯蒂亚</h4>
+                        <div class="story-description">
+                            <p>在被彩虹恒久包裹的琳凯蒂亚星球上，银蓝色的铃铛树轻抚着流光云，双月在星法塔顶交织成彩虹光环。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>星帝宫殿：</strong>月光石砌成，云霞鸟衔朝霞装饰，周围有变色星蝶栖息的花丛
+                                </div>
+                                <div class="detail-item">
+                                    <strong>妙可公主：</strong>5岁太阳光线使者，金发蓝眼，武器太阳手杖，散发铃兰+柑橘+阳光的独特香气
+                                </div>
+                                <div class="detail-item">
+                                    <strong>云雨时空：</strong>星帝弟弟的孩子，内心充满对力量的贪婪和不满
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>⚔️ 冲突爆发</h4>
+                        <div class="story-description">
+                            <p>云雨和时空觊觎星法塔内的彩虹核心，深夜潜入练习破坏，被星使爷爷发现后与星帝对峙。</p>
+                            <div class="story-highlight">
+                                云雨放乌云吞没宫殿星光，时空开虫洞吸走水晶椅，并向星法塔发射雨箭，随后跳入虫洞逃离。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🔒 大战与镇压</h4>
+                        <div class="story-description">
+                            <p>激战数日后，星帝用金色锁链制服云雨时空，将其关入星光石牢狱。</p>
+                            <div class="story-quote">
+                                "时空在牢中发现符文弱点，并探知18年后逃脱的'天命'，预示着未来的危机。"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🚪 星门离别</h4>
+                        <div class="story-description">
+                            <p>星帝知晓天命，决定将妙可和其他光线使者送往地球历练。</p>
+                            <div class="story-emotion">
+                                星母给妙可绣太阳手帕，抹泪送别。妙可懵懂不舍，抱住星母腿。使者们依次走进流淌彩色糖浆般的星门...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第一集故事 -->
+                <div id="episode1" class="story-content">
+                    <div class="story-header">
+                        <h3>第一集：彩虹落地的瞬间</h3>
+                        <div class="story-time">时间：2015年8月25日，田野18岁生日</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🎂 十八岁生日的黑暗降临</h4>
+                        <div class="story-description">
+                            <p>田野18岁生日当天，正在天鹅湖畔与好友聚会。突然，天空出现诡异的时空裂缝，黑暗势力降临。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>云雨附身：</strong>17岁少年韩斌被云雨光线使者附身，眼中闪烁邪恶光芒
+                                </div>
+                                <div class="detail-item">
+                                    <strong>时空附身：</strong>18岁少年俊伟被时空光线使者附身，获得虫洞传送能力
+                                </div>
+                                <div class="detail-item">
+                                    <strong>袭击开始：</strong>云雨放出乌云吞噬现场，时空开启虫洞进行围攻
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>⚡ 激烈战斗与觉醒</h4>
+                        <div class="story-description">
+                            <p>面对强敌，田野体内的太阳印记开始发光发热，18年前的记忆片段闪现。</p>
+                            <div class="story-highlight">
+                                田野变回6岁女孩妙可公主的模样，太阳手杖化为翅膀项链重新出现，散发出铃兰柑橘阳光的独特香气。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>💎 彩虹水晶散落</h4>
+                        <div class="story-description">
+                            <p>激战中，七颗彩虹水晶从妙可体内被震出，如流星般散落合肥各地。</p>
+                            <div class="story-quote">
+                                "赤橙黄绿蓝靛紫，七道光芒划过天际，每一颗水晶都承载着星球的神圣力量。"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🌟 星使爷爷的指引</h4>
+                        <div class="story-description">
+                            <p>危急时刻，星使爷爷的投影出现，银袍星辰闪烁，白胡子掉落金粉。</p>
+                            <div class="story-emotion">
+                                "妙可，你必须找回散落的彩虹水晶，重新找到太阳手杖，这是你的使命。"温暖的声音在心中回响...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二集故事 -->
+                <div id="episode2" class="story-content">
+                    <div class="story-header">
+                        <h3>第二集：微光里的适应</h3>
+                        <div class="story-time">时间：2015年8月26日-9月初，袭击后的适应期</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🏠 变化中的日常</h4>
+                        <div class="story-description">
+                            <p>妙可以6岁女孩的形态回到田家，面临身份认知的巨大挑战。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>身体变化：</strong>从18岁少年变成6岁女孩，需要重新适应身体协调
+                                </div>
+                                <div class="detail-item">
+                                    <strong>记忆融合：</strong>田野18年的地球记忆与妙可的琳凯蒂亚记忆交融
+                                </div>
+                                <div class="detail-item">
+                                    <strong>家人困惑：</strong>田父田母对孩子突然的变化感到迷茫和担忧
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🔍 太阳手杖的寻找</h4>
+                        <div class="story-description">
+                            <p>妙可开始在合肥城中寻找失落的太阳手杖，但线索渺茫。</p>
+                            <div class="story-highlight">
+                                翅膀项链偶尔会发出微弱光芒，指向某个方向，但手杖似乎被某种力量隐藏了起来。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🌙 夜晚的练习</h4>
+                        <div class="story-description">
+                            <p>每当夜深人静时，妙可会偷偷练习太阳魔法，努力恢复力量。</p>
+                            <div class="story-quote">
+                                "即使没有太阳手杖，我也要保护这个世界。"小小的身影在月光下发出坚定的誓言。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🎯 敌人的暗中观察</h4>
+                        <div class="story-description">
+                            <p>云雨和时空也在暗中寻找彩虹水晶，同时密切监视着妙可的一举一动。</p>
+                            <div class="story-emotion">
+                                街角的阴影中，韩斌和俊伟的眼中闪烁着邪恶的光芒，计划着下一次行动...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三集故事 -->
+                <div id="episode3" class="story-content">
+                    <div class="story-header">
+                        <h3>第三集：学籍簿上的金发小公主</h3>
+                        <div class="story-time">时间：2015年9月，新学期开始</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🏫 星虹中学的新开始</h4>
+                        <div class="story-description">
+                            <p>以特殊情况进入星虹中学，妙可成为了学校里最引人注目的小女孩。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>特殊安排：</strong>学校为这个特殊的6岁"高中生"做了特别安排
+                                </div>
+                                <div class="detail-item">
+                                    <strong>同学反应：</strong>金发蓝眼的外貌引起同学们的好奇和议论
+                                </div>
+                                <div class="detail-item">
+                                    <strong>学习挑战：</strong>小小身体要适应高中的学习节奏和内容
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🎭 身份的秘密</h4>
+                        <div class="story-description">
+                            <p>妙可努力隐藏自己光线使者的身份，但独特的香气时常泄露秘密。</p>
+                            <div class="story-highlight">
+                                铃兰+柑橘+阳光的复合香气让周围的人不由自主地感到温暖和安心。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>👥 新的友谊萌芽</h4>
+                        <div class="story-description">
+                            <p>在学校里，妙可遇到了一些真心的朋友，也察觉到了一些可疑的目光。</p>
+                            <div class="story-quote">
+                                "这个小女孩有些不同寻常..."一个熟悉的声音在人群中响起。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>📚 知识的力量</h4>
+                        <div class="story-description">
+                            <p>妙可发现地球的知识对理解琳凯蒂亚魔法有意想不到的帮助。</p>
+                            <div class="story-emotion">
+                                物理课上的光学原理让她对太阳魔法有了新的认识，化学课的元素周期表似乎与彩虹水晶的能量频率有着神秘的联系...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第四集故事 -->
+                <div id="episode4" class="story-content">
+                    <div class="story-header">
+                        <h3>第四集：儿时伙伴的重逢</h3>
+                        <div class="story-time">时间：2015年9月中下旬，学校生活中</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🌟 星星使者丽丽</h4>
+                        <div class="story-description">
+                            <p>在星虹中学，妙可遇到了同班同学丽丽，一个看似普通的高一女生。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>初次相遇：</strong>丽丽对妙可的特殊身份并不惊讶，反而显得很亲切
+                                </div>
+                                <div class="detail-item">
+                                    <strong>疑似熊猫：</strong>丽丽随身携带着一只可爱的小熊猫玩具
+                                </div>
+                                <div class="detail-item">
+                                    <strong>神秘反应：</strong>当妙可靠近时，熊猫玩具的眼睛会发出微弱的蓝光
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>✨ 记忆的复苏</h4>
+                        <div class="story-description">
+                            <p>在一次意外事件中，丽丽为了保护妙可而觉醒了星星使者的力量。</p>
+                            <div class="story-highlight">
+                                熊猫玩具变成了星辰法杖，杖身流转星河光晕，杖头镶嵌自转深蓝星核。丽丽的眼中闪烁着星辰的光芒。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🤝 幼年时光的回忆</h4>
+                        <div class="story-description">
+                            <p>两人的记忆彼此交融，18年前在琳凯蒂亚的幼年时光重现。</p>
+                            <div class="story-quote">
+                                "妙可公主，我终于找到你了。我们曾经在银蓝色的铃铛树下一起玩耶，你还记得吗？"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>⚔️ 合作作战</h4>
+                        <div class="story-description">
+                            <p>面对突然出现的小型敌人攻击，两位光线使者第一次合作作战。</p>
+                            <div class="story-emotion">
+                                太阳光线与星辰防御交织成网，金色的温暖与蓝色的宁静完美融合，就像18年前那些美好的日子一样...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第五集故事 -->
+                <div id="episode5" class="story-content">
+                    <div class="story-header">
+                        <h3>第五集：在暴风雨中的少女</h3>
+                        <div class="story-time">时间：2015年9月下旬，秋雨绵绵的季节</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🌧️ 梦云的出现</h4>
+                        <div class="story-description">
+                            <p>在一个雨夜，妙可在公园里遇到了一个淘气在雨中的少女——梦云。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>首次相遇：</strong>梦云独自一人在雨中漫步，似乎对淋雨毫不在意
+                                </div>
+                                <div class="detail-item">
+                                    <strong>特殊能力：</strong>雨滴在她身边自动避开，就像有隐形的保护罩
+                                </div>
+                                <div class="detail-item">
+                                    <strong>内心状态：</strong>眼中有着深深的迷茫和不安，似乎承受着巨大的心理压力
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>💔 心灵的交流</h4>
+                        <div class="story-description">
+                            <p>妙可主动上前关心，两个少女在雨中开始了第一次真诚的对话。</p>
+                            <div class="story-highlight">
+                                梦云讲述了自己中考失利后的沉迷和迷茫，对未来的无助和对现实的逃避。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>⚡ 暗中的操控</h4>
+                        <div class="story-description">
+                            <p>在对话过程中，妙可发现梦云的情绪变化中有着不寻常的规律。</p>
+                            <div class="story-quote">
+                                "不对，这不是她自然的情绪波动...有人在操控她的心智！"妙可心中警铃大作。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🌊 小云雨使者的觉醒</h4>
+                        <div class="story-description">
+                            <p>在妙可的关心和鼓励下，梦云短暂的觉醒了自己小云雨光线使者的身份。</p>
+                            <div class="story-emotion">
+                                河水在她身边温顺地流淌，雨滴在她手中凝聚成晶莹的水珠。那一瞬间，她的眼中闪现了清晰和希望的光芒...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第六集故事 -->
+                <div id="episode6" class="story-content">
+                    <div class="story-header">
+                        <h3>第六集：雨中的寻找</h3>
+                        <div class="story-time">时间：2015年10月初，一个雨夜</div>
+                    </div>
+                    
+                    <div class="story-section">
+                        <h4>🔮 神秘的线索</h4>
+                        <div class="story-description">
+                            <p>妙可和丽丽收到了来自星使爷爷的特殊信息，指向了一个神秘的地点。</p>
+                            <div class="story-details">
+                                <div class="detail-item">
+                                    <strong>星魔盘反应：</strong>丽丽的星魔盘捕捉到了彩虹水晶的微弱信号
+                                </div>
+                                <div class="detail-item">
+                                    <strong>方向指引：</strong>翅膀项链在某个方向上发出持续的光芒
+                                </div>
+                                <div class="detail-item">
+                                    <strong>时间紧迫：</strong>信号不断弱化，必须在信号消失前找到水晶
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🌧️ 雨夜行动</h4>
+                        <div class="story-description">
+                            <p>在一个雨夜，三个女孩踏上了寻找第一颗彩虹水晶的旅程。</p>
+                            <div class="story-highlight">
+                                梦云在网吧里被云雨的意志再次控制，成为了不情愿的内应。她的眼中闪烁着矛盾的光芒——一边是对妙可的真心关心，一边是被强加的敌意。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>⚔️ 三人的对决</h4>
+                        <div class="story-description">
+                            <p>在一个废弃的工厂里，三人遇到了云雨和时空的伏击。</p>
+                            <div class="story-quote">
+                                "云雨，放开梦云！她只是一个无辜的少女！"妙可的声音在雨夜中回荡。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>💎 第一颗水晶的密秘</h4>
+                        <div class="story-description">
+                            <p>在激战的关键时刻，一颗翰绿色的水晶在废弃机器中闪现光芒。</p>
+                            <div class="story-emotion">
+                                那是一颗绿色的彩虹水晶，象征着生命和希望的力量。当妙可的手触及水晶的瞬间，一阵温暖的绿光在雨夜中绚放，照亮了每个人的脸庞...
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-section">
+                        <h4>🌌 新的开始</h4>
+                        <div class="story-description">
+                            <p>第一颗彩虹水晶的回归不仅增强了妙可的力量，也为接下来的冒险拉开了序幕。</p>
+                            <div class="story-highlight">
+                                但是，云雨和时空并没有放弃，他们的计划只是刚刚开始。而梦云的内心斗争也将面临更大的考验...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
             <!-- 人物志 -->
@@ -533,7 +939,7 @@
 
             <!-- 田历历法 -->
             <section id="calendar" class="culture-section">
-                <h2>琦凯蒂亚新星历（田历）</h2>
+                <h2>琳凯蒂亚新星历（田历）</h2>
                 
                 <div class="calendar-intro">
                     <div class="calendar-description">
@@ -563,9 +969,65 @@
                     </div>
                     
                     <div class="calendar-controls">
-                        <button class="btn btn-primary" id="todayBtn">回到今天</button>
-                        <div class="calendar-info">
-                            <span id="todayInfo"></span>
+                        <div class="integrated-control-bar">
+                            <!-- 年份控制组 -->
+                            <div class="control-group year-controls">
+                                <button class="control-btn year-nav prev-year" id="prevYear" title="上一年 (W)">
+                                    <span class="control-icon">◀</span>
+                                </button>
+                                <div class="current-year-display" id="currentYearDisplay">
+                                    <span class="year-value" id="currentYearValue">华田元年</span>
+                                </div>
+                                <button class="control-btn year-nav next-year" id="nextYear" title="下一年 (S)">
+                                    <span class="control-icon">▶</span>
+                                </button>
+                            </div>
+                            
+                            <!-- 分隔线 -->
+                            <div class="control-divider"></div>
+                            
+                            <!-- 月份控制组 -->
+                            <div class="control-group month-controls">
+                                <button class="control-btn month-nav" id="prevMonth" title="上个月 (A)">
+                                    <span class="control-icon">◀</span>
+                                </button>
+                                <button class="control-btn month-nav" id="nextMonth" title="下个月 (D)">
+                                    <span class="control-icon">▶</span>
+                                </button>
+                            </div>
+                            
+                            <!-- 分隔线 -->
+                            <div class="control-divider"></div>
+                            
+                            <!-- 操作按钮组 -->
+                            <div class="control-group action-controls">
+                                <button class="control-btn today-btn" id="todayBtn" title="回到今天 (T)">
+                                    <span class="control-icon">📅</span>
+                                    <span class="control-text">今天</span>
+                                </button>
+                            </div>
+                            
+                            <!-- 分隔线 -->
+                            <div class="control-divider"></div>
+                            
+                            <!-- 快捷键提示组 -->
+                            <div class="control-group shortcuts-display">
+                                <div class="shortcuts-compact">
+                                    <span class="shortcuts-label">快捷键:</span>
+                                    <div class="shortcuts-items">
+                                        <span class="shortcut-hint"><kbd>WS</kbd>年份</span>
+                                        <span class="shortcut-hint"><kbd>AD</kbd>月份</span>
+                                        <span class="shortcut-hint"><kbd>T</kbd>今天</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 今日信息 -->
+                            <div class="control-group today-info">
+                                <div class="calendar-info">
+                                    <span id="todayInfo"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
