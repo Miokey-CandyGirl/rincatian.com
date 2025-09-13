@@ -3,7 +3,7 @@
 const LocationData = {
     // 国家数据：包含国名和国旗emoji
     countries: [
-        { code: 'RC', name: '田国（琳凯蒂亚）', flag: Rincatia_flag },
+        { code: 'RC', name: '田国（琳凯蒂亚）', flag: '🌟' },
         { code: 'CN', name: '中国', flag: '🇨🇳' },
         { code: 'US', name: '美国', flag: '🇺🇸' },
         { code: 'JP', name: '日本', flag: '🇯🇵' },

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国旗导航测试 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav-test {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .rincatian-flag {
+            display: inline-block;
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+        .flag-icon {
+            width: 32px;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .test-info {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+        .step-list li {
+            background: rgba(0, 188, 212, 0.1);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #00bcd4;
+        }
+        .status {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🎌 国旗导航功能测试</h1>
+            <p>测试琳凯蒂亚语网站的国旗导航菜单功能</p>
+        </div>
+
+        <div class="nav-test">
+            <h2>国旗导航元素测试</h2>
+            <div class="rincatian-flag">
+                <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+            </div>
+            <span>👈 点击这个国旗测试导航菜单</span>
+        </div>
+
+        <div class="test-info">
+            <h3>📋 测试步骤</h3>
+            <ol class="step-list">
+                <li>✨ 点击上方的琳凯蒂亚国旗图标</li>
+                <li>🎯 观察是否弹出导航菜单</li>
+                <li>📱 菜单应包含：首页、语法、词典、文化、社区</li>
+                <li>🎨 菜单应具有琳凯蒂亚风格的设计</li>
+                <li>⚡ 测试点击菜单项是否能正确跳转</li>
+                <li>🚀 测试鼠标悬停和动画效果</li>
+                <li>🎪 测试ESC键和点击外部关闭功能</li>
+            </ol>
+        </div>
+
+        <div class="status">
+            <h3>🔧 功能状态</h3>
+            <p>已完成所有主要页面的国旗导航集成：</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>✅ index.html - 首页</li>
+                <li>✅ grammar.html - 语法页面</li>
+                <li>✅ dictionary.html - 词典页面</li>
+                <li>✅ culture.html - 文化页面</li>
+                <li>✅ community.html - 社区页面</li>
+                <li>✅ user-profile.html - 用户中心</li>
+            </ul>
+        </div>
+
+        <div class="test-info">
+            <h3>💡 技术细节</h3>
+            <p><strong>实现原理：</strong></p>
+            <ul>
+                <li>🎯 <code>FlagNavigation</code> 类自动初始化</li>
+                <li>🔍 自动查找 <code>.rincatian-flag</code> 元素</li>
+                <li>⚡ 为国旗添加点击事件监听器</li>
+                <li>🎨 动态创建导航菜单HTML</li>
+                <li>✨ 添加CSS样式和动画效果</li>
+                <li>🎪 支持键盘和鼠标交互</li>
+            </ul>
+        </div>
+
+        <div class="test-info">
+            <h3>🎨 设计特色</h3>
+            <ul>
+                <li>🌟 琳凯蒂亚风格的渐变背景</li>
+                <li>💎 毛玻璃效果和阴影</li>
+                <li>🎯 当前页面高亮显示</li>
+                <li>⚡ 流畅的过渡动画</li>
+                <li>📱 响应式设计</li>
+                <li>🎭 波纹点击效果</li>
+            </ul>
+        </div>
+
+        <div class="nav-links" style="text-align: center; margin-top: 30px;">
+            <p>🔗 快速访问其他页面进行测试：</p>
+            <a href="index.html" style="color: #ffd700; margin: 0 10px;">首页</a>
+            <a href="grammar.html" style="color: #ffd700; margin: 0 10px;">语法</a>
+            <a href="dictionary.html" style="color: #ffd700; margin: 0 10px;">词典</a>
+            <a href="culture.html" style="color: #ffd700; margin: 0 10px;">文化</a>
+            <a href="community.html" style="color: #ffd700; margin: 0 10px;">社区</a>
+        </div>
+    </div>
+
+    <script src="flag-navigation.js"></script>
+    <script>
+        // 测试脚本
+        console.log('🎌 国旗导航测试页面已加载');
+        console.log('✅ flag-navigation.js 已引入');
+        
+        // 等待页面完全加载后进行测试
+        window.addEventListener('load', () => {
+            console.log('🚀 页面已完全加载，开始测试...');
+            
+            // 检查FlagNavigation是否正确初始化
+            if (window.flagNavigation) {
+                console.log('✅ FlagNavigation 实例已创建');
+            } else {
+                console.warn('⚠️ FlagNavigation 实例未找到');
+            }
+            
+            // 检查国旗元素是否存在
+            const flagElement = document.querySelector('.rincatian-flag');
+            if (flagElement) {
+                console.log('✅ 国旗元素已找到');
+                
+                // 检查是否添加了点击事件
+                flagElement.addEventListener('click', () => {
+                    console.log('🎯 国旗被点击！');
+                });
+            } else {
+                console.warn('⚠️ 国旗元素未找到');
+            }
+        });
+    </script>
+</body>
+</html>

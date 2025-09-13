@@ -380,7 +380,8 @@ function initLocationSelectors() {
     LocationData.countries.forEach(country => {
         const option = document.createElement('option');
         option.value = country.code;
-        option.textContent = `${country.flag} ${country.name}`;
+        // 使用innerHTML确保emoji正确显示
+        option.innerHTML = `${country.flag} ${country.name}`;
         countrySelect.appendChild(option);
     });
     
