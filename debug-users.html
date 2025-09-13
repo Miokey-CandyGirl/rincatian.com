@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户数据调试工具 - 琳凯蒂亚语社区</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --accent-color: #bd10e0;
+            --background-color: #f5f7fa;
+            --card-color: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e1e8ed;
+            --success-color: #7ed321;
+            --warning-color: #f5a623;
+            --error-color: #d0021b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h2 i {
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .data-section {
+            background: var(--card-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(74, 144, 226, 0.1);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        tr:hover {
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+
+        .duplicate-badge {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .unique-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .log-container {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            margin: 0.2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .log-timestamp {
+            color: #95a5a6;
+        }
+
+        .log-info {
+            color: #3498db;
+        }
+
+        .log-warning {
+            color: #f39c12;
+        }
+
+        .log-error {
+            color: #e74c3c;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 用户数据调试工具</h1>
+            <p class="subtitle">用于检查和分析用户数据重复问题</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2>📊 数据概览</h2>
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">总用户数</div>
+                <div class="stat-number" id="duplicateCount">0</div>
+                <div class="stat-label">重复用户数</div>
+                <div class="stat-number" id="uniqueCount">0</div>
+                <div class="stat-label">唯一用户数</div>
+            </div>
+
+            <div class="card">
+                <h2>⚙️ 操作面板</h2>
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="loadUserData()">
+                        <i>🔄</i> 加载用户数据
+                    </button>
+                    <button class="btn btn-secondary" onclick="analyzeDuplicates()">
+                        <i>🔬</i> 分析重复数据
+                    </button>
+                    <button class="btn btn-warning" onclick="clearLogs()">
+                        <i>🗑️</i> 清空日志
+                    </button>
+                </div>
+                <p>使用此工具检查用户数据重复问题，分析重复原因并验证修复效果。</p>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h2>📋 用户数据详情</h2>
+                <div>
+                    <input type="text" id="searchInput" placeholder="搜索用户名或ID..." style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color);">
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>数据源</th>
+                        <th>重复标识</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center;">点击"加载用户数据"按钮开始分析</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h2>📝 系统日志</h2>
+            </div>
+            <div class="log-container" id="logContainer">
+                <div class="log-entry">
+                    <span class="log-timestamp">[系统]</span> 用户数据调试工具已启动
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 日志记录函数
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 清空日志
+        function clearLogs() {
+            const logContainer = document.getElementById('logContainer');
+            logContainer.innerHTML = '';
+            log('日志已清空', 'info');
+        }
+
+        // 模拟用户数据
+        function getSampleUsers() {
+            return [
+                {
+                    id: 'user_001',
+                    username: '琳凯蒂亚',
+                    email: '1778181360@qq.com',
+                    role: '管理员',
+                    status: 'active',
+                    source: 'authSystem'
+                },
+                {
+                    id: 'user_002',
+                    username: '星光法师',
+                    email: 'starlight@example.com',
+                    role: '版主',
+                    status: 'active',
+                    source: 'localStorage'
+                },
+                {
+                    id: 'user_003',
+                    username: '月光学者',
+                    email: 'moonlight@example.com',
+                    role: '用户',
+                    status: 'inactive',
+                    source: 'userDatabase'
+                },
+                // 重复数据示例
+                {
+                    id: 'user_001',
+                    username: '琳凯蒂亚',
+                    email: '1778181360@qq.com',
+                    role: '管理员',
+                    status: 'active',
+                    source: 'localStorage'
+                },
+                {
+                    id: 'user_002',
+                    username: '星光法师',
+                    email: 'starlight@example.com',
+                    role: '版主',
+                    status: 'active',
+                    source: 'userDatabase'
+                }
+            ];
+        }
+
+        // 加载用户数据
+        function loadUserData() {
+            log('开始加载用户数据...', 'info');
+            
+            // 模拟从不同数据源获取用户数据
+            const users = getSampleUsers();
+            
+            log(`成功获取 ${users.length} 条用户记录`, 'info');
+            
+            // 更新统计数据
+            document.getElementById('totalUsers').textContent = users.length;
+            
+            // 显示用户数据
+            displayUsers(users);
+            
+            // 自动分析重复数据
+            setTimeout(() => {
+                analyzeDuplicates();
+            }, 500);
+        }
+
+        // 显示用户数据
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">暂无用户数据</td></tr>';
+                return;
+            }
+            
+            // 按ID分组以识别重复项
+            const userGroups = {};
+            users.forEach(user => {
+                if (!userGroups[user.id]) {
+                    userGroups[user.id] = [];
+                }
+                userGroups[user.id].push(user);
+            });
+            
+            // 显示所有用户
+            users.forEach(user => {
+                const isDuplicate = userGroups[user.id].length > 1;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar">${user.username.charAt(0)}</div>
+                            ${user.username}
+                        </div>
+                    </td>
+                    <td>${user.email || '未设置'}</td>
+                    <td>${user.role}</td>
+                    <td>${user.status}</td>
+                    <td>${user.source}</td>
+                    <td>
+                        ${isDuplicate ? 
+                            '<span class="duplicate-badge">重复</span>' : 
+                            '<span class="unique-badge">唯一</span>'}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 分析重复数据
+        function analyzeDuplicates() {
+            log('开始分析重复用户数据...', 'info');
+            
+            // 模拟从不同数据源获取用户数据
+            const users = getSampleUsers();
+            
+            // 按ID分组
+            const userGroups = {};
+            users.forEach(user => {
+                if (!userGroups[user.id]) {
+                    userGroups[user.id] = [];
+                }
+                userGroups[user.id].push(user);
+            });
+            
+            // 找出重复的用户
+            const duplicates = [];
+            const uniqueUsers = [];
+            
+            Object.keys(userGroups).forEach(userId => {
+                const userGroup = userGroups[userId];
+                if (userGroup.length > 1) {
+                    duplicates.push(...userGroup);
+                } else {
+                    uniqueUsers.push(...userGroup);
+                }
+            });
+            
+            // 更新统计数据
+            document.getElementById('duplicateCount').textContent = duplicates.length;
+            document.getElementById('uniqueCount').textContent = uniqueUsers.length;
+            
+            log(`分析完成: ${uniqueUsers.length} 个唯一用户, ${duplicates.length} 个重复用户`, 'info');
+            
+            if (duplicates.length > 0) {
+                log(`检测到 ${duplicates.length} 个重复用户记录，请检查数据源`, 'warning');
+            } else {
+                log('未检测到重复用户记录，数据正常', 'info');
+            }
+        }
+
+        // 搜索功能
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('用户数据调试工具已准备就绪', 'info');
+        });
+    </script>
+</body>
+</html>

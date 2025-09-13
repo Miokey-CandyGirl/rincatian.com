@@ -79,6 +79,16 @@ class CommunitySystem {
         this.users.push(communityUser);
         this.saveUsers();
         console.log('为认证用户创建社区档案:', communityUser.username);
+        
+        // 同时在用户数据库中保存社区数据
+        if (window.userDatabase) {
+            window.userDatabase.saveCommunityData({
+                userId: communityUser.id,
+                posts: [],
+                replies: []
+            });
+        }
+        
         return communityUser;
     }
 
@@ -110,6 +120,15 @@ class CommunitySystem {
         this.currentUser.points += 10;
         this.updateUserStats();
         console.log('创建新帖子:', newPost.title);
+        
+        // 在用户数据库中保存帖子信息
+        if (window.userDatabase) {
+            const communityData = window.userDatabase.getCommunityData();
+            if (!communityData.posts) communityData.posts = [];
+            communityData.posts.push(newPost);
+            window.userDatabase.saveCommunityData(communityData);
+        }
+        
         return newPost;
     }
 
@@ -153,6 +172,15 @@ class CommunitySystem {
         }
 
         console.log('创建新回复:', newReply.id);
+        
+        // 在用户数据库中保存回复信息
+        if (window.userDatabase) {
+            const communityData = window.userDatabase.getCommunityData();
+            if (!communityData.replies) communityData.replies = [];
+            communityData.replies.push(newReply);
+            window.userDatabase.saveCommunityData(communityData);
+        }
+        
         return newReply;
     }
 

@@ -3053,17 +3053,214 @@ function updateStats() {
     const totalPosts = document.getElementById('totalPosts');
     const onlineUsers = document.getElementById('onlineUsers');
     
-    // 优先使用新的社区系统
-    if (window.communitySystem) {
-        if (totalUsers) totalUsers.textContent = window.communitySystem.users.length;
-        if (totalPosts) totalPosts.textContent = window.communitySystem.posts.filter(p => p.status === 'active').length;
-        if (onlineUsers) onlineUsers.textContent = window.communitySystem.onlineUsers.size || Math.floor(Math.random() * 20) + 5;
+    // 使用与管理页面和首页相同的用户数据获取逻辑，确保数据一致性
+    let userCount = 0;
+    
+    // 1. 优先从 authSystem 获取所有用户（最可靠的数据源）
+    if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
+        try {
+            const users = window.authSystem.getAllUsers();
+            // 使用管理页面的去重逻辑
+            const uniqueUsers = [];
+            const userIds = new Set();
+            users.forEach(user => {
+                if (user && user.id && !userIds.has(user.id)) {
+                    userIds.add(user.id);
+                    uniqueUsers.push(user);
+                }
+            });
+            userCount = uniqueUsers.length;
+            console.log('📊 从 authSystem 获取用户数:', userCount);
+        } catch (error) {
+            console.warn('⚠️ authSystem 获取失败:', error);
+            
+            // 2. 如果 authSystem 获取失败，从 localStorage 获取 linkaitiya_users
+            try {
+                const storedUsers = localStorage.getItem('linkaitiya_users');
+                if (storedUsers) {
+                    const parsed = JSON.parse(storedUsers);
+                    if (Array.isArray(parsed)) {
+                        // 去重处理，避免重复计数
+                        const uniqueUsers = [];
+                        const userIds = new Set();
+                        parsed.forEach(user => {
+                            if (user && user.id && !userIds.has(user.id)) {
+                                userIds.add(user.id);
+                                uniqueUsers.push(user);
+                            }
+                        });
+                        userCount = uniqueUsers.length;
+                        console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ 解析 linkaitiya_users 失败:', e);
+            }
+        }
     } else {
-        // 使用兼容层
-        if (totalUsers) totalUsers.textContent = communityData.users.length;
-        if (totalPosts) totalPosts.textContent = communityData.posts.length;
-        if (onlineUsers) onlineUsers.textContent = Math.floor(Math.random() * 50) + 10; // 模拟在线用户数
+        // 3. 如果 authSystem 不可用，尝试从 localStorage 获取 linkaitiya_users
+        try {
+            const storedUsers = localStorage.getItem('linkaitiya_users');
+            if (storedUsers) {
+                const parsed = JSON.parse(storedUsers);
+                if (Array.isArray(parsed)) {
+                    // 去重处理，避免重复计数
+                    const uniqueUsers = [];
+                    const userIds = new Set();
+                    parsed.forEach(user => {
+                        if (user && user.id && !userIds.has(user.id)) {
+                            userIds.add(user.id);
+                            uniqueUsers.push(user);
+                        }
+                    });
+                    userCount = uniqueUsers.length;
+                    console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 解析 linkaitiya_users 失败:', error);
+        }
     }
+    
+    // 更新用户数显示
+    if (totalUsers) totalUsers.textContent = userCount;
+    
+    // 更新帖子数
+    let postCount = 0;
+    if (window.communitySystem) {
+        postCount = window.communitySystem.posts.filter(p => p.status === 'active').length;
+        if (totalPosts) totalPosts.textContent = postCount;
+    } else if (totalPosts) {
+        // 使用兼容层
+        totalPosts.textContent = communityData.posts.length;
+    }
+    
+    // 更新在线用户数
+    if (window.communitySystem) {
+        // 使用社区系统的在线用户数
+        if (onlineUsers) onlineUsers.textContent = window.communitySystem.onlineUsers.size || Math.floor(Math.random() * 20) + 5;
+    } else if (onlineUsers) {
+        // 使用兼容层
+        onlineUsers.textContent = Math.floor(Math.random() * 50) + 10; // 模拟在线用户数
+    }
+    
+    console.log('📊 社区页面统计数据已更新:', { users: userCount, posts: postCount });
+}
+
+// 更新社区统计数据
+function updateCommunityStats() {
+    const totalUsers = document.getElementById('totalUsers');
+    const totalPosts = document.getElementById('totalPosts');
+    const onlineUsers = document.getElementById('onlineUsers');
+    
+    // 使用与管理页面和首页相同的用户数据获取逻辑，确保数据一致性
+    let userCount = 0;
+    
+    // 1. 优先从 authSystem 获取所有用户（最可靠的数据源）
+    if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
+        try {
+            const users = window.authSystem.getAllUsers();
+            // 使用管理页面的去重逻辑
+            const uniqueUsers = [];
+            const userIds = new Set();
+            users.forEach(user => {
+                if (user && user.id && !userIds.has(user.id)) {
+                    userIds.add(user.id);
+                    uniqueUsers.push(user);
+                }
+            });
+            userCount = uniqueUsers.length;
+            console.log('📊 从 authSystem 获取用户数:', userCount);
+        } catch (error) {
+            console.warn('⚠️ authSystem 获取失败:', error);
+            
+            // 2. 如果 authSystem 获取失败，从 localStorage 获取 linkaitiya_users
+            try {
+                const storedUsers = localStorage.getItem('linkaitiya_users');
+                if (storedUsers) {
+                    const parsed = JSON.parse(storedUsers);
+                    if (Array.isArray(parsed)) {
+                        // 去重处理，避免重复计数
+                        const uniqueUsers = [];
+                        const userIds = new Set();
+                        parsed.forEach(user => {
+                            if (user && user.id && !userIds.has(user.id)) {
+                                userIds.add(user.id);
+                                uniqueUsers.push(user);
+                            }
+                        });
+                        userCount = uniqueUsers.length;
+                        console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ 解析 linkaitiya_users 失败:', e);
+            }
+        }
+    } else {
+        // 3. 如果 authSystem 不可用，尝试从 localStorage 获取 linkaitiya_users
+        try {
+            const storedUsers = localStorage.getItem('linkaitiya_users');
+            if (storedUsers) {
+                const parsed = JSON.parse(storedUsers);
+                if (Array.isArray(parsed)) {
+                    // 去重处理，避免重复计数
+                    const uniqueUsers = [];
+                    const userIds = new Set();
+                    parsed.forEach(user => {
+                        if (user && user.id && !userIds.has(user.id)) {
+                            userIds.add(user.id);
+                            uniqueUsers.push(user);
+                        }
+                    });
+                    userCount = uniqueUsers.length;
+                    console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 解析 linkaitiya_users 失败:', error);
+        }
+    }
+    
+    // 更新用户数显示
+    if (totalUsers) totalUsers.textContent = userCount;
+    
+    // 更新帖子数
+    let postCount = 0;
+    if (window.communitySystem) {
+        postCount = window.communitySystem.posts.filter(p => p.status === 'active').length;
+        if (totalPosts) totalPosts.textContent = postCount;
+    } else if (totalPosts) {
+        // 使用兼容层
+        totalPosts.textContent = communityData.posts.length;
+    }
+    
+    // 更新在线用户数
+    if (window.communitySystem) {
+        // 使用社区系统的在线用户数
+        if (onlineUsers) onlineUsers.textContent = window.communitySystem.onlineUsers.size || Math.floor(Math.random() * 20) + 5;
+    } else if (onlineUsers) {
+        // 使用兼容层
+        onlineUsers.textContent = Math.floor(Math.random() * 50) + 10; // 模拟在线用户数
+    }
+    
+    console.log('📊 社区页面统计数据已更新:', { users: userCount, posts: postCount });
+}
+
+// 启动实时更新
+function startRealTimeUpdates() {
+    // 定期更新统计数据，但避免过于频繁的更新
+    setInterval(() => {
+        updateCommunityStats();
+    }, 60000); // 每60秒更新一次，避免频繁更新导致的问题
+    
+    // 监听用户活动
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && window.communitySystem?.currentUser) {
+            window.communitySystem.currentUser.lastActiveTime = Date.now();
+            window.communitySystem.updateUserStats();
+        }
+    });
 }
 
 // 加载内容

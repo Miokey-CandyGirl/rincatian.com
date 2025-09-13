@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 3px;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .refresh-btn {
+            background: #2196F3;
+        }
+        .refresh-btn:hover {
+            background: #1976D2;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>管理员功能测试</h1>
+        
+        <div class="test-section">
+            <h2>认证系统测试</h2>
+            <button onclick="testAuthSystem()">测试认证系统</button>
+            <div id="authTestResult" class="test-result">点击按钮开始测试</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>用户数据测试</h2>
+            <button onclick="testUserData()">测试用户数据</button>
+            <div id="userTestResult" class="test-result">点击按钮开始测试</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>管理员权限测试</h2>
+            <button onclick="testAdminAccess()">测试管理员权限</button>
+            <div id="adminTestResult" class="test-result">点击按钮开始测试</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>localStorage数据</h2>
+            <button class="refresh-btn" onclick="showLocalStorage()">显示localStorage</button>
+            <div id="localStorageResult" class="test-result">点击按钮显示数据</div>
+        </div>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="user-database.js"></script>
+    <script>
+        function testAuthSystem() {
+            const resultDiv = document.getElementById('authTestResult');
+            try {
+                if (typeof window.authSystem !== 'undefined') {
+                    const users = window.authSystem.users;
+                    const currentUser = window.authSystem.currentUser;
+                    resultDiv.innerHTML = `✅ 认证系统已加载
+用户数量: ${users.length}
+当前用户: ${currentUser ? currentUser.username : '未登录'}`;
+                    resultDiv.className = 'test-result success';
+                } else {
+                    resultDiv.innerHTML = '❌ 认证系统未加载';
+                    resultDiv.className = 'test-result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ 测试失败: ${error.message}`;
+                resultDiv.className = 'test-result error';
+            }
+        }
+        
+        function testUserData() {
+            const resultDiv = document.getElementById('userTestResult');
+            try {
+                if (typeof window.authSystem !== 'undefined') {
+                    const users = window.authSystem.users;
+                    resultDiv.innerHTML = `✅ 获取到用户数据
+总用户数: ${users.length}
+用户列表:
+${users.map(user => `  - ${user.username} (${user.role})`).join('\n')}`;
+                    resultDiv.className = 'test-result success';
+                } else {
+                    resultDiv.innerHTML = '❌ 认证系统未加载';
+                    resultDiv.className = 'test-result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ 测试失败: ${error.message}`;
+                resultDiv.className = 'test-result error';
+            }
+        }
+        
+        function testAdminAccess() {
+            const resultDiv = document.getElementById('adminTestResult');
+            try {
+                if (typeof window.authSystem !== 'undefined') {
+                    const currentUser = window.authSystem.currentUser;
+                    const isAdmin = window.authSystem.isAdmin();
+                    resultDiv.innerHTML = `✅ 权限检查完成
+当前用户: ${currentUser ? currentUser.username : '未登录'}
+是否为管理员: ${isAdmin}`;
+                    resultDiv.className = 'test-result success';
+                } else {
+                    resultDiv.innerHTML = '❌ 认证系统未加载';
+                    resultDiv.className = 'test-result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ 测试失败: ${error.message}`;
+                resultDiv.className = 'test-result error';
+            }
+        }
+        
+        function showLocalStorage() {
+            const resultDiv = document.getElementById('localStorageResult');
+            try {
+                let output = 'localStorage数据:\n\n';
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.includes('user') || key.includes('auth')) {
+                        const value = localStorage.getItem(key);
+                        let displayValue = value;
+                        try {
+                            const parsed = JSON.parse(value);
+                            displayValue = JSON.stringify(parsed, null, 2);
+                        } catch (e) {
+                            // 保持原样
+                        }
+                        output += `${key}: ${displayValue}\n\n`;
+                    }
+                }
+                resultDiv.innerHTML = output || '未找到相关数据';
+                resultDiv.className = 'test-result';
+            } catch (error) {
+                resultDiv.innerHTML = `❌ 显示失败: ${error.message}`;
+                resultDiv.className = 'test-result error';
+            }
+        }
+    </script>
+</body>
+</html>

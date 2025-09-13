@@ -67,8 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1a237e, #3f51b5); border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; max-width: 90vw;">
-                    <h2 style="color: #ffd700; margin-bottom: 16px;">QQ社区</h2>
-                    <p style="font-size: 1.2rem; color: #fff; margin-bottom: 24px;">QQ群号：<b style='color:#ffd700;'>515385616</b></p>
+                    <h2 style="color: #ffd700; margin-bottom: 16px;">QQ田语社区</h2>
+                    <p style="font-size: 1.2rem; color: #fff; margin-bottom: 3px;">QQ群：<b style='color:#ffd700;'>515385616</b></p>
+                    <p style="font-size: 0.9rem; color: #fff; margin-bottom: 24px;">欢迎您的加入！^v^<b style='color:#ffd700;'</b></p>
                     <button id="qqModalCloseBtn" style="background: #ffd700; color: #1a237e; border: none; padding: 8px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;">关闭</button>
                 </div>
             `;
@@ -1571,7 +1572,7 @@ function handleProfileUpdate() {
     }
 }
 
-// 显示新个人资料
+// 显示新个人资料             旧的链接：<button onclick="showUserDetailedInfo()" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">我的信息</button>
 function showNewProfile() {
     if (!window.authSystem.currentUser) return;
     
@@ -1593,7 +1594,7 @@ function showNewProfile() {
                 <p><strong>当前田历：</strong> 华田${tianDate.year}年${tianDate.month}月${tianDate.day}日</p>
             </div>
             <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-                <button onclick="showUserDetailedInfo()" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">我的信息</button>
+                <a href="user-profile.html" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: inline-block; text-align: center; font-weight: 500; transition: all 0.3s ease;">我的信息</a>
                 ${(user.role === 'admin' || user.role === '管理员' || user.username === '琳凯蒂亚') ? 
                     '<a href="admin.html" style="background: #ff9800; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: inline-block; text-align: center;">管理后台</a>' : 
                     ''}
@@ -2152,17 +2153,127 @@ function initializeCommunityUpdates() {
 
 // 更新统计数据
 function updateStatistics() {
-    // 模拟数据，实际中可以从 localStorage 或 API 获取
-    const stats = {
-        totalWords: 1247 + Math.floor(Math.random() * 100),
-        totalUsers: 356 + Math.floor(Math.random() * 50),
-        todayActive: 42 + Math.floor(Math.random() * 20)
+    // 使用与管理页面相同的用户数据获取逻辑，确保数据一致性
+    let userCount = 0;
+    
+    // 1. 优先从 authSystem 获取所有用户（最可靠的数据源）
+    if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
+        try {
+            const users = window.authSystem.getAllUsers();
+            // 使用管理页面的去重逻辑
+            const uniqueUsers = [];
+            const userIds = new Set();
+            users.forEach(user => {
+                if (user && user.id && !userIds.has(user.id)) {
+                    userIds.add(user.id);
+                    uniqueUsers.push(user);
+                }
+            });
+            userCount = uniqueUsers.length;
+            console.log('📊 从 authSystem 获取用户数:', userCount);
+        } catch (error) {
+            console.warn('⚠️ authSystem 获取失败:', error);
+            
+            // 2. 如果 authSystem 获取失败，从 localStorage 获取 linkaitiya_users
+            try {
+                const storedUsers = localStorage.getItem('linkaitiya_users');
+                if (storedUsers) {
+                    const parsed = JSON.parse(storedUsers);
+                    if (Array.isArray(parsed)) {
+                        // 去重处理，避免重复计数
+                        const uniqueUsers = [];
+                        const userIds = new Set();
+                        parsed.forEach(user => {
+                            if (user && user.id && !userIds.has(user.id)) {
+                                userIds.add(user.id);
+                                uniqueUsers.push(user);
+                            }
+                        });
+                        userCount = uniqueUsers.length;
+                        console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ 解析 linkaitiya_users 失败:', e);
+            }
+        }
+    } else {
+        // 3. 如果 authSystem 不可用，尝试从 localStorage 获取 linkaitiya_users
+        try {
+            const storedUsers = localStorage.getItem('linkaitiya_users');
+            if (storedUsers) {
+                const parsed = JSON.parse(storedUsers);
+                if (Array.isArray(parsed)) {
+                    // 去重处理，避免重复计数
+                    const uniqueUsers = [];
+                    const userIds = new Set();
+                    parsed.forEach(user => {
+                        if (user && user.id && !userIds.has(user.id)) {
+                            userIds.add(user.id);
+                            uniqueUsers.push(user);
+                        }
+                    });
+                    userCount = uniqueUsers.length;
+                    console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 解析 linkaitiya_users 失败:', error);
+        }
+    }
+    
+    // 获取今日活跃用户数
+    let todayActiveUsers = 0;
+    if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
+        try {
+            const allUsers = window.authSystem.getAllUsers();
+            const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+            const now = Date.now();
+            todayActiveUsers = allUsers.filter(user => {
+                if (!user.lastLogin) return false;
+                return (now - new Date(user.lastLogin).getTime()) < oneDay;
+            }).length;
+        } catch (error) {
+            console.warn('⚠️ 获取今日活跃用户数失败:', error);
+        }
+    }
+    
+    // 构建统计数据对象
+    let stats = {
+        totalWords: 3000, // 默认值
+        totalUsers: userCount,  // 使用去重后的用户数
+        todayActive: todayActiveUsers    // 使用正确的活跃用户数
     };
     
-    // 动画更新数字
-    animateCounter('totalWords', 0, stats.totalWords, 2000);
-    animateCounter('totalUsers', 0, stats.totalUsers, 2500);
-    animateCounter('todayActive', 0, stats.todayActive, 1500);
+    // 防止重复动画：只有当数字真正改变时才执行动画
+    const totalUsersElement = document.getElementById('totalUsers');
+    if (totalUsersElement) {
+        const currentText = totalUsersElement.textContent.replace(/,/g, '');
+        const currentNumber = parseInt(currentText) || 0;
+        if (currentNumber !== stats.totalUsers) {
+            animateCounter('totalUsers', currentNumber, stats.totalUsers, 1000);
+        }
+    }
+    
+    const totalWordsElement = document.getElementById('totalWords');
+    if (totalWordsElement) {
+        const currentText = totalWordsElement.textContent.replace(/,/g, '');
+        const currentNumber = parseInt(currentText) || 0;
+        if (currentNumber !== stats.totalWords) {
+            animateCounter('totalWords', currentNumber, stats.totalWords, 1000);
+        }
+    }
+    
+    const todayActiveElement = document.getElementById('todayActive');
+    if (todayActiveElement) {
+        const currentText = todayActiveElement.textContent.replace(/,/g, '');
+        const currentNumber = parseInt(currentText) || 0;
+        if (currentNumber !== stats.todayActive) {
+            animateCounter('todayActive', currentNumber, stats.todayActive, 1000);
+        }
+    }
+    
+    console.log('📊 首页统计数据已更新:', stats);
 }
 
 // 数字动画效果
@@ -2188,22 +2299,44 @@ function animateCounter(elementId, start, end, duration) {
 
 // 加载热门话题
 function loadHotTopics() {
-    const topics = [
-        { title: '琳凯蒂亚语的语序问题', replies: 23 },
-        { title: '如何记住复杂的代词变格？', replies: 18 },
-        { title: '双月历法的计算方法', replies: 15 },
-        { title: 'AI翻译的准确性问题', replies: 12 },
-        { title: '初学者应该从哪里开始？', replies: 9 }
+    let topics = [
+        { title: '琳凯蒂亚语的语序问题', replies: 2 },
+        { title: '如何记住复杂的代词变格？', replies: 1 },
+        { title: '双月历法的计算方法', replies: 6 },
+        { title: '初学者应该从哪开始？', replies: 21 },
+        { title: '谁说说《光线传奇》后续故事？', replies: 69 }
     ];
+    
+    // 如果社区系统已加载，获取真实数据
+    if (window.communitySystem) {
+        // 获取真实帖子并按回复数排序
+        const posts = window.communitySystem.getPosts();
+        topics = posts
+            .sort((a, b) => b.replyCount - a.replyCount)
+            .slice(0, 5)
+            .map(post => ({
+                title: post.title,
+                replies: post.replyCount
+            }));
+    }
     
     const container = document.getElementById('hotTopics');
     if (container) {
-        container.innerHTML = topics.map(topic => `
-            <div class="topic-item">
-                <span class="topic-title">${topic.title}</span>
-                <span class="topic-replies">${topic.replies}回复</span>
-            </div>
-        `).join('');
+        if (topics.length > 0) {
+            container.innerHTML = topics.map(topic => `
+                <div class="topic-item">
+                    <span class="topic-title">${topic.title}</span>
+                    <span class="topic-replies">${topic.replies}回复</span>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = `
+                <div class="topic-item">
+                    <span class="topic-title">暂无热门话题</span>
+                    <span class="topic-replies">0回复</span>
+                </div>
+            `;
+        }
         
         // 添加点击事件
         container.addEventListener('click', function(e) {
@@ -2217,13 +2350,28 @@ function loadHotTopics() {
 
 // 加载最新更新
 function loadLatestNews() {
-    const news = [
-        { date: '2025-01-06', content: '新增50个魔法相关词汇' },
-        { date: '2025-01-05', content: 'AI翻译功能正式上线' },
-        { date: '2025-01-04', content: '语法练习系统优化更新' },
-        { date: '2025-01-03', content: '社区讨论功能增强' },
-        { date: '2025-01-02', content: '用户成就系统上线' }
+    let news = [
+        { date: '2025-09-06', content: '新增50个魔法相关词汇' },
+        { date: '2025-09-06', content: 'AI翻译功能正式上线' },
+        { date: '2025-09-06', content: '语法练习系统优化更新' }
     ];
+    
+    // 如果社区系统已加载，获取真实数据
+    if (window.communitySystem) {
+        // 获取真实帖子并按时间排序
+        const posts = window.communitySystem.getPosts();
+        const latestPosts = posts
+            .sort((a, b) => b.timestamp - a.timestamp)
+            .slice(0, 5);
+        
+        // 如果有真实帖子，使用真实数据
+        if (latestPosts.length > 0) {
+            news = latestPosts.map(post => ({
+                date: new Date(post.timestamp).toLocaleDateString('zh-CN'),
+                content: post.title
+            }));
+        }
+    }
     
     const container = document.getElementById('latestNews');
     if (container) {

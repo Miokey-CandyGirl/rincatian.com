@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试社区数据</title>
+</head>
+<body>
+    <h1>测试社区数据获取</h1>
+    <div id="result"></div>
+
+    <!-- 引入社区系统 -->
+    <script src="community-system.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultDiv = document.getElementById('result');
+            
+            if (window.communitySystem) {
+                resultDiv.innerHTML += '<p>✅ 社区系统已加载</p>';
+                
+                // 测试获取用户数据
+                const users = window.communitySystem.users;
+                resultDiv.innerHTML += `<p>用户数量: ${users.length}</p>`;
+                
+                // 测试获取帖子数据
+                const posts = window.communitySystem.getPosts();
+                resultDiv.innerHTML += `<p>帖子数量: ${posts.length}</p>`;
+                
+                if (posts.length > 0) {
+                    resultDiv.innerHTML += '<h2>帖子列表:</h2><ul>';
+                    posts.forEach(post => {
+                        resultDiv.innerHTML += `<li>${post.title} (回复数: ${post.replyCount})</li>`;
+                    });
+                    resultDiv.innerHTML += '</ul>';
+                }
+            } else {
+                resultDiv.innerHTML = '<p>❌ 社区系统未加载</p>';
+            }
+        });
+    </script>
+</body>
+</html>

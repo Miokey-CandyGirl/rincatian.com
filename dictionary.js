@@ -2150,6 +2150,12 @@ function submitWordRequest() {
         return;
     }
     
+    // 检查用户是否已登录
+    if (!window.authSystem || !window.authSystem.currentUser) {
+        showMessage('请先登录后再提交申请！', 'warning');
+        return;
+    }
+    
     try {
         // 获取现有申请列表
         let requests = JSON.parse(localStorage.getItem('linkaitiya_word_requests') || '[]');

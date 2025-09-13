@@ -413,10 +413,13 @@ function initTianCalendar() {
         
         // 特殊日期
         FESTIVALS: {
-            '1-1': { name: '新星元旦', desc: '纪念光线使者地球任务开启' },
-            '4-32': { name: '星法塔日', desc: '纪念星法塔的神圣力量' },
+            '1-1': { name: '春元节', desc: '象征着万物新生新的朝气' },
+            '4-32': { name: '星法节', desc: '纪念星法塔的神圣力量，也是琳凯蒂亚最重要的活动量' },
+            '6-3': { name: '彩虹节', desc: '纪念光线使者地球任务开启（20150825）' },
             '7-15': { name: '双月交辉节', desc: '银月金月交叠成彩虹光环' },
-            '10-29': { name: '彩虹水晶节', desc: '纪念七颗彩虹水晶的力量' }
+            '8-16': { name: '妙可生日', desc: '琳凯蒂亚小公主诞辰，这天全球庆贺' },
+            '10-29': { name: '彩虹水晶节', desc: '纪念七颗彩虹水晶的力量' },
+            '12-30': { name: '夜夕节', desc: '全球欢迎新年的到来！' }
         }
     };
     
@@ -556,6 +559,241 @@ function initTianCalendar() {
         const resultDate = new Date(epochDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
         
         return resultDate;
+    }
+    
+    // 创建日期元素
+    function createDayElement(day, isOtherMonth, isToday, year, month) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day;
+        
+        if (isOtherMonth) {
+            dayElement.classList.add('other-month');
+        }
+        
+        if (isToday) {
+            dayElement.classList.add('today');
+        }
+        
+        // 检查是否为特殊日期
+        const festivalKey = month + '-' + day;
+        if (TIAN_CALENDAR.FESTIVALS[festivalKey]) {
+            dayElement.classList.add('festival');
+            dayElement.title = TIAN_CALENDAR.FESTIVALS[festivalKey].name + ': ' + TIAN_CALENDAR.FESTIVALS[festivalKey].desc;
+        }
+        
+        // 添加点击事件监听器
+        dayElement.addEventListener('click', function() {
+            showDateDetails(year, month, day, isOtherMonth);
+        });
+        
+        return dayElement;
+    }
+    
+    // 显示日期详细信息
+    function showDateDetails(year, month, day, isOtherMonth) {
+        try {
+            console.log('显示日期详情:', year, month, day);
+            
+            // 获取公历日期
+            const gregorianDate = tianToGregorian(year, month, day);
+            const gregorianYear = gregorianDate.getFullYear();
+            const gregorianMonth = gregorianDate.getMonth() + 1;
+            const gregorianDay = gregorianDate.getDate();
+            
+            console.log('公历日期:', gregorianYear, gregorianMonth, gregorianDay);
+            
+            // 获取农历信息（这里使用真实计算）
+            const lunarInfo = getLunarInfo(gregorianYear, gregorianMonth, gregorianDay);
+            
+            console.log('农历信息:', lunarInfo);
+            
+            // 获取节气信息
+            const solarTerm = getSolarTermInfo(gregorianYear, gregorianMonth, gregorianDay);
+            
+            // 获取黄帝纪年
+            const huangdiYear = LunarCalendar.getHuangdiYear(gregorianYear);
+            
+            // 获取公历节日信息
+            const solarFestival = LunarCalendar.getSolarFestival(gregorianMonth, gregorianDay);
+            
+            // 构建详细信息HTML
+            let detailsHTML = '<div class="date-details-header">' +
+                '<h3>日期详情</h3>' +
+                '<button class="close-btn" id="closeDateDetails">&times;</button>' +
+                '</div>' +
+                '<div class="date-info-grid">' +
+                '<div class="date-info-item">' +
+                '<div class="info-label">田历</div>' +
+                '<div class="info-value">' + getTianDateString(year, month, day, isOtherMonth) + '</div>' +
+                '</div>' +
+                '<div class="date-info-item">' +
+                '<div class="info-label">公历</div>' +
+                '<div class="info-value">' + gregorianYear + '年' + gregorianMonth + '月' + gregorianDay + '日</div>' +
+                '</div>' +
+                '<div class="date-info-item">' +
+                '<div class="info-label">农历</div>' +
+                '<div class="info-value">' + huangdiYear + '年' + (lunarInfo.isLeapMonth ? '闰' : '') + lunarInfo.lunarMonthName + lunarInfo.lunarDayName + '</div>' +
+                '</div>' +
+                '<div class="date-info-item">' +
+                '<div class="info-label">干支与生肖</div>' +
+                '<div class="info-value">' + lunarInfo.heavenlyStem + lunarInfo.earthlyBranch + '（' + lunarInfo.zodiac + '）年</div>' +
+                '</div>';
+            
+            if (solarTerm) {
+                detailsHTML += '<div class="date-info-item">' +
+                    '<div class="info-label">节气</div>' +
+                    '<div class="info-value">' + solarTerm.name + '</div>' +
+                    '</div>';
+            }
+            
+            // 添加农历节日信息
+            if (lunarInfo.festival) {
+                detailsHTML += '<div class="date-info-item festival-info">' +
+                    '<div class="info-label">农历节日</div>' +
+                    '<div class="info-value">' + lunarInfo.festival.name + '</div>' +
+                    '<div class="info-desc">' + lunarInfo.festival.desc + '</div>' +
+                    '</div>';
+            }
+            
+            // 添加公历节日信息
+            if (solarFestival) {
+                detailsHTML += '<div class="date-info-item festival-info">' +
+                    '<div class="info-label">公历节日</div>' +
+                    '<div class="info-value">' + solarFestival.name + '</div>' +
+                    '<div class="info-desc">' + solarFestival.desc + '</div>' +
+                    '</div>';
+            }
+            
+            // 添加特殊节日信息（田历节日）
+            const festivalKey = month + '-' + day;
+            if (TIAN_CALENDAR.FESTIVALS[festivalKey]) {
+                detailsHTML += '<div class="date-info-item festival-info">' +
+                    '<div class="info-label">田历节日</div>' +
+                    '<div class="info-value">' + TIAN_CALENDAR.FESTIVALS[festivalKey].name + '</div>' +
+                    '<div class="info-desc">' + TIAN_CALENDAR.FESTIVALS[festivalKey].desc + '</div>' +
+                    '</div>';
+            }
+            
+            detailsHTML += '</div>';
+            
+            // 显示模态框
+            showDateModal(detailsHTML);
+        } catch (error) {
+            console.error('显示日期详情时出错:', error);
+        }
+    }
+
+    // 获取田历日期字符串
+    function getTianDateString(year, month, day, isOtherMonth) {
+        const yearPrefix = year < 1 ? '田元前' : '华田';
+        const displayYear = year < 1 ? Math.abs(year) : year;
+        const monthName = TIAN_CALENDAR.MONTH_NAMES[month - 1];
+        return yearPrefix + displayYear + '年' + month + '月' + day + '日';
+    }
+
+    // 获取农历信息（使用真实的农历计算）
+    function getLunarInfo(year, month, day) {
+        try {
+            console.log('计算农历信息:', year, month, day);
+            
+            // 使用LunarCalendar类计算真实的农历信息
+            if (typeof LunarCalendar === 'undefined') {
+                console.error('LunarCalendar未定义');
+                throw new Error('LunarCalendar未定义');
+            }
+            
+            if (typeof LunarCalendar.solarToLunar !== 'function') {
+                console.error('LunarCalendar.solarToLunar不是函数');
+                throw new Error('LunarCalendar.solarToLunar不是函数');
+            }
+            
+            const lunarInfo = LunarCalendar.solarToLunar(year, month, day);
+            
+            console.log('LunarCalendar计算结果:', lunarInfo);
+            
+            // 获取农历节日信息
+            const lunarFestival = LunarCalendar.getLunarFestival(lunarInfo.lunarMonth, lunarInfo.lunarDay);
+            
+            return {
+                lunarYear: lunarInfo.lunarYear,
+                lunarMonth: lunarInfo.lunarMonth,
+                lunarDay: lunarInfo.lunarDay,
+                lunarMonthName: lunarInfo.lunarMonthName,
+                lunarDayName: lunarInfo.lunarDayName,
+                zodiac: lunarInfo.zodiac,
+                heavenlyStem: lunarInfo.heavenlyStem,
+                earthlyBranch: lunarInfo.earthlyBranch,
+                isLeapMonth: lunarInfo.isLeapMonth,
+                festival: lunarFestival
+            };
+        } catch (error) {
+            console.error('计算农历信息时出错:', error);
+            // 返回默认值
+            return {
+                lunarYear: year,
+                lunarMonth: month,
+                lunarDay: day,
+                lunarMonthName: '未知月',
+                lunarDayName: '未知日',
+                zodiac: '未知',
+                heavenlyStem: '未知',
+                earthlyBranch: '未知',
+                isLeapMonth: false,
+                festival: null
+            };
+        }
+    }
+
+    // 获取节气信息
+    function getSolarTermInfo(year, month, day) {
+        try {
+            if (typeof LunarCalendar === 'undefined' || typeof LunarCalendar.getSolarTerm !== 'function') {
+                console.error('LunarCalendar或getSolarTerm未定义');
+                return null;
+            }
+            
+            return LunarCalendar.getSolarTerm(year, month, day);
+        } catch (error) {
+            console.error('获取节气信息时出错:', error);
+            return null;
+        }
+    }
+
+    // 显示日期详情模态框
+    function showDateModal(content) {
+        // 创建模态框元素
+        const modal = document.createElement('div');
+        modal.className = 'date-details-modal';
+        modal.innerHTML = '<div class="date-details-content">' + content + '</div>';
+        
+        // 添加到页面
+        document.body.appendChild(modal);
+        
+        // 添加关闭事件
+        const closeBtn = modal.querySelector('#closeDateDetails');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        // 点击模态框外部关闭
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // ESC键关闭
+        function handleEscKey(e) {
+            if (e.key === 'Escape') {
+                document.body.removeChild(modal);
+                document.removeEventListener('keydown', handleEscKey);
+            }
+        }
+        
+        document.addEventListener('keydown', handleEscKey);
     }
     
     // 初始化日历
@@ -700,12 +938,12 @@ function initTianCalendar() {
             const yearPrefix = currentDisplayYear < 1 ? '田元前' : '华田';
             const displayYear = currentDisplayYear < 1 ? Math.abs(currentDisplayYear) : currentDisplayYear;
             
-            titleElement.textContent = `${yearPrefix}${displayYear}年 ${TIAN_CALENDAR.MONTH_NAMES[currentDisplayMonth - 1]}`;
+            titleElement.textContent = yearPrefix + displayYear + '年 ' + TIAN_CALENDAR.MONTH_NAMES[currentDisplayMonth - 1];
             
             // 显示对应的公历日期范围
             const firstDay = tianToGregorian(currentDisplayYear, currentDisplayMonth, 1);
             const lastDay = tianToGregorian(currentDisplayYear, currentDisplayMonth, getTianMonthDays(currentDisplayYear, currentDisplayMonth));
-            subtitleElement.textContent = `对应公历: ${firstDay.getFullYear()}.${firstDay.getMonth() + 1}.${firstDay.getDate()} - ${lastDay.getFullYear()}.${lastDay.getMonth() + 1}.${lastDay.getDate()}`;
+            subtitleElement.textContent = '对应公历: ' + firstDay.getFullYear() + '.' + (firstDay.getMonth() + 1) + '.' + firstDay.getDate() + ' - ' + lastDay.getFullYear() + '.' + (lastDay.getMonth() + 1) + '.' + lastDay.getDate();
         }
     }
     
@@ -756,30 +994,6 @@ function initTianCalendar() {
         }
     }
     
-    // 创建日期元素
-    function createDayElement(day, isOtherMonth, isToday, year, month) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
-        dayElement.textContent = day;
-        
-        if (isOtherMonth) {
-            dayElement.classList.add('other-month');
-        }
-        
-        if (isToday) {
-            dayElement.classList.add('today');
-        }
-        
-        // 检查是否为特殊日期
-        const festivalKey = `${month}-${day}`;
-        if (TIAN_CALENDAR.FESTIVALS[festivalKey]) {
-            dayElement.classList.add('festival');
-            dayElement.title = `${TIAN_CALENDAR.FESTIVALS[festivalKey].name}: ${TIAN_CALENDAR.FESTIVALS[festivalKey].desc}`;
-        }
-        
-        return dayElement;
-    }
-    
     // 更新今天信息
     function updateTodayInfo() {
         const todayInfoElement = document.getElementById('todayInfo');
@@ -791,10 +1005,8 @@ function initTianCalendar() {
         const yearPrefix = today.year < 1 ? '田元前' : '华田';
         const displayYear = today.year < 1 ? Math.abs(today.year) : today.year;
         
-        todayInfoElement.innerHTML = `
-            <strong>今天：</strong>${yearPrefix}${displayYear}年${today.month}月${today.day}日<br>
-            <strong>公历：</strong>${todayGregorian.getFullYear()}年${todayGregorian.getMonth() + 1}月${todayGregorian.getDate()}日
-        `;
+        todayInfoElement.innerHTML = '<strong>今天：</strong>' + yearPrefix + displayYear + '年' + today.month + '月' + today.day + '日<br>' +
+            '<strong>公历：</strong>' + todayGregorian.getFullYear() + '年' + (todayGregorian.getMonth() + 1) + '月' + todayGregorian.getDate() + '日';
     }
     
     // 更新当前年份显示
@@ -805,13 +1017,13 @@ function initTianCalendar() {
         const yearPrefix = currentDisplayYear < 1 ? '田元前' : '华田';
         const displayYear = currentDisplayYear < 1 ? Math.abs(currentDisplayYear) : currentDisplayYear;
         
-        currentYearElement.textContent = `${yearPrefix}${displayYear}年`;
+        currentYearElement.textContent = yearPrefix + displayYear + '年';
         
         // 添加年份更新动画效果
         currentYearElement.style.transform = 'scale(1.1)';
         currentYearElement.style.opacity = '0.8';
         
-        setTimeout(() => {
+        setTimeout(function() {
             currentYearElement.style.transform = 'scale(1)';
             currentYearElement.style.opacity = '1';
         }, 200);

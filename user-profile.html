@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="琳凯蒂亚语社区用户个人中心">
+    <title>我的信息 - 琳凯蒂亚语社区</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="user-profile.css">
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="rincatian-flag">
+                        <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+                    </div>
+                    <div class="planet-icon"></div>
+                    <div class="logo-text">
+                        <span class="logo-chinese">琳凯蒂亚语社区</span>
+                        <span class="logo-english">Rincatian Community</span>
+                    </div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                    <li><a href="user-profile.html" class="active">我的</a></li>
+                </ul>
+                <div class="nav-extras">
+                    <div class="tian-calendar">
+                        <span class="calendar-icon">📅</span>
+                        <span class="tian-date" id="tianDate">载入中...</span>
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                        <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                    </div>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <div class="user-avatar" id="userAvatar"></div>
+                        <span class="user-name" id="userName"></span>
+                        <div class="user-dropdown">
+                            <a href="user-profile.html" id="profileLink">我的信息</a>
+                            <a href="#" id="logoutLink">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="profile-header">
+            <div class="container">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <div class="avatar-large" id="profileAvatar">?</div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="profile-username" id="profileUsername">载入中...</h1>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <span class="detail-label">用户等级:</span>
+                                <span class="detail-value" id="userRank">载入中...</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">注册时间:</span>
+                                <span class="detail-value" id="joinDate">载入中...</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">最后登录:</span>
+                                <span class="detail-value" id="lastLogin">载入中...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-content">
+            <div class="container">
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="overview">概览</button>
+                    <button class="tab-btn" data-tab="achievements">成就</button>
+                    <button class="tab-btn" data-tab="activity">活动</button>
+                    <button class="tab-btn" data-tab="learning">学习进度</button>
+                    <button class="tab-btn" data-tab="favorites">我的收藏</button>
+                    <button class="tab-btn" data-tab="contributions">词汇贡献</button>
+                    <button class="tab-btn" data-tab="history">学习历史</button>
+                    <button class="tab-btn" data-tab="settings">设置</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- 概览标签页 -->
+                    <div class="tab-pane active" id="overview-tab">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">📊</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="totalPoints">0</div>
+                                    <div class="stat-label">总积分</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📚</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="wordsLearned">0</div>
+                                    <div class="stat-label">已学词汇</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">💬</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="postsCount">0</div>
+                                    <div class="stat-label">发布帖子</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">💬</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="repliesCount">0</div>
+                                    <div class="stat-label">回复数量</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activity">
+                            <h3>最近活动</h3>
+                            <div class="activity-list" id="recentActivity">
+                                <div class="activity-item">
+                                    <div class="activity-icon">👋</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">欢迎加入琳凯蒂亚语社区！</div>
+                                        <div class="activity-time">刚刚</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 成就标签页 -->
+                    <div class="tab-pane" id="achievements-tab">
+                        <div class="achievements-grid" id="achievementsGrid">
+                            <!-- 成就将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+
+                    <!-- 活动标签页 -->
+                    <div class="tab-pane" id="activity-tab">
+                        <div class="activity-section">
+                            <h3>我的帖子</h3>
+                            <div class="posts-list" id="userPosts">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📝</div>
+                                    <div class="empty-text">您还没有发布任何帖子</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-section">
+                            <h3>我的回复</h3>
+                            <div class="replies-list" id="userReplies">
+                                <div class="empty-state">
+                                    <div class="empty-icon">💬</div>
+                                    <div class="empty-text">您还没有发表任何回复</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 学习进度标签页 -->
+                    <div class="tab-pane" id="learning-tab">
+                        <div class="learning-progress-section">
+                            <h3>词汇学习进度</h3>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="vocabularyProgressFill"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span id="vocabularyProgressText">0/1000 词汇</span>
+                                    <span id="vocabularyProgressPercent">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="learning-progress-section">
+                            <h3>语法掌握进度</h3>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="grammarProgressFill"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span id="grammarProgressText">0/100 语法规则</span>
+                                    <span id="grammarProgressPercent">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="learning-progress-section">
+                            <h3>每日学习目标</h3>
+                            <div class="goal-container">
+                                <div class="goal-item">
+                                    <div class="goal-icon">📖</div>
+                                    <div class="goal-info">
+                                        <div class="goal-label">今日已学</div>
+                                        <div class="goal-value" id="todayLearned">0</div>
+                                    </div>
+                                </div>
+                                <div class="goal-item">
+                                    <div class="goal-icon">🎯</div>
+                                    <div class="goal-info">
+                                        <div class="goal-label">目标</div>
+                                        <div class="goal-value" id="dailyGoal">10</div>
+                                    </div>
+                                </div>
+                                <div class="goal-item">
+                                    <div class="goal-icon">🔥</div>
+                                    <div class="goal-info">
+                                        <div class="goal-label">连续天数</div>
+                                        <div class="goal-value" id="streakDays">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="learning-charts">
+                            <h3>学习趋势</h3>
+                            <div class="chart-container">
+                                <canvas id="learningChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 我的收藏标签页 -->
+                    <div class="tab-pane" id="favorites-tab">
+                        <div class="favorites-section">
+                            <h3>收藏的词汇</h3>
+                            <div class="favorites-grid" id="favoriteWords">
+                                <div class="empty-state">
+                                    <div class="empty-icon">❤️</div>
+                                    <div class="empty-text">您还没有收藏任何词汇</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="favorites-section">
+                            <h3>收藏的帖子</h3>
+                            <div class="favorites-list" id="favoritePosts">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📌</div>
+                                    <div class="empty-text">您还没有收藏任何帖子</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 词汇贡献标签页 -->
+                    <div class="tab-pane" id="contributions-tab">
+                        <div class="contributions-section">
+                            <h3>词汇贡献记录</h3>
+                            <p class="section-desc">您在词典页面申请添加的词汇记录</p>
+                            <div class="contributions-list" id="wordContributions">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📝</div>
+                                    <div class="empty-text">您还没有贡献任何词汇</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contributions-section">
+                            <h3>贡献统计</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon">📝</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="totalContributions">0</div>
+                                        <div class="stat-label">总申请数</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">✅</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="approvedContributions">0</div>
+                                        <div class="stat-label">已通过</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">⏳</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="pendingContributions">0</div>
+                                        <div class="stat-label">待审核</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">🔄</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="totalWordsAdded">0</div>
+                                        <div class="stat-label">已添加</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 学习历史标签页 -->
+                    <div class="tab-pane" id="history-tab">
+                        <div class="history-section">
+                            <h3>词汇学习历史</h3>
+                            <div class="history-list" id="wordHistory">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📚</div>
+                                    <div class="empty-text">暂无词汇学习记录</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="history-section">
+                            <h3>语法学习历史</h3>
+                            <div class="history-list" id="grammarHistory">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📝</div>
+                                    <div class="empty-text">暂无语法学习记录</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 设置标签页 -->
+                    <div class="tab-pane" id="settings-tab">
+                        <div class="settings-section">
+                            <h3>个人资料</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label for="username">用户名</label>
+                                    <input type="text" id="username" class="form-input" placeholder="用户名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">邮箱</label>
+                                    <input type="email" id="email" class="form-input" placeholder="邮箱地址">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="avatar">头像字符</label>
+                                    <input type="text" id="avatar" class="form-input" placeholder="头像显示字符" maxlength="1">
+                                </div>
+
+                                <!-- 预设头像选择 -->
+                                <div class="form-group">
+                                    <label>预设头像</label>
+                                    <div class="preset-avatars">
+                                        <div class="avatar-option" data-avatar="🌟">🌟</div>
+                                        <div class="avatar-option" data-avatar="👑">👑</div>
+                                        <div class="avatar-option" data-avatar="🧙">🧙</div>
+                                        <div class="avatar-option" data-avatar="📚">📚</div>
+                                        <div class="avatar-option" data-avatar="💬">💬</div>
+                                        <div class="avatar-option" data-avatar="🌍">🌍</div>
+                                        <div class="avatar-option" data-avatar="🔮">🔮</div>
+                                        <div class="avatar-option" data-avatar="✨">✨</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 文件上传 -->
+                                <div class="form-group">
+                                    <label for="avatarUpload">上传头像</label>
+                                    <input type="file" id="avatarUpload" class="form-input" accept="image/*">
+                                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                        <img id="previewImage" src="" alt="预览" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                                    </div>
+                                </div>
+
+                                <!-- 国家和地区设置 -->
+                                <div class="form-group">
+                                    <label for="country">国家/地区</label>
+                                    <select id="country" class="form-input">
+                                        <option value="">请选择国家/地区</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="province">省级</label>
+                                    <select id="province" class="form-input">
+                                        <option value="">请选择省/州</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="city">市级</label>
+                                    <select id="city" class="form-input">
+                                        <option value="">请选择城市</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bio">个人简介</label>
+                                    <textarea id="bio" class="form-textarea" placeholder="介绍一下自己吧"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">保存资料</button>
+                            </form>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h3>学习设置</h3>
+                            <div class="form-group">
+                                <label for="dailyGoalSetting">每日学习目标 (词汇数)</label>
+                                <input type="number" id="dailyGoalSetting" class="form-input" min="5" max="50" value="10">
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notificationsSetting"> 接收学习提醒
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="emailNotificationsSetting"> 接收邮件通知
+                                </label>
+                            </div>
+                            <button id="saveLearningSettings" class="btn btn-primary">保存学习设置</button>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h3>修改密码</h3>
+                            <form id="passwordForm">
+                                <div class="form-group">
+                                    <label for="oldPassword">原密码</label>
+                                    <input type="password" id="oldPassword" class="form-input" placeholder="请输入原密码">
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">新密码</label>
+                                    <input type="password" id="newPassword" class="form-input" placeholder="请输入新密码">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">确认新密码</label>
+                                    <input type="password" id="confirmPassword" class="form-input" placeholder="请再次输入新密码">
+                                </div>
+                                <button type="submit" class="btn btn-primary">修改密码</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>琳凯蒂亚语社区</h3>
+                <p>探索奇幻语言的魅力</p>
+                <p>基于《光线传奇》小说世界观</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：1778181360@qq.com</p>
+                <p>👥 QQ群：515385616</p>
+                <div class="institution">
+                    <h5>华田中央大学田语学院</h5>
+                    <p>专业的琳凯蒂亚语研究与教学机构</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 琳凯蒂亚语社区. 版权所有.</p>
+            <p>华田中央大学田语学院 版权所有</p>
+        </div>
+    </footer>
+
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="user-database.js"></script>
+    <script src="location-data.js"></script>
+    <script src="user-profile.js"></script>
+</body>
+</html>

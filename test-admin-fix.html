@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员页面修复测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a237e, #3f51b5);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .test-section h2 {
+            color: #00bcd4;
+            margin-top: 0;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            border-left: 4px solid #4caf50;
+        }
+        .error {
+            border-left: 4px solid #f44336;
+        }
+        .info {
+            border-left: 4px solid #2196f3;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 管理员页面修复测试</h1>
+        
+        <div class="test-section">
+            <h2>🔧 测试说明</h2>
+            <p>本页面用于测试管理员页面的修复效果，包括：</p>
+            <ul>
+                <li>按钮点击功能是否正常</li>
+                <li>用户数据是否能正确获取</li>
+                <li>统计数据是否显示真实数据</li>
+            </ul>
+            <p>请先确保您已使用默认管理员账户登录：</p>
+            <p><strong>用户名：</strong>琳凯蒂亚</p>
+            <p><strong>密码：</strong>Rincatian-2015!</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>🧪 功能测试</h2>
+            <button onclick="testAuthSystem()">测试认证系统</button>
+            <button onclick="testUserData()">测试用户数据</button>
+            <button onclick="testAdminPanel()">测试管理面板</button>
+            <button onclick="showLocalStorage()">查看本地存储</button>
+            
+            <div id="testResult" class="result info">
+                点击上方按钮开始测试...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 快速链接</h2>
+            <p><a href="admin.html" target="_blank">➡️ 访问管理员页面</a></p>
+            <p><a href="localstorage-viewer.html" target="_blank">➡️ 查看本地存储数据</a></p>
+            <p><a href="admin-test.html" target="_blank">➡️ 管理员功能详细测试</a></p>
+        </div>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="user-database.js"></script>
+    <script src="admin.js"></script>
+    
+    <script>
+        function updateResult(content, type = 'info') {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.textContent = content;
+            resultDiv.className = 'result ' + type;
+        }
+        
+        function testAuthSystem() {
+            updateResult('正在测试认证系统...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    if (typeof window.authSystem !== 'undefined') {
+                        const users = window.authSystem.users;
+                        const currentUser = window.authSystem.currentUser;
+                        const isAdmin = window.authSystem.isAdmin();
+                        
+                        let result = `✅ 认证系统测试通过\n\n`;
+                        result += `总用户数: ${users.length}\n`;
+                        result += `当前用户: ${currentUser ? currentUser.username : '未登录'}\n`;
+                        result += `是否为管理员: ${isAdmin}\n\n`;
+                        result += `用户列表:\n`;
+                        users.forEach((user, index) => {
+                            result += `  ${index + 1}. ${user.username} (${user.role})\n`;
+                        });
+                        
+                        updateResult(result, 'success');
+                    } else {
+                        updateResult('❌ 认证系统未加载', 'error');
+                    }
+                } catch (error) {
+                    updateResult(`❌ 测试失败: ${error.message}`, 'error');
+                }
+            }, 500);
+        }
+        
+        function testUserData() {
+            updateResult('正在测试用户数据获取...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    if (typeof window.adminPanel !== 'undefined') {
+                        const users = window.adminPanel.getUsersData();
+                        
+                        let result = `✅ 用户数据获取测试通过\n\n`;
+                        result += `获取到用户数: ${users.length}\n\n`;
+                        result += `用户详情:\n`;
+                        users.forEach((user, index) => {
+                            result += `  ${index + 1}. ${user.username}\n`;
+                            result += `     ID: ${user.id}\n`;
+                            result += `     角色: ${user.role}\n`;
+                            result += `     邮箱: ${user.email || '未设置'}\n`;
+                            result += `     注册时间: ${user.joinDate ? new Date(user.joinDate).toLocaleDateString() : '未知'}\n`;
+                            result += `     最后登录: ${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : '从未'}\n\n`;
+                        });
+                        
+                        updateResult(result, 'success');
+                    } else {
+                        updateResult('❌ 管理面板未加载', 'error');
+                    }
+                } catch (error) {
+                    updateResult(`❌ 测试失败: ${error.message}`, 'error');
+                }
+            }, 500);
+        }
+        
+        function testAdminPanel() {
+            updateResult('正在测试管理面板...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    if (typeof window.adminPanel !== 'undefined') {
+                        // 测试权限检查
+                        const hasAccess = window.adminPanel.checkAdminAccess();
+                        
+                        // 测试获取当前用户
+                        const currentUser = window.adminPanel.getCurrentUser();
+                        
+                        let result = `✅ 管理面板测试通过\n\n`;
+                        result += `管理员权限: ${hasAccess}\n`;
+                        result += `当前用户: ${currentUser ? currentUser.username : '未获取到'}\n\n`;
+                        
+                        if (hasAccess) {
+                            result += `🎉 管理员权限验证成功！\n`;
+                            result += `您可以正常访问管理员页面的所有功能。\n\n`;
+                            result += `建议操作:\n`;
+                            result += `1. 访问管理员页面测试按钮功能\n`;
+                            result += `2. 检查用户列表是否显示正确\n`;
+                            result += `3. 验证统计数据是否显示真实数据`;
+                        } else {
+                            result += `⚠️ 权限验证失败\n`;
+                            result += `请确保您已使用管理员账户登录。\n`;
+                            result += `默认管理员账户:\n`;
+                            result += `用户名: 琳凯蒂亚\n`;
+                            result += `密码: Rincatian-2015!`;
+                        }
+                        
+                        updateResult(result, 'success');
+                    } else {
+                        updateResult('❌ 管理面板未加载', 'error');
+                    }
+                } catch (error) {
+                    updateResult(`❌ 测试失败: ${error.message}`, 'error');
+                }
+            }, 500);
+        }
+        
+        function showLocalStorage() {
+            updateResult('正在读取本地存储数据...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    let result = `📋 本地存储中的用户相关数据\n\n`;
+                    
+                    // 获取用户相关数据
+                    const userKeys = [
+                        'linkaitiya_users',
+                        'linkaitiya_current_user',
+                        'linkaitiya_sessions',
+                        'linkaitiya_user_profiles',
+                        'linkaitiya_user_learning_data',
+                        'linkaitiya_user_community_data',
+                        'linkaitiya_user_settings'
+                    ];
+                    
+                    let foundData = false;
+                    userKeys.forEach(key => {
+                        const value = localStorage.getItem(key);
+                        if (value) {
+                            foundData = true;
+                            result += `${key}:\n`;
+                            try {
+                                const parsed = JSON.parse(value);
+                                result += JSON.stringify(parsed, null, 2) + '\n\n';
+                            } catch (e) {
+                                result += value + '\n\n';
+                            }
+                        }
+                    });
+                    
+                    if (!foundData) {
+                        result += '未找到用户相关数据\n';
+                        result += '请确保您已注册并登录账户';
+                    }
+                    
+                    updateResult(result, 'info');
+                } catch (error) {
+                    updateResult(`❌ 读取失败: ${error.message}`, 'error');
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>

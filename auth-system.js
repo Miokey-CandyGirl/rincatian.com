@@ -109,6 +109,31 @@ class AuthSystem {
                 password: userData.password
             });
 
+            // 初始化用户数据库
+            if (window.userDatabase) {
+                window.userDatabase.saveUserProfile({
+                    bio: '',
+                    createdAt: new Date().toISOString()
+                });
+                
+                window.userDatabase.saveLearningData({
+                    favorites: [],
+                    history: [],
+                    progress: {}
+                });
+                
+                window.userDatabase.saveCommunityData({
+                    posts: [],
+                    replies: []
+                });
+                
+                window.userDatabase.saveUserSettings({
+                    dailyGoal: 10,
+                    notifications: true,
+                    emailNotifications: true
+                });
+            }
+
             return { 
                 success: true, 
                 message: '注册成功！欢迎您加入琳凯蒂亚星球！',
@@ -144,7 +169,10 @@ class AuthSystem {
             // 验证密码 - 特殊处理admin用户和普通用户
             let passwordValid = false;
             
-            if (user.username === '琳凯蒂亚' && password === 'Rincatian-2015!') {
+            // 检查是否为管理员用户
+            const isAdminUser = user.username === '琳凯蒂亚';
+            
+            if (isAdminUser && password === 'Rincatian-2015!') {
                 // admin用户的特殊处理：直接验证明文密码
                 passwordValid = true;
                 console.log('✅ 管理员密码验证成功（明文验证）');
@@ -246,12 +274,25 @@ class AuthSystem {
         const user = this.users.find(u => u.id === this.currentUser.id);
         if (!user) return false;
 
-        return user.permissions.includes(permission) || user.role === 'admin';
+        // 确保用户有permissions属性
+        if (!user.permissions) {
+            user.permissions = this.getPermissionsByRole(user.role || 'user');
+            this.saveUsers(); // 保存更新后的用户数据
+        }
+
+        // 管理员拥有所有权限
+        if (this.isAdmin()) {
+            return true;
+        }
+
+        return user.permissions.includes(permission);
     }
 
     // 检查是否为管理员
     isAdmin() {
-        return this.currentUser && (
+        if (!this.currentUser) return false;
+        
+        return (
             this.currentUser.role === 'admin' || 
             this.currentUser.role === '管理员' ||
             this.currentUser.username === '琳凯蒂亚' ||
