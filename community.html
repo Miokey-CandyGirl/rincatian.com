@@ -85,6 +85,7 @@
                     <li><a href="#" class="nav-tab" data-tab="translation">翻译练习</a></li>
                     <li><a href="#" class="nav-tab" data-tab="events">星球活动</a></li>
                     <li><a href="#" class="nav-tab" data-tab="resources">资源分享</a></li>
+                    <li><a href="#" class="nav-tab" data-tab="stories">故事研讨</a></li>
                 </ul>
             </nav>
 
@@ -227,6 +228,350 @@
 
                         <div class="resources-grid" id="resourcesList">
                             <!-- 资源列表将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 故事研讨 -->
+                <section id="stories" class="community-section">
+                    <div class="section-header">
+                        <h2>光线传奇故事研讨</h2>
+                        <button class="btn btn-primary" id="createStoryDiscussionBtn">
+                            <span class="icon">📚</span>
+                            发起讨论
+                        </button>
+                    </div>
+
+                    <div class="story-content">
+                        <!-- 讨论分类导航 -->
+                        <div class="story-navigation">
+                            <h3>🎭 讨论分类</h3>
+                            <div class="discussion-categories">
+                                <button class="category-btn active" data-category="all" onclick="console.log('直接点击-全部'); switchStoryCategory('all')">
+                                    <span class="icon">🌟</span>
+                                    <span class="text">全部讨论</span>
+                                </button>
+                                <button class="category-btn" data-category="character" onclick="console.log('直接点击-角色'); switchStoryCategory('character')">
+                                    <span class="icon">👥</span>
+                                    <span class="text">角色分析</span>
+                                </button>
+                                <button class="category-btn" data-category="plot" onclick="console.log('直接点击-剧情'); switchStoryCategory('plot')">
+                                    <span class="icon">📚</span>
+                                    <span class="text">剧情解读</span>
+                                </button>
+                                <button class="category-btn" data-category="world" onclick="console.log('直接点击-世界观'); switchStoryCategory('world')">
+                                    <span class="icon">🌍</span>
+                                    <span class="text">世界观</span>
+                                </button>
+                                <button class="category-btn" data-category="theory" onclick="console.log('直接点击-理论'); switchStoryCategory('theory')">
+                                    <span class="icon">🔮</span>
+                                    <span class="text">理论探讨</span>
+                                </button>
+                                <button class="category-btn" data-category="creative" onclick="console.log('直接点击-创作'); switchStoryCategory('creative')">
+                                    <span class="icon">✨</span>
+                                    <span class="text">创作分享</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 热门讨论话题 -->
+                        <div class="hot-topics">
+                            <h3>🔥 热门话题</h3>
+                            <div class="topics-grid">
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>妙可的双重身份认知与成长</h4>
+                                        <span class="topic-type character">角色分析</span>
+                                    </div>
+                                    <p class="topic-excerpt">田野意识与妙可身体的融合过程体现了什么样的哲学思考？从18岁少年到6岁女童的身份转换，反映了现代社会中青少年的身份认同危机...</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 42 回复</span>
+                                        <span class="likes">❤️ 125</span>
+                                        <span class="time">2小时前</span>
+                                    </div>
+                                </div>
+
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>琳凯蒂亚星球的魔法科学体系</h4>
+                                        <span class="topic-type world">世界观</span>
+                                    </div>
+                                    <p class="topic-excerpt">银蓝色铃铛树会唱歌、流光云变色掉光球、双月交叠成彩虹...这些奇幻元素背后有怎样的科学原理？让我们从物理学角度分析...</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 38 回复</span>
+                                        <span class="likes">❤️ 89</span>
+                                        <span class="time">5小时前</span>
+                                    </div>
+                                </div>
+
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>云雨时空的心理分析：从纯真到黑化</h4>
+                                        <span class="topic-type character">角色分析</span>
+                                    </div>
+                                    <p class="topic-excerpt">从童年伙伴到叛逆者，云雨和时空的心理转变过程值得深思。他们的背叛是出于嫉妒、野心，还是更深层的心理创伤？</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 55 回复</span>
+                                        <span class="likes">❤️ 167</span>
+                                        <span class="time">1天前</span>
+                                    </div>
+                                </div>
+
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>光线传奇中的象征主义解读</h4>
+                                        <span class="topic-type theory">理论探讨</span>
+                                    </div>
+                                    <p class="topic-excerpt">彩虹水晶代表什么？星光河的流淌暗示什么？从文学角度分析故事中的象征元素和隐喻含义...</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 29 回复</span>
+                                        <span class="likes">❤️ 73</span>
+                                        <span class="time">3天前</span>
+                                    </div>
+                                </div>
+
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>梦云的救赎之路：可能性分析</h4>
+                                        <span class="topic-type plot">剧情解读</span>
+                                    </div>
+                                    <p class="topic-excerpt">被时空控制的梦云还有救赎的希望吗？从心理学和剧情发展角度，探讨她重返光明的可能路径...</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 67 回复</span>
+                                        <span class="likes">❤️ 201</span>
+                                        <span class="time">6小时前</span>
+                                    </div>
+                                </div>
+
+                                <div class="topic-card">
+                                    <div class="topic-header">
+                                        <h4>同人创作：妙可与丽丽的友谊番外</h4>
+                                        <span class="topic-type creative">创作分享</span>
+                                    </div>
+                                    <p class="topic-excerpt">分享原创同人小说《星光下的约定》，讲述妙可和丽丽在琳凯蒂亚星球的童年友谊故事...</p>
+                                    <div class="topic-stats">
+                                        <span class="replies">💬 24 回复</span>
+                                        <span class="likes">❤️ 95</span>
+                                        <span class="time">8小时前</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 角色关系图 -->
+                        <div class="character-relationships">
+                            <h3>🌟 角色关系网络</h3>
+                            <div class="relationship-diagram">
+                                <div class="character-node main">
+                                    <div class="character-avatar">👑</div>
+                                    <span>妙可/田野</span>
+                                    <small>太阳光线使者</small>
+                                </div>
+                                
+                                <div class="character-node ally">
+                                    <div class="character-avatar">⭐</div>
+                                    <span>丽丽</span>
+                                    <small>星星光线使者</small>
+                                </div>
+                                
+                                <div class="character-node enemy">
+                                    <div class="character-avatar">☁️</div>
+                                    <span>云雨/韩斌</span>
+                                    <small>叛逆者</small>
+                                </div>
+                                
+                                <div class="character-node enemy">
+                                    <div class="character-avatar">⚡</div>
+                                    <span>时空/俊伟</span>
+                                    <small>叛逆者</small>
+                                </div>
+                                
+                                <div class="character-node uncertain">
+                                    <div class="character-avatar">🌧️</div>
+                                    <span>梦云</span>
+                                    <small>小云雨使者（被控制）</small>
+                                </div>
+                                
+                                <div class="character-node guide">
+                                    <div class="character-avatar">🔮</div>
+                                    <span>星使爷爷</span>
+                                    <small>引导者</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 故事时间线 -->
+                        <div class="story-timeline">
+                            <h3>⏰ 故事时间线</h3>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">📅</div>
+                                    <div class="timeline-content">
+                                        <h4>18年前 - 琳凯蒂亚之乱</h4>
+                                        <p>云雨时空叛乱，妙可等光线使者被送往地球历练</p>
+                                        <span class="timeline-chapter">前传篇</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">🌟</div>
+                                    <div class="timeline-content">
+                                        <h4>2015年8月25日 - 彩虹水晶散落</h4>
+                                        <p>田野被袭击变身妙可，七颗彩虹水晶散落合肥</p>
+                                        <span class="timeline-chapter">第一集</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">📚</div>
+                                    <div class="timeline-content">
+                                        <h4>8月26日-9月1日 - 身份适应</h4>
+                                        <p>妙可努力适应新身体，在开学考试中突破困境</p>
+                                        <span class="timeline-chapter">第二-三集</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">⭐</div>
+                                    <div class="timeline-content">
+                                        <h4>9月7日-9日 - 丽丽觉醒</h4>
+                                        <p>妙可找到丽丽，在危机中唤醒星星光线使者</p>
+                                        <span class="timeline-chapter">第四集</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">🌧️</div>
+                                    <div class="timeline-content">
+                                        <h4>9月10日-10月1日 - 梦云陷阱</h4>
+                                        <p>时空设局控制梦云，将其改造成潜伏的棋子</p>
+                                        <span class="timeline-chapter">第五-六集</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 讨论列表 -->
+                        <div class="story-discussions">
+                            <h3>💭 最新讨论</h3>
+                            <div class="discussions-list" id="storyDiscussionsList">
+                                <!-- 讨论将通过JavaScript动态加载 -->
+                            </div>
+                            
+                            <div class="load-more">
+                                <button class="btn btn-outline" id="loadMoreDiscussionsBtn">加载更多讨论</button>
+                            </div>
+                        </div>
+
+                        <!-- 创作灵感 -->
+                        <div class="creative-inspiration">
+                            <h3>✨ 创作灵感与互动</h3>
+                            <div class="inspiration-categories">
+                                <div class="inspiration-section">
+                                    <h4>🎨 角色探索</h4>
+                                    <div class="inspiration-cards">
+                                        <div class="inspiration-card character">
+                                            <h5>👑 如果你是妙可</h5>
+                                            <p>面对身体突然变化，你会如何应对？分享你的想法和解决方案</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleInspirationClick('🎨 角色扮演')">参与讨论</button>
+                                        </div>
+                                        <div class="inspiration-card character">
+                                            <h5>⭐ 丽丽的成长轨迹</h5>
+                                            <p>分析丽丽从普通女孩到星星光线使者的成长历程</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleCharacterAnalysis('丽丽')">深度分析</button>
+                                        </div>
+                                        <div class="inspiration-card character">
+                                            <h5>🌧️ 梦云的内心世界</h5>
+                                            <p>探索梦云在被控制前后的心理状态变化</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleCharacterAnalysis('梦云')">心理分析</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inspiration-section">
+                                    <h4>🌍 世界构建</h4>
+                                    <div class="inspiration-cards">
+                                        <div class="inspiration-card world">
+                                            <h5>🌌 新地区设计</h5>
+                                            <p>设计一个琳凯蒂亚星球上的新地区，包括地貌、生物和文化</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleWorldBuilding('地区')">开始创造</button>
+                                        </div>
+                                        <div class="inspiration-card world">
+                                            <h5>🦄 神奇生物</h5>
+                                            <p>创造一种琳凯蒂亚星球特有的神奇生物，详细描述其能力和习性</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleWorldBuilding('生物')">设计生物</button>
+                                        </div>
+                                        <div class="inspiration-card world">
+                                            <h5>✨ 魔法系统</h5>
+                                            <p>完善光线魔法的理论体系，探讨不同魔法之间的关系</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleWorldBuilding('魔法')">理论探讨</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inspiration-section">
+                                    <h4>📝 情节创作</h4>
+                                    <div class="inspiration-cards">
+                                        <div class="inspiration-card plot">
+                                            <h5>🔮 剧情预测</h5>
+                                            <p>梦云被控制后会发生什么？分享你的预测和分析</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleInspirationClick('🔮 情节预测')">写预测</button>
+                                        </div>
+                                        <div class="inspiration-card plot">
+                                            <h5>🕰️ 平行时空</h5>
+                                            <p>如果云雨和时空没有背叛，故事会如何发展？</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handlePlotCreation('平行')">创作番外</button>
+                                        </div>
+                                        <div class="inspiration-card plot">
+                                            <h5>🎉 后续剧情</h5>
+                                            <p>第六集之后的故事会怎样发展？创作你的续集</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handlePlotCreation('后续')">续写故事</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inspiration-section">
+                                    <h4>🎨 艺术创作</h4>
+                                    <div class="inspiration-cards">
+                                        <div class="inspiration-card creative">
+                                            <h5>🎵 音乐创作</h5>
+                                            <p>为光线传奇创作主题音乐，或用琳凯蒂亚语写歌词</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleArtCreation('音乐')">创作音乐</button>
+                                        </div>
+                                        <div class="inspiration-card creative">
+                                            <h5>🎨 绘画分享</h5>
+                                            <p>绘制角色形象、场景设定或故事情节的插图</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleArtCreation('绘画')">上传作品</button>
+                                        </div>
+                                        <div class="inspiration-card creative">
+                                            <h5>🎦 视频创作</h5>
+                                            <p>制作角色分析视频、故事解读或翻译教学</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleArtCreation('视频')">分享视频</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inspiration-section">
+                                    <h4>🧠 理论研究</h4>
+                                    <div class="inspiration-cards">
+                                        <div class="inspiration-card theory">
+                                            <h5>📚 文学分析</h5>
+                                            <p>从文学角度分析故事的象征意义、主题思想等</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleTheoryDiscussion('文学')">学术讨论</button>
+                                        </div>
+                                        <div class="inspiration-card theory">
+                                            <h5>🧠 心理学研究</h5>
+                                            <p>从心理学角度分析角色行为和情感变化</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleTheoryDiscussion('心理学')">心理分析</button>
+                                        </div>
+                                        <div class="inspiration-card theory">
+                                            <h5>🔬 科学探索</h5>
+                                            <p>从科学角度探讨魔法系统的可能性和原理</p>
+                                            <button class="btn btn-secondary btn-small" onclick="handleTheoryDiscussion('科学')">科学分析</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -388,6 +733,68 @@
         </div>
     </div>
 
+    <!-- 故事讨论模态框 -->
+    <div class="modal" id="storyDiscussionModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>发起故事讨论</h3>
+                <button class="close-btn" data-modal="storyDiscussionModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="storyDiscussionForm">
+                    <div class="form-group">
+                        <label for="storyTitle">讨论标题</label>
+                        <input type="text" id="storyTitle" placeholder="请输入讨论标题..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="storyChapter">相关章节</label>
+                        <select id="storyChapter">
+                            <option value="general">综合讨论</option>
+                            <option value="prequel">前传篇</option>
+                            <option value="chapter1">第一集</option>
+                            <option value="chapter2">第二集</option>
+                            <option value="chapter3">第三集</option>
+                            <option value="chapter4">第四集</option>
+                            <option value="chapter5">第五集</option>
+                            <option value="chapter6">第六集</option>
+                            <option value="characters">角色分析</option>
+                            <option value="worldbuilding">世界观</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="discussionType">讨论类型</label>
+                        <select id="discussionType">
+                            <option value="analysis">剧情分析</option>
+                            <option value="character">角色探讨</option>
+                            <option value="prediction">剧情预测</option>
+                            <option value="worldview">世界观讨论</option>
+                            <option value="creative">二次创作</option>
+                            <option value="question">疑问解答</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="storyContent">讨论内容</label>
+                        <textarea id="storyContent" rows="10" placeholder="分享您对《光线传奇》的见解和想法..."></textarea>
+                        <span class="form-hint">可以包含具体的情节引用、角色分析、剧情预测等</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="storyTags">讨论标签</label>
+                        <input type="text" id="storyTags" placeholder="请输入标签，用逗号分隔">
+                        <span class="form-hint">例如：妙可,身份认知,双重身份</span>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="containsSpoilers">
+                            <span>包含剧透内容</span>
+                        </label>
+                        <span class="form-hint">勾选此项将会在标题上添加剧透警告</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">发起讨论</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -421,7 +828,15 @@
         </div>
     </footer>
 
-    <script src="auth-system.js"></script>
+    <!-- Supabase系统脚本 -->
+    <!-- Supabase CDN支持 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase配置 -->
+    <script src="config/supabase.js"></script>
+    <!-- GitHub Pages兼容的认证和内容管理系统 -->
+    <script src="github-pages-auth-system.js"></script>
+    <script src="github-pages-content-manager.js"></script>
+    <!-- 社区系统 -->
     <script src="community-system.js"></script>
     <script src="content-manager.js"></script>
     <script src="ai-translation.js"></script>

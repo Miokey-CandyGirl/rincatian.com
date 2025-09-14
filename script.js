@@ -1988,43 +1988,43 @@ document.head.appendChild(authStyle);
 function initializeDailyWord() {
     const dailyWords = [
         {
-            linkaitiya: 'link',
-            pronunciation: '[liŋk]',
+            linkaitiya: 'lātiŋ',
+            pronunciation: '[lai ting]',
             chinese: '光，光线',
             type: '名词',
-            example: 'link beautiful',
-            exampleChinese: '美丽的光线'
+            example: 'lātiŋe lātiŋ！',
+            exampleChinese: '释放光线！'
         },
         {
-            linkaitiya: 'kaitiya',
-            pronunciation: '[kaɪˈtiːja]',
-            chinese: '星球，世界',
+            linkaitiya: 'sēgā',
+            pronunciation: '[sei gai]',
+            chinese: '世界，星球',
             type: '名词',
-            example: 'beautiful kaitiya',
+            example: 'bela sēgā',
             exampleChinese: '美丽的星球'
         },
         {
-            linkaitiya: 'beautiful',
-            pronunciation: '[bjuːˈtɪfol]',
+            linkaitiya: 'bela',
+            pronunciation: '[be la]',
             chinese: '美丽的',
             type: '形容词',
-            example: 'beautiful nim mun',
+            example: 'bela nim luno',
             exampleChinese: '美丽的双月'
         },
         {
             linkaitiya: 'sose',
-            pronunciation: '[soːseː]',
+            pronunciation: '[so se]',
             chinese: '学习',
             type: '动词',
-            example: 'wi sose linkaitiya',
+            example: 'wi sose Rincatian',
             exampleChinese: '我学习琳凯蒂亚语'
         },
         {
-            linkaitiya: 'mun',
-            pronunciation: '[muːn]',
-            chinese: '月亮',
+            linkaitiya: 'luno',
+            pronunciation: '[lu no]',
+            chinese: '月亮，月球',
             type: '名词',
-            example: 'nim mun shine',
+            example: 'nim luno\'ô lātiŋe',
             exampleChinese: '双月闪耀'
         }
     ];

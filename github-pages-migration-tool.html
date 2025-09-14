@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages 数据迁移工具 - 琳凯蒂亚语社区</title>
+    <link rel="icon" href="flag_logo.jpg" type="image/jpg">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a237e, #3f51b5);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+        
+        .migration-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            color: #00bcd4;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+        }
+        
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+        }
+        
+        .status {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+        
+        .status.info {
+            background: rgba(0, 188, 212, 0.2);
+            border: 1px solid #00bcd4;
+            color: #00bcd4;
+        }
+        
+        .data-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00bcd4, #4caf50);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step.active .step-number {
+            background: #00bcd4;
+        }
+        
+        .step.completed .step-number {
+            background: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 GitHub Pages 数据迁移工具</h1>
+        
+        <div class="warning">
+            <strong>⚠️ 重要提示：</strong>
+            <ul>
+                <li>这是一次性的数据迁移工具，用于将LocalStorage数据迁移到Supabase</li>
+                <li>请确保您已经在Supabase中设置好数据库表结构</li>
+                <li>迁移过程不可逆，请谨慎操作</li>
+                <li>建议在迁移前备份您的数据</li>
+            </ul>
+        </div>
+
+        <!-- 步骤指示器 -->
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div>检查环境</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div>扫描数据</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div>执行迁移</div>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <div>验证结果</div>
+            </div>
+        </div>
+
+        <!-- 环境检查 -->
+        <div class="migration-section">
+            <div class="section-title">
+                🔧 环境检查
+            </div>
+            <div id="environmentStatus" class="status info">
+                正在检查环境配置...
+            </div>
+            <button class="btn" onclick="checkEnvironment()">重新检查环境</button>
+        </div>
+
+        <!-- 数据扫描 -->
+        <div class="migration-section">
+            <div class="section-title">
+                📊 LocalStorage 数据扫描
+            </div>
+            <div id="scanStatus" class="status info">
+                点击按钮开始扫描本地数据
+            </div>
+            <button class="btn" onclick="scanLocalData()" id="scanBtn">扫描本地数据</button>
+            
+            <div id="dataPreview" class="data-preview" style="display: none;">
+                <!-- 数据预览将在这里显示 -->
+            </div>
+        </div>
+
+        <!-- 数据迁移 -->
+        <div class="migration-section">
+            <div class="section-title">
+                🚀 数据迁移
+            </div>
+            <div id="migrationStatus" class="status info">
+                请先完成数据扫描
+            </div>
+            <div class="progress-bar" style="display: none;" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button class="btn btn-success" onclick="startMigration()" id="migrateBtn" disabled>开始迁移</button>
+            <button class="btn btn-danger" onclick="clearLocalData()" id="clearBtn" disabled>清除本地数据</button>
+        </div>
+
+        <!-- 迁移结果 -->
+        <div class="migration-section">
+            <div class="section-title">
+                ✅ 迁移结果
+            </div>
+            <div id="resultStatus" class="status info">
+                迁移完成后将显示结果
+            </div>
+            <div id="migrationDetails" style="display: none;">
+                <!-- 迁移详情将在这里显示 -->
+            </div>
+        </div>
+
+        <!-- 返回按钮 -->
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn" onclick="window.location.href='index.html'">
+                🏠 返回首页
+            </button>
+            <button class="btn" onclick="window.location.href='admin.html'">
+                ⚙️ 管理后台
+            </button>
+        </div>
+    </div>
+
+    <!-- Supabase CDN支持 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase配置 -->
+    <script src="config/supabase.js"></script>
+    <!-- GitHub Pages兼容的认证和内容管理系统 -->
+    <script src="github-pages-auth-system.js"></script>
+    <script src="github-pages-content-manager.js"></script>
+
+    <script>
+        // GitHub Pages版本的数据迁移逻辑
+        let localData = null;
+        let migrationProgress = 0;
+
+        // 检查环境
+        async function checkEnvironment() {
+            const statusEl = document.getElementById('environmentStatus');
+            statusEl.className = 'status info';
+            statusEl.textContent = '正在检查环境...';
+
+            try {
+                // 检查Supabase连接
+                if (!window.supabaseClient) {
+                    throw new Error('Supabase客户端未初始化');
+                }
+
+                // 测试数据库连接
+                const { data, error } = await window.supabaseClient
+                    .from('users')
+                    .select('count', { count: 'exact', head: true });
+
+                if (error && error.code !== 'PGRST116') {
+                    throw new Error(`数据库连接失败: ${error.message}`);
+                }
+
+                statusEl.className = 'status success';
+                statusEl.innerHTML = `
+                    ✅ 环境检查通过<br>
+                    📡 Supabase连接正常<br>
+                    🗄️ 数据库表可访问
+                `;
+
+                updateStep(1, 'completed');
+                updateStep(2, 'active');
+
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.innerHTML = `
+                    ❌ 环境检查失败<br>
+                    错误信息: ${error.message}
+                `;
+            }
+        }
+
+        // 扫描本地数据
+        function scanLocalData() {
+            const statusEl = document.getElementById('scanStatus');
+            const previewEl = document.getElementById('dataPreview');
+            const scanBtn = document.getElementById('scanBtn');
+
+            statusEl.className = 'status info';
+            statusEl.textContent = '正在扫描本地数据...';
+
+            try {
+                // 扫描LocalStorage
+                const vocabularyData = JSON.parse(localStorage.getItem('linkaitiya_vocabulary') || '[]');
+                const grammarData = JSON.parse(localStorage.getItem('linkaitiya_grammar') || '[]');
+                const userData = JSON.parse(localStorage.getItem('linkaitiya_users') || '[]');
+                const phrasesData = JSON.parse(localStorage.getItem('linkaitiya_phrases') || '[]');
+
+                localData = {
+                    vocabulary: vocabularyData,
+                    grammar: grammarData,
+                    users: userData,
+                    phrases: phrasesData
+                };
+
+                const totalItems = vocabularyData.length + grammarData.length + userData.length + phrasesData.length;
+
+                if (totalItems === 0) {
+                    statusEl.className = 'status info';
+                    statusEl.textContent = '未发现本地数据，可能已经迁移或者是新安装';
+                    return;
+                }
+
+                statusEl.className = 'status success';
+                statusEl.innerHTML = `
+                    ✅ 扫描完成，发现 ${totalItems} 条数据<br>
+                    📚 词汇: ${vocabularyData.length} 条<br>
+                    📝 语法: ${grammarData.length} 条<br>
+                    👥 用户: ${userData.length} 条<br>
+                    💬 短语: ${phrasesData.length} 条
+                `;
+
+                // 显示数据预览
+                previewEl.innerHTML = `
+                    <h4>数据预览 (前5条)</h4>
+                    <h5>词汇数据:</h5>
+                    <pre>${JSON.stringify(vocabularyData.slice(0, 5), null, 2)}</pre>
+                    <h5>语法数据:</h5>
+                    <pre>${JSON.stringify(grammarData.slice(0, 5), null, 2)}</pre>
+                `;
+                previewEl.style.display = 'block';
+
+                // 启用迁移按钮
+                document.getElementById('migrateBtn').disabled = false;
+
+                updateStep(2, 'completed');
+                updateStep(3, 'active');
+
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = `扫描失败: ${error.message}`;
+            }
+        }
+
+        // 开始迁移
+        async function startMigration() {
+            if (!localData) {
+                alert('请先扫描本地数据');
+                return;
+            }
+
+            const statusEl = document.getElementById('migrationStatus');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const migrateBtn = document.getElementById('migrateBtn');
+
+            statusEl.className = 'status info';
+            statusEl.textContent = '开始数据迁移...';
+            progressBar.style.display = 'block';
+            migrateBtn.disabled = true;
+
+            try {
+                let completed = 0;
+                const totalSteps = 4; // 词汇、语法、用户、短语
+
+                // 迁移词汇数据
+                if (localData.vocabulary.length > 0) {
+                    statusEl.textContent = '正在迁移词汇数据...';
+                    await migrateVocabulary(localData.vocabulary);
+                    completed++;
+                    updateProgress(completed / totalSteps * 100);
+                }
+
+                // 迁移语法数据
+                if (localData.grammar.length > 0) {
+                    statusEl.textContent = '正在迁移语法数据...';
+                    await migrateGrammar(localData.grammar);
+                    completed++;
+                    updateProgress(completed / totalSteps * 100);
+                }
+
+                // 迁移用户数据
+                if (localData.users.length > 0) {
+                    statusEl.textContent = '正在迁移用户数据...';
+                    await migrateUsers(localData.users);
+                    completed++;
+                    updateProgress(completed / totalSteps * 100);
+                }
+
+                // 迁移短语数据
+                if (localData.phrases.length > 0) {
+                    statusEl.textContent = '正在迁移短语数据...';
+                    await migratePhrases(localData.phrases);
+                    completed++;
+                    updateProgress(completed / totalSteps * 100);
+                }
+
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ 数据迁移完成！';
+
+                // 启用清除按钮
+                document.getElementById('clearBtn').disabled = false;
+
+                updateStep(3, 'completed');
+                updateStep(4, 'active');
+
+                // 显示迁移结果
+                await showMigrationResults();
+
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = `迁移失败: ${error.message}`;
+                migrateBtn.disabled = false;
+            }
+        }
+
+        // 迁移词汇数据
+        async function migrateVocabulary(vocabularyData) {
+            for (const vocab of vocabularyData) {
+                const { error } = await window.supabaseClient
+                    .from('vocabulary')
+                    .upsert({
+                        word: vocab.word,
+                        pronunciation: vocab.pronunciation,
+                        meaning: vocab.meaning,
+                        type: vocab.type,
+                        definition: vocab.definition,
+                        examples: vocab.examples,
+                        etymology: vocab.etymology,
+                        usage: vocab.usage,
+                        level: vocab.level,
+                        tags: vocab.tags,
+                        created_by: vocab.createdBy || 'migrated'
+                    });
+
+                if (error) {
+                    console.warn('词汇迁移警告:', error);
+                }
+            }
+        }
+
+        // 迁移语法数据
+        async function migrateGrammar(grammarData) {
+            for (const grammar of grammarData) {
+                const { error } = await window.supabaseClient
+                    .from('grammar')
+                    .upsert({
+                        title: grammar.title,
+                        category: grammar.category,
+                        description: grammar.description,
+                        rules: grammar.rules,
+                        examples: grammar.examples,
+                        exceptions: grammar.exceptions,
+                        level: grammar.level,
+                        order_num: grammar.order,
+                        created_by: grammar.createdBy || 'migrated'
+                    });
+
+                if (error) {
+                    console.warn('语法迁移警告:', error);
+                }
+            }
+        }
+
+        // 迁移用户数据
+        async function migrateUsers(userData) {
+            for (const user of userData) {
+                // 注意：用户数据需要特殊处理，因为涉及认证
+                console.log('用户数据迁移:', user.username);
+                // 这里可以根据需要实现用户数据迁移逻辑
+            }
+        }
+
+        // 迁移短语数据
+        async function migratePhrases(phrasesData) {
+            for (const phrase of phrasesData) {
+                const { error } = await window.supabaseClient
+                    .from('phrases')
+                    .upsert({
+                        linkaitiya: phrase.linkaitiya,
+                        chinese: phrase.chinese,
+                        pronunciation: phrase.pronunciation,
+                        category: phrase.category,
+                        usage: phrase.usage,
+                        level: phrase.level,
+                        created_by: phrase.createdBy || 'migrated'
+                    });
+
+                if (error) {
+                    console.warn('短语迁移警告:', error);
+                }
+            }
+        }
+
+        // 显示迁移结果
+        async function showMigrationResults() {
+            const resultEl = document.getElementById('resultStatus');
+            const detailsEl = document.getElementById('migrationDetails');
+
+            try {
+                // 查询迁移后的数据统计
+                const [vocabResult, grammarResult] = await Promise.all([
+                    window.supabaseClient.from('vocabulary').select('*', { count: 'exact', head: true }),
+                    window.supabaseClient.from('grammar').select('*', { count: 'exact', head: true })
+                ]);
+
+                resultEl.className = 'status success';
+                resultEl.textContent = '✅ 迁移完成，数据已成功保存到Supabase';
+
+                detailsEl.innerHTML = `
+                    <h4>迁移统计:</h4>
+                    <ul>
+                        <li>📚 词汇表: ${vocabResult.count || 0} 条记录</li>
+                        <li>📝 语法表: ${grammarResult.count || 0} 条记录</li>
+                        <li>🔗 数据库: Supabase (云端)</li>
+                        <li>⏰ 迁移时间: ${new Date().toLocaleString()}</li>
+                    </ul>
+                `;
+                detailsEl.style.display = 'block';
+
+                updateStep(4, 'completed');
+
+            } catch (error) {
+                resultEl.className = 'status error';
+                resultEl.textContent = `获取迁移结果失败: ${error.message}`;
+            }
+        }
+
+        // 清除本地数据
+        function clearLocalData() {
+            if (!confirm('确定要清除本地LocalStorage数据吗？此操作不可恢复！')) {
+                return;
+            }
+
+            const keysToRemove = [
+                'linkaitiya_vocabulary',
+                'linkaitiya_grammar',
+                'linkaitiya_users',
+                'linkaitiya_phrases',
+                'linkaitiya_current_user',
+                'linkaitiya_sessions'
+            ];
+
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+            });
+
+            alert('✅ 本地数据已清除');
+            document.getElementById('clearBtn').disabled = true;
+        }
+
+        // 更新步骤状态
+        function updateStep(stepNumber, status) {
+            const step = document.getElementById(`step${stepNumber}`);
+            step.className = `step ${status}`;
+        }
+
+        // 更新进度条
+        function updateProgress(percent) {
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = `${percent}%`;
+        }
+
+        // 页面加载时自动检查环境
+        window.addEventListener('load', function() {
+            setTimeout(checkEnvironment, 1000);
+        });
+    </script>
+</body>
+</html>

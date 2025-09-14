@@ -881,6 +881,70 @@
     100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(78, 205, 196, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.6), 0 0 30px rgba(78, 205, 196, 0.3); }
+    100% { box-shadow: 0 0 5px rgba(78, 205, 196, 0.3); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% { transform: translate3d(0, 0, 0); }
+    40%, 43% { transform: translate3d(0, -8px, 0); }
+    70% { transform: translate3d(0, -4px, 0); }
+    90% { transform: translate3d(0, -2px, 0); }
+}
+
+/* 应用动画到元素 */
+.story-discussion-item {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.story-discussion-item:nth-child(1) { animation-delay: 0.1s; }
+.story-discussion-item:nth-child(2) { animation-delay: 0.2s; }
+.story-discussion-item:nth-child(3) { animation-delay: 0.3s; }
+.story-discussion-item:nth-child(4) { animation-delay: 0.4s; }
+.story-discussion-item:nth-child(5) { animation-delay: 0.5s; }
+
+.topic-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.topic-card:nth-child(1) { animation-delay: 0.1s; }
+.topic-card:nth-child(2) { animation-delay: 0.2s; }
+.topic-card:nth-child(3) { animation-delay: 0.3s; }
+.topic-card:nth-child(4) { animation-delay: 0.4s; }
+
+.inspiration-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.inspiration-card:nth-child(1) { animation-delay: 0.1s; }
+.inspiration-card:nth-child(2) { animation-delay: 0.2s; }
+.inspiration-card:nth-child(3) { animation-delay: 0.3s; }
+
+.category-btn.active {
+    animation: pulse 2s infinite;
+}
+
+.author-avatar {
+    animation: glow 3s ease-in-out infinite;
+}
+
+.spoiler-badge {
+    animation: bounce 2s infinite;
+}
+
 /* 用户资料样式 */
 .user-profile {
     max-width: 500px;
@@ -2329,4 +2393,1064 @@
 .btn > * {
     position: relative;
     z-index: 2;
+}
+
+/* ================ 故事研讨样式 ================ */
+
+/* 故事内容容器 */
+.story-content {
+    display: grid;
+    gap: 2rem;
+    max-width: 100%;
+}
+
+/* 故事导航 */
+.story-navigation {
+    margin-bottom: 2.5rem;
+}
+
+.story-navigation h3 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* 讨论分类导航 */
+.discussion-categories {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.category-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.category-btn:hover::before {
+    left: 100%;
+}
+
+.category-btn:hover {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.category-btn.active {
+    background: linear-gradient(135deg, #ffd700, #4ecdc4);
+    color: #1a1a2e;
+    border-color: transparent;
+    font-weight: 600;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.category-btn .icon {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.category-btn:hover .icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.category-btn.active .icon {
+    transform: scale(1.2);
+}
+
+.chapter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chapter-tab {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.chapter-tab:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+}
+
+.chapter-tab.active {
+    background: linear-gradient(45deg, #ffd700, #4ecdc4);
+    color: #1a1a2e;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+/* 热门话题 */
+.hot-topics {
+    margin-bottom: 2.5rem;
+}
+
+.hot-topics h3 {
+    color: #ff6b6b;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.topic-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.8rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
+    border-radius: 16px 16px 0 0;
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.topic-card:hover::before {
+    transform: scaleX(1);
+}
+
+.topic-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(255, 215, 0, 0.4);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(255, 215, 0, 0.1);
+}
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.topic-header h4 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    flex: 1;
+    font-weight: 600;
+}
+
+.topic-type {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.topic-type.character {
+    background: linear-gradient(45deg, #ff6b6b, #e74c3c);
+    color: #fff;
+}
+
+.topic-type.plot {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: #fff;
+}
+
+.topic-type.world {
+    background: linear-gradient(45deg, #9b59b6, #8e44ad);
+    color: #fff;
+}
+
+.topic-type.theory {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    color: #fff;
+}
+
+.topic-type.creative {
+    background: linear-gradient(45deg, #ffd700, #f39c12);
+    color: #1a1a2e;
+}
+
+.topic-excerpt {
+    color: #b0b0c8;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.topic-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #888;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.topic-stats .replies,
+.topic-stats .likes {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+}
+
+.topic-stats .time {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* 角色关系图 */
+.character-relationships {
+    margin-bottom: 2rem;
+}
+
+.character-relationships h3 {
+    color: #9b59b6;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.relationship-diagram {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.character-node {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.character-node.main {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    color: #1a1a2e;
+}
+
+.character-node.ally {
+    background: linear-gradient(135deg, #4ecdc4, #44a08d);
+    color: #fff;
+}
+
+.character-node.enemy {
+    background: linear-gradient(135deg, #ff6b6b, #e74c3c);
+    color: #fff;
+}
+
+.character-node.uncertain {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: #fff;
+}
+
+.character-node.guide {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    color: #fff;
+}
+
+.character-node:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.character-avatar {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.character-node span {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.character-node small {
+    opacity: 0.8;
+    font-size: 0.8rem;
+}
+
+/* 故事时间线 */
+.story-timeline {
+    margin-bottom: 2rem;
+}
+
+.story-timeline h3 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #ffd700, #4ecdc4, #ff6b6b);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(45deg, #ffd700, #4ecdc4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    z-index: 2;
+}
+
+.timeline-content {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    flex: 1;
+}
+
+.timeline-content h4 {
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.timeline-content p {
+    color: #b0b0c8;
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+.timeline-chapter {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 2px 8px;
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* 故事讨论列表 */
+.story-discussions {
+    margin-bottom: 3rem;
+}
+
+.story-discussions h3 {
+    color: #e67e22;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.discussions-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.story-discussion-item {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.story-discussion-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #e67e22, #f39c12);
+    transform: scaleY(0);
+    transition: transform 0.4s ease;
+}
+
+.story-discussion-item:hover::before {
+    transform: scaleY(1);
+}
+
+.story-discussion-item:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border-color: rgba(230, 126, 34, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 8px 15px rgba(230, 126, 34, 0.1);
+}
+
+.story-discussion-item.spoiler-warning {
+    border-color: rgba(255, 107, 107, 0.3);
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.05) 0%, rgba(255, 107, 107, 0.02) 100%);
+}
+
+.spoiler-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(45deg, #ff6b6b, #e74c3c);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+}
+
+.discussion-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.discussion-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.discussion-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.discussion-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.discussion-time {
+    color: #aaa;
+}
+
+.discussion-type {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.discussion-category {
+    background: linear-gradient(45deg, #9b59b6, #8e44ad);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.discussion-content {
+    margin-bottom: 1.5rem;
+}
+
+.discussion-title {
+    margin: 0 0 1rem 0;
+}
+
+.discussion-title a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.discussion-title a:hover {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.discussion-excerpt {
+    color: #b0b0c8;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.discussion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.discussion-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.stat-item .icon {
+    font-size: 1rem;
+}
+
+.discussion-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.story-tag {
+    background: rgba(78, 205, 196, 0.2);
+    color: #4ecdc4;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid rgba(78, 205, 196, 0.3);
+    transition: all 0.3s ease;
+}
+
+.story-tag:hover {
+    background: rgba(78, 205, 196, 0.3);
+    transform: scale(1.05);
+}
+
+/* 加载更多按钮 */
+.load-more {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.load-more .btn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    border: none;
+    color: #fff;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.load-more .btn:hover {
+    background: linear-gradient(45deg, #44a08d, #4ecdc4);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+}
+
+/* 空状态 */
+.no-discussions {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+.no-content-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+.no-discussions h4 {
+    color: #fff;
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+}
+
+.no-discussions p {
+    color: #b0b0c8;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.no-discussions .btn {
+    background: linear-gradient(45deg, #ffd700, #f39c12);
+    color: #1a1a2e;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.no-discussions .btn:hover {
+    background: linear-gradient(45deg, #f39c12, #ffd700);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+}
+
+/* 创作灵感 */
+.creative-inspiration {
+    margin-bottom: 3rem;
+}
+
+.creative-inspiration h3 {
+    color: #f39c12;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    justify-content: center;
+}
+
+.inspiration-categories {
+    display: grid;
+    gap: 2.5rem;
+}
+
+.inspiration-section {
+    position: relative;
+}
+
+.inspiration-section h4 {
+    color: #4ecdc4;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+}
+
+.inspiration-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.inspiration-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.inspiration-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 215, 0, 0.1));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 16px;
+}
+
+.inspiration-card:hover::before {
+    opacity: 1;
+}
+
+.inspiration-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+    border-color: rgba(78, 205, 196, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(78, 205, 196, 0.2);
+}
+
+.inspiration-card h5 {
+    position: relative;
+    color: #fff;
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    z-index: 1;
+}
+
+.inspiration-card p {
+    position: relative;
+    color: #b0b0c8;
+    margin-bottom: 1.8rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    z-index: 1;
+}
+
+.inspiration-card .btn {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    border: none;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.inspiration-card .btn:hover {
+    background: linear-gradient(45deg, #44a08d, #4ecdc4);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+}
+
+/* 不同类型的灵感卡片颜色 */
+.inspiration-card.character {
+    border-image: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(231, 76, 60, 0.3)) 1;
+}
+
+.inspiration-card.character:hover {
+    border-color: rgba(255, 107, 107, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(255, 107, 107, 0.2);
+}
+
+.inspiration-card.world {
+    border-image: linear-gradient(135deg, rgba(155, 89, 182, 0.3), rgba(142, 68, 173, 0.3)) 1;
+}
+
+.inspiration-card.world:hover {
+    border-color: rgba(155, 89, 182, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(155, 89, 182, 0.2);
+}
+
+.inspiration-card.plot {
+    border-image: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(41, 128, 185, 0.3)) 1;
+}
+
+.inspiration-card.plot:hover {
+    border-color: rgba(52, 152, 219, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(52, 152, 219, 0.2);
+}
+
+.inspiration-card.creative {
+    border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(243, 156, 18, 0.3)) 1;
+}
+
+.inspiration-card.creative:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(255, 215, 0, 0.2);
+}
+
+.inspiration-card.theory {
+    border-image: linear-gradient(135deg, rgba(230, 126, 34, 0.3), rgba(211, 84, 0, 0.3)) 1;
+}
+
+.inspiration-card.theory:hover {
+    border-color: rgba(230, 126, 34, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(230, 126, 34, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .community-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .community-sidebar {
+        order: -1;
+    }
+    
+    .nav-tabs {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    /* 故事研讨响应式优化 */
+    .discussion-categories {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem;
+    }
+    
+    .category-btn {
+        justify-content: center;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .topics-grid,
+    .inspiration-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .topic-card,
+    .inspiration-card {
+        padding: 1.5rem;
+    }
+    
+    .topic-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .topic-type {
+        align-self: flex-start;
+    }
+    
+    .topic-stats {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: flex-start;
+    }
+    
+    .story-discussion-item {
+        padding: 1.5rem;
+    }
+    
+    .discussion-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .discussion-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .discussion-stats {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .discussion-tags {
+        width: 100%;
+    }
+    
+    .inspiration-section h4 {
+        font-size: 1.1rem;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .inspiration-card h5 {
+        font-size: 1rem;
+    }
+    
+    .inspiration-card .btn {
+        width: 100%;
+        padding: 0.8rem 1rem;
+    }
+    
+    .relationship-diagram {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        padding: 1rem;
+    }
+    
+    .timeline {
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-marker {
+        left: -1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.7rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .community-stats {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .spoiler-badge {
+        position: static;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+    
+    .story-navigation h3,
+    .hot-topics h3,
+    .creative-inspiration h3,
+    .story-discussions h3 {
+        font-size: 1.2rem;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-btn {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+    
+    .topic-card,
+    .inspiration-card,
+    .story-discussion-item {
+        padding: 1.2rem;
+    }
+    
+    .discussion-title a {
+        font-size: 1.1rem;
+    }
+    
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .timeline-content {
+        padding: 0.8rem;
+    }
+    
+    .no-discussions {
+        padding: 2rem 1rem;
+    }
+    
+    .load-more .btn {
+        width: 100%;
+        padding: 1rem;
+    }
 }

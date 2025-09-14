@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="光线传奇小说">
     <title>琳凯蒂亚语社区- Rincatian Language Community</title>
-    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="icon" href="flag_logo.jpg" type="image/jpg">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -189,15 +189,15 @@
                     </div>
                     <div class="daily-word-content">
                         <div class="word-main">
-                            <div class="word-linkaitiya" id="dailyWordLinkaitiya">link</div>
-                            <div class="word-pronunciation" id="dailyWordPronunciation">[liŋk]</div>
+                            <div class="word-linkaitiya" id="dailyWordLinkaitiya">lātiŋ</div>
+                            <div class="word-pronunciation" id="dailyWordPronunciation">[lai ting]</div>
                         </div>
                         <div class="word-meaning">
                             <div class="word-chinese" id="dailyWordChinese">光，光线</div>
                             <div class="word-type" id="dailyWordType">名词</div>
                         </div>
                         <div class="word-example">
-                            <p class="example-linkaitiya" id="dailyWordExample">link beautiful</p>
+                            <p class="example-linkaitiya" id="dailyWordExample">bela lātiŋ</p>
                             <p class="example-chinese" id="dailyWordExampleChinese">美丽的光。</p>
                         </div>
                     </div>
@@ -368,10 +368,18 @@
         </div>
     </footer>
 
-    <script src="auth-system.js"></script>
-    <script src="content-manager.js"></script>
+    <!-- Supabase CDN支持 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase配置 -->
+    <script src="config/supabase.js"></script>
+    <!-- GitHub Pages兼容的认证和内容管理系统 -->
+    <script src="github-pages-auth-system.js"></script>
+    <script src="github-pages-content-manager.js"></script>
+    <!-- 其他系统 -->
     <script src="community-system.js"></script>
+    <!-- 日历系统 -->
     <script src="flag-navigation.js"></script>
+    <!-- 主脚本 -->
     <script src="script.js"></script>
 </body>
 </html>

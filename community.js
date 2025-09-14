@@ -9,47 +9,6 @@ let communityData = {
     currentUser: null
 };
 
-// 确保兼容层立即可用
-function ensureCompatibilityLayer() {
-    try {
-        // 从 localStorage 加载数据
-        const storedUsers = JSON.parse(localStorage.getItem('communityUsers') || '[]');
-        const storedPosts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
-        const storedCurrentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        
-        communityData.users = storedUsers;
-        communityData.posts = storedPosts;
-        communityData.currentUser = storedCurrentUser;
-        communityData.studyGroups = [];
-        
-        // 如果没有帖子数据，创建一些示例数据
-        if (storedPosts.length === 0) {
-            const samplePosts = createSamplePosts();
-            communityData.posts = samplePosts;
-            localStorage.setItem('communityPosts', JSON.stringify(samplePosts));
-            console.log('🎆 已创建示例帖子数据');
-        }
-        
-        console.log('🔧 兼容层已确保初始化:', {
-            users: communityData.users.length,
-            posts: communityData.posts.length,
-            currentUser: !!communityData.currentUser
-        });
-        
-        return true;
-    } catch (error) {
-        console.error('兼容层初始化失败:', error);
-        // 如果失败，至少确保对象存在
-        communityData = {
-            users: [],
-            posts: createSamplePosts(),
-            studyGroups: [],
-            currentUser: null
-        };
-        return false;
-    }
-}
-
 // 创建示例帖子数据
 function createSamplePosts() {
     return [
@@ -109,6 +68,1073 @@ function createSamplePosts() {
             status: 'active'
         }
     ];
+}
+
+// 确保兼容层立即可用
+function ensureCompatibilityLayer() {
+    try {
+        // 从 localStorage 加载数据
+        const storedUsers = JSON.parse(localStorage.getItem('communityUsers') || '[]');
+        const storedPosts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+        const storedCurrentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        
+        communityData.users = storedUsers;
+        communityData.posts = storedPosts;
+        communityData.currentUser = storedCurrentUser;
+        communityData.studyGroups = [];
+        
+        // 如果没有帖子数据，创建一些示例数据
+        if (storedPosts.length === 0) {
+            const samplePosts = createSamplePosts();
+            communityData.posts = samplePosts;
+            localStorage.setItem('communityPosts', JSON.stringify(samplePosts));
+            console.log('🎆 已创建示例帖子数据');
+        }
+        
+        console.log('🔧 兼容层已确保初始化:', {
+            users: communityData.users.length,
+            posts: communityData.posts.length,
+            currentUser: !!communityData.currentUser
+        });
+        
+        return true;
+    } catch (error) {
+        console.error('兼容层初始化失败:', error);
+        // 如果失败，至少确保对象存在
+        communityData = {
+            users: [],
+            posts: createSamplePosts(),
+            studyGroups: [],
+            currentUser: null
+        };
+        return false;
+    }
+}
+
+// 立即执行一次确保
+ensureCompatibilityLayer();
+
+// 初始化兼容层（向后兼容）
+function initCompatibilityLayer() {
+    return ensureCompatibilityLayer();
+}
+
+// ==================== 故事研讨功能 ====================
+
+// 故事研讨数据存储
+const storyDiscussions = {
+    discussions: [],
+    currentCategory: 'all',
+    
+    // 初始化数据
+    init() {
+        this.loadFromStorage();
+        this.initEventListeners();
+        this.loadCategoryContent();
+    },
+    
+    // 从存储加载数据
+    loadFromStorage() {
+        try {
+            const stored = localStorage.getItem('storyDiscussions');
+            if (stored) {
+                this.discussions = JSON.parse(stored);
+            } else {
+                this.discussions = this.createSampleDiscussions();
+                this.saveToStorage();
+            }
+        } catch (error) {
+            console.error('加载故事讨论数据失败:', error);
+            this.discussions = this.createSampleDiscussions();
+        }
+    },
+    
+    // 保存到存储
+    saveToStorage() {
+        try {
+            localStorage.setItem('storyDiscussions', JSON.stringify(this.discussions));
+        } catch (error) {
+            console.error('保存故事讨论数据失败:', error);
+        }
+    },
+    
+    // 创建示例讨论数据
+    createSampleDiscussions() {
+        return [
+            {
+                id: 'story_disc_001',
+                title: '妙可的双重身份认知与成长轨迹',
+                content: '从田野突然变身为妙可这一剧情来看，作者在探讨身份认同这一深刻主题。田野作为18岁少年的记忆与妙可6岁女童的身体形成强烈反差，这种冲突不仅是生理上的，更是心理认知层面的。\n\n**身体认知的撕裂：**\n- 130斤健壮少年 → 36斤纤弱女童\n- 粗糙有茧的手 → 白皙纤细的小手\n- 沙哑的嗓音 → 甜糯的童音\n- 篮球运动能力 → 铅笔都握不稳\n\n**心理适应的层次：**\n1. **拒绝期**：否认现实，强调"我是田野"\n2. **愤怒期**：对身体限制的暴躁和不甘\n3. **协商期**：尝试在新身体中保留田野特质\n4. **接受期**：开始融合双重身份，成为"田妙可"\n\n这种设定让我想到了荣格的人格面具理论，田野/妙可需要整合anima（内在女性）和外在表现，最终实现完整的自我...',
+                author: { username: '心理分析师', avatar: '🧠', displayName: '星光心理师' },
+                category: 'character',
+                type: '角色分析',
+                timestamp: Date.now() - 1000 * 60 * 60 * 2,
+                likes: 25,
+                replies: 12,
+                tags: ['身份认同', '心理分析', '角色发展', '成长轨迹'],
+                isSpoiler: false
+            },
+            {
+                id: 'story_disc_002',
+                title: '琳凯蒂亚星球生态系统的科幻设定与文化内涵',
+                content: '**奇幻生态的科学基础：**\n\n1. **银蓝色铃铛树**：果实能唱歌，可能是通过共振原理，类似风铃效应\n2. **蜂蜜色星光河**：发光莲花利用生物荧光，透明鱼类可能具有隐形能力\n3. **双月系统**：银月和金月的交叠产生特殊引力场，形成彩虹光环\n4. **流光云**：随时间变色并掉落光球，暗示大气层的能量传导\n\n**文化象征意义：**\n- 银铃树的歌声 = 自然的和谐与生命力\n- 星光河的流淌 = 时间与记忆的延续\n- 双月的交叠 = 对立统一的哲学思想\n- 流光云的变化 = 情感与精神的流动\n\n**与地球对比：**\n地球环境相对单调，缺乏魔法元素，这也解释了为什么光线使者在地球会"沉睡"——环境缺乏能量支撑...',
+                author: { username: '科幻爱好者', avatar: '🌌', displayName: '星系探索者' },
+                category: 'world',
+                type: '世界观讨论',
+                timestamp: Date.now() - 1000 * 60 * 60 * 5,
+                likes: 34,
+                replies: 18,
+                tags: ['世界观', '生态设定', '科幻元素', '文化象征'],
+                isSpoiler: false
+            },
+            {
+                id: 'story_disc_003',
+                title: '云雨时空背叛的深层动机：权力、嫉妒与命运',
+                content: '**⚠️ 本文包含前传篇重要剧透 ⚠️**\n\n重读前传部分，发现云雨和时空的背叛绝非偶然，而是多重因素交织的必然结果：\n\n**心理层面分析：**\n1. **权力欲望**：作为星帝弟弟的儿子，却无法继承王位\n2. **能力自卑**：10岁的他们vs5岁就展现强大能力的妙可\n3. **关注匮乏**：星母极度宠爱妙可，他们缺乏同等关爱\n\n**行为模式解读：**\n- 深夜练习破坏魔法 = 对现有秩序的不满\n- 攻击星法塔 = 对权力中心的挑战\n- 逃离时的回望 = 内心仍有复杂情感\n\n**"天命"的预言暗示：**\n时空能预知18年后的"天命"，说明：\n1. 他们的叛逃是宿命的一部分\n2. 星帝可能早已知晓但选择让其发生\n3. 这场劫难是光线使者成长的必要考验\n\n从某种角度看，云雨时空是"必要的恶"，推动着主角们的成长...',
+                author: { username: '情节分析专家', avatar: '🕵️', displayName: '剧情侦探' },
+                category: 'plot',
+                type: '剧情分析',
+                timestamp: Date.now() - 1000 * 60 * 60 * 24,
+                likes: 42,
+                replies: 27,
+                tags: ['反派动机', '剧情伏笔', '角色心理', '预言解读'],
+                isSpoiler: true
+            },
+            {
+                id: 'story_disc_004',
+                title: '丽丽觉醒场景的象征意义与视觉呈现',
+                content: '第四集中丽丽的觉醒场景是整个故事的高光时刻之一，充满了丰富的象征意义：\n\n**觉醒的触发条件：**\n1. **生死危机**：只有在极致的危险中，潜藏的力量才会爆发\n2. **守护意志**：不是为了自己，而是为了保护妙可的决心\n3. **记忆共鸣**："会唱歌的银色树林"触发了深层记忆\n\n**视觉效果的深层含义：**\n- **冰蓝色星光**：代表理性、冷静与纯净\n- **急速旋转的星环**：象征时间的轮回与宿命\n- **星辰符文**：古老智慧与力量的传承\n- **星尘裁决**：正义对邪恶的审判\n\n**雨中觉醒的环境设定：**\n雨天→阴霾压抑，象征困境\n星光破雨→希望穿透绝望\n冰蓝光芒→理性战胜情感\n\n**与妙可对比：**\n- 妙可：金色/温暖/太阳→感性、温情\n- 丽丽：蓝色/冷静/星辰→理性、坚毅\n两人形成完美的阴阳互补...',
+                author: { username: '视觉分析师', avatar: '🎨', displayName: '光影追寻者' },
+                category: 'plot',
+                type: '剧情解读',
+                timestamp: Date.now() - 1000 * 60 * 60 * 8,
+                likes: 29,
+                replies: 15,
+                tags: ['觉醒场景', '象征意义', '视觉效果', '角色对比'],
+                isSpoiler: false
+            },
+            {
+                id: 'story_disc_005',
+                title: '梦云被控制的心理操控技巧分析',
+                content: '第五、六集中时空对梦云的控制堪称教科书级的心理操控案例：\n\n**第一阶段：环境营造**\n- 异常大雨→创造压抑氛围\n- 抑郁孢子→放大负面情绪\n- 梦境入侵→模糊现实边界\n\n**第二阶段：需求识别**\n- 精准捕捉梦云的痛点（证明价值、逃离家庭）\n- "日结200元"击中经济需求\n- "轻松优雅"满足虚荣心理\n\n**第三阶段：信任建立**\n- 预付现金→物质诱惑\n- 温和关怀→情感依赖\n- "你很特别"→自我价值认同\n\n**第四阶段：能力展示**\n- 咖啡"魔术"→神秘感\n- 引导"觉醒"→掌控感\n- 超能力视频→虚荣心爆棚\n\n**第五阶段：深度控制**\n- 幻象公司→完整的虚假世界\n- 黑暗能量注入→生理层面的控制\n- 任务植入→行为指令\n\n这种渐进式的控制比强制洗脑更可怕，因为受害者会误以为是自己的选择...',
+                author: { username: '犯罪心理学者', avatar: '🔬', displayName: '行为分析师' },
+                category: 'theory',
+                type: '理论探讨',
+                timestamp: Date.now() - 1000 * 60 * 60 * 12,
+                likes: 38,
+                replies: 23,
+                tags: ['心理操控', '行为分析', '梦云', '反派手段'],
+                isSpoiler: true
+            },
+            {
+                id: 'story_disc_006',
+                title: '光线传奇中的成长主题：从逃避到承担',
+                content: '纵观前六集的剧情发展，"成长"是贯穿始终的核心主题：\n\n**妙可/田野的成长轨迹：**\n第一集：震惊否认 →"我是田野！"\n第二集：被迫适应 → 体验女孩生活\n第三集：自我证明 → 墨指刻答案\n第四集：承担责任 → 主动寻找丽丽\n\n**丽丽的成长轨迹：**\n- 从困惑排斥到记忆复苏\n- 从普通学生到光线使者\n- 从被保护者到守护者\n\n**成长的代价：**\n1. **身份认同的痛苦**：田野失去原有身份\n2. **责任的重负**：从个人生活到拯救世界\n3. **友情的考验**：面对被控制的梦云\n\n**成长的催化剂：**\n- 危机事件推动觉醒\n- 他人需要激发保护欲\n- 命运使命赋予意义\n\n**现实意义：**\n每个人都会经历身份转换的困惑期，关键是如何在变化中找到真正的自我，并承担相应的责任。妙可的成长历程就是一个隐喻，告诉我们成长不是失去，而是获得更完整的自己...',
+                author: { username: '文学评论家', avatar: '📖', displayName: '主题研究者' },
+                category: 'theory',
+                type: '主题探讨',
+                timestamp: Date.now() - 1000 * 60 * 60 * 18,
+                likes: 33,
+                replies: 19,
+                tags: ['成长主题', '身份认同', '责任承担', '现实意义'],
+                isSpoiler: false
+            }
+        ];
+    },
+    
+    // 添加新讨论
+    addDiscussion(discussionData) {
+        const newDiscussion = {
+            id: 'story_disc_' + Date.now(),
+            ...discussionData,
+            timestamp: Date.now(),
+            likes: 0,
+            replies: 0,
+            author: communityData.currentUser || { username: '匿名', avatar: '👤' }
+        };
+        
+        this.discussions.unshift(newDiscussion);
+        this.saveToStorage();
+        return newDiscussion;
+    },
+    
+    // 获取筛选后的讨论
+    getFilteredDiscussions(category = 'all') {
+        if (category === 'all') {
+            return this.discussions;
+        }
+        return this.discussions.filter(d => d.category === category);
+    }
+};
+
+// 初始化故事研讨功能
+function initStoryDiscussions() {
+    console.log('🎭 初始化故事研讨功能...');
+    
+    // 检查DOM元素是否存在
+    const storiesSection = document.querySelector('#stories');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    
+    console.log('🔍 检查DOM元素:', {
+        storiesSection: !!storiesSection,
+        categoryButtons: categoryBtns.length,
+        buttonsData: Array.from(categoryBtns).map(btn => ({
+            category: btn.dataset.category,
+            hasEventBound: btn.hasAttribute('data-event-bound')
+        }))
+    });
+    
+    if (!storiesSection) {
+        console.warn('⚠️ 未找到故事研讨区域');
+        return;
+    }
+    
+    // 初始化数据
+    storyDiscussions.init();
+    
+    // 绑定事件监听器
+    initStoryEventListeners();
+    
+    // 加载默认内容
+    loadStoryDiscussions('all');
+    
+    console.log('✅ 故事研讨功能初始化完成');
+}
+
+// 初始化故事研讨事件监听器
+function initStoryEventListeners() {
+    // 分类筛选按钮
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    categoryBtns.forEach(btn => {
+        // 检查是否已经绑定过事件
+        if (!btn.hasAttribute('data-event-bound')) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.dataset.category;
+                console.log('💆 点击分类按钮:', category);
+                switchStoryCategory(category);
+            });
+            // 标记为已绑定
+            btn.setAttribute('data-event-bound', 'true');
+        }
+    });
+    
+    // 创建讨论按钮
+    const createBtn = document.getElementById('createStoryDiscussionBtn');
+    if (createBtn && !createBtn.hasAttribute('data-event-bound')) {
+        createBtn.addEventListener('click', function() {
+            if (isUserLoggedIn()) {
+                showStoryDiscussionModal();
+            } else {
+                showLoginPrompt();
+            }
+        });
+        createBtn.setAttribute('data-event-bound', 'true');
+    }
+    
+    // 创作灵感按钮
+    bindInspirationButtons();
+    
+    console.log('✅ 故事研讨事件监听器已绑定', {
+        categoryButtons: categoryBtns.length,
+        createButton: !!createBtn
+    });
+}
+
+// 绑定灵感按钮
+function bindInspirationButtons() {
+    const inspirationCards = document.querySelectorAll('.inspiration-card');
+    inspirationCards.forEach(card => {
+        const button = card.querySelector('button');
+        if (button && button.onclick) {
+            // 已经有点击事件，跳过
+            return;
+        }
+        
+        if (button) {
+            const title = card.querySelector('h5')?.textContent || card.querySelector('h4')?.textContent || '';
+            const category = card.className.includes('character') ? 'character' :
+                           card.className.includes('world') ? 'world' :
+                           card.className.includes('plot') ? 'plot' :
+                           card.className.includes('creative') ? 'creative' :
+                           card.className.includes('theory') ? 'theory' : 'general';
+            
+            button.addEventListener('click', function() {
+                handleAdvancedInspiration(title, category);
+            });
+        }
+    });
+}
+
+// 切换故事分类
+function switchStoryCategory(category) {
+    console.log('🔄 切换到分类:', category);
+    
+    // 更新按钮状态
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    console.log('💆 找到的分类按钮数量:', categoryBtns.length);
+    
+    categoryBtns.forEach(btn => {
+        const isActive = btn.dataset.category === category;
+        btn.classList.toggle('active', isActive);
+        if (isActive) {
+            console.log('✅ 激活按钮:', btn.dataset.category);
+        }
+    });
+    
+    // 加载对应分类内容
+    loadStoryDiscussions(category);
+    storyDiscussions.currentCategory = category;
+    
+    console.log('🎆 分类切换完成:', category);
+}
+
+// 切换故事章节
+function switchStoryChapter(chapter) {
+    // 更新按钮状态
+    const chapterTabs = document.querySelectorAll('.chapter-tab');
+    chapterTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.chapter === chapter);
+    });
+    
+    // 加载对应章节内容
+    loadStoryDiscussions(chapter);
+    storyDiscussions.currentChapter = chapter;
+    
+    console.log('🔄 切换到章节:', chapter);
+}
+
+// 在社区页面标签切换中添加故事研讨
+function loadTabContent(tabName) {
+    console.log('📦 加载标签内容:', tabName);
+    
+    switch (tabName) {
+        case 'discussions':
+            loadDiscussions('all');
+            break;
+        case 'learning':
+            loadLearningContent();
+            break;
+        case 'translation':
+            loadTranslationContent();
+            break;
+        case 'events':
+            loadEventsContent();
+            break;
+        case 'resources':
+            loadResourcesContent();
+            break;
+        case 'stories':
+            // 初始化故事研讨功能
+            console.log('🎆 初始化故事研讨标签...');
+            setTimeout(() => {
+                initStoryDiscussions();
+            }, 100);
+            break;
+    }
+}
+
+// 工具函数
+function isUserLoggedIn() {
+    return !!(communityData.currentUser || 
+             (window.authSystem && window.authSystem.currentUser) ||
+             (window.communitySystem && window.communitySystem.currentUser));
+}
+
+function isUserAdmin() {
+    const user = communityData.currentUser || 
+                (window.authSystem && window.authSystem.currentUser) ||
+                (window.communitySystem && window.communitySystem.currentUser);
+    return user && (user.role === 'admin' || user.username === 'admin');
+}
+
+function formatTimeAgo(timestamp) {
+    if (!timestamp) return '未知时间';
+    
+    const now = Date.now();
+    const diff = now - timestamp;
+    const minute = 60 * 1000;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    
+    if (diff < minute) {
+        return '刚刚';
+    } else if (diff < hour) {
+        return Math.floor(diff / minute) + '分钟前';
+    } else if (diff < day) {
+        return Math.floor(diff / hour) + '小时前';
+    } else if (diff < 7 * day) {
+        return Math.floor(diff / day) + '天前';
+    } else {
+        return new Date(timestamp).toLocaleDateString();
+    }
+}
+
+// 在文档加载完成时也初始化故事研讨
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        // 延迟一些时间确保其他系统初始化完成
+        setTimeout(() => {
+            // 检查故事研讨标签是否激活或者是否需要初始化
+            const storiesSection = document.querySelector('#stories.community-section');
+            if (storiesSection) {
+                // 无论是否激活都初始化，确保事件监听器被绑定
+                initStoryDiscussions();
+            }
+        }, 500);
+    });
+} else {
+    // 如果文档已经加载完成
+    setTimeout(() => {
+        const storiesSection = document.querySelector('#stories.community-section');
+        if (storiesSection) {
+            // 无论是否激活都初始化，确保事件监听器被绑定
+            initStoryDiscussions();
+        }
+    }, 500);
+}
+
+// 加载故事讨论列表
+function loadStoryDiscussions(category = 'all') {
+    const discussionsList = document.getElementById('storyDiscussionsList');
+    if (!discussionsList) {
+        console.warn('未找到故事讨论列表元素');
+        return;
+    }
+    
+    const discussions = storyDiscussions.getFilteredDiscussions(category);
+    
+    if (discussions.length === 0) {
+        discussionsList.innerHTML = `
+            <div class="no-discussions">
+                <div class="no-content-icon">📚</div>
+                <h4>暂无相关讨论</h4>
+                <p>成为第一个发起${getCategoryDisplayName(category)}讨论的人吧！</p>
+                <button class="btn btn-primary" onclick="showStoryDiscussionModal()">
+                    发起讨论
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    discussionsList.innerHTML = discussions.map(discussion => 
+        createStoryDiscussionElement(discussion)
+    ).join('');
+    
+    console.log(`✅ 已加载${category}分类的${discussions.length}个讨论`);
+}
+
+// 创建故事讨论元素
+function createStoryDiscussionElement(discussion) {
+    const timeDisplay = formatTimeAgo(discussion.timestamp);
+    const spoilerClass = discussion.isSpoiler ? 'spoiler-warning' : '';
+    
+    return `
+        <div class="story-discussion-item ${spoilerClass}">
+            ${discussion.isSpoiler ? '<div class="spoiler-badge">⚠️ 剧透</div>' : ''}
+            
+            <div class="discussion-header">
+                <div class="discussion-author">
+                    <div class="author-avatar">${discussion.author.avatar}</div>
+                    <div class="author-info">
+                        <div class="author-name">${discussion.author.displayName || discussion.author.username}</div>
+                        <div class="discussion-meta">
+                            <span class="discussion-time">${timeDisplay}</span>
+                            <span class="discussion-type">${discussion.type}</span>
+                            <span class="discussion-category">${getCategoryDisplayName(discussion.category)}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="discussion-content">
+                <h4 class="discussion-title">
+                    <a href="#" onclick="viewStoryDiscussion('${discussion.id}')">
+                        ${discussion.title}
+                    </a>
+                </h4>
+                <p class="discussion-excerpt">
+                    ${discussion.isSpoiler ? '点击查看内容（包含剧透）' : truncateText(discussion.content, 120)}
+                </p>
+            </div>
+            
+            <div class="discussion-footer">
+                <div class="discussion-stats">
+                    <span class="stat-item">
+                        <span class="icon">❤️</span>
+                        <span class="count">${discussion.likes}</span>
+                    </span>
+                    <span class="stat-item">
+                        <span class="icon">💬</span>
+                        <span class="count">${discussion.replies}</span>
+                    </span>
+                </div>
+                
+                <div class="discussion-tags">
+                    ${discussion.tags.map(tag => `<span class="story-tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 显示故事讨论模态框
+function showStoryDiscussionModal() {
+    const modal = createModal('storyDiscussionModal', '发起故事讨论', `
+        <form id="storyDiscussionForm" class="story-discussion-form">
+            <div class="form-group">
+                <label for="discussionTitle">讨论标题 *</label>
+                <input type="text" id="discussionTitle" name="title" required 
+                       placeholder="请输入讨论标题，如：妙可的性格发展分析">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="discussionCategory">讨论分类 *</label>
+                    <select id="discussionCategory" name="category" required>
+                        <option value="character">角色分析</option>
+                        <option value="plot">剧情解读</option>
+                        <option value="world">世界观讨论</option>
+                        <option value="theory">理论探讨</option>
+                        <option value="creative">创作分享</option>
+                        <option value="general">综合讨论</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="discussionType">讨论类型 *</label>
+                    <select id="discussionType" name="type" required>
+                        <option value="角色分析">角色分析</option>
+                        <option value="剧情分析">剧情分析</option>
+                        <option value="剧情解读">剧情解读</option>
+                        <option value="世界观讨论">世界观讨论</option>
+                        <option value="情节预测">情节预测</option>
+                        <option value="细节考察">细节考察</option>
+                        <option value="主题探讨">主题探讨</option>
+                        <option value="理论研究">理论研究</option>
+                        <option value="创作分享">创作分享</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="discussionContent">讨论内容 *</label>
+                <textarea id="discussionContent" name="content" required rows="8" 
+                          placeholder="详细描述你的观点、分析或疑问...\n\n例如：\n- 分析角色的心理变化\n- 探讨情节的深层含义\n- 预测后续剧情发展\n- 讨论世界观设定"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="discussionTags">标签</label>
+                <input type="text" id="discussionTags" name="tags" 
+                       placeholder="用逗号分隔，如：角色发展,心理分析,妙可">
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="isSpoiler" name="isSpoiler">
+                        <span class="checkmark"></span>
+                        包含剧透内容
+                    </label>
+                    <small class="form-hint">如果讨论涉及重要剧情透露，请勾选此项</small>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('storyDiscussionModal')">
+                    取消
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="icon">📚</span>
+                    发起讨论
+                </button>
+            </div>
+        </form>
+    `, 'medium');
+    
+    document.body.appendChild(modal);
+    showModal('storyDiscussionModal');
+    
+    // 绑定表单提交事件
+    const form = document.getElementById('storyDiscussionForm');
+    if (form) {
+        form.addEventListener('submit', handleStoryDiscussionSubmit);
+    }
+}
+
+// 处理故事讨论表单提交
+function handleStoryDiscussionSubmit(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const discussionData = {
+        title: formData.get('title')?.trim(),
+        content: formData.get('content')?.trim(),
+        category: formData.get('category'),
+        type: formData.get('type'),
+        tags: formData.get('tags') ? formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+        isSpoiler: formData.get('isSpoiler') === 'on'
+    };
+    
+    // 验证数据
+    if (!discussionData.title || !discussionData.content) {
+        showNotification('请填写完整的讨论信息', 'error');
+        return;
+    }
+    
+    try {
+        // 添加讨论
+        const newDiscussion = storyDiscussions.addDiscussion(discussionData);
+        
+        // 关闭模态框
+        closeModal('storyDiscussionModal');
+        
+        // 刷新讨论列表
+        loadStoryDiscussions(storyDiscussions.currentCategory);
+        
+        // 显示成功消息
+        showNotification('讨论发起成功！', 'success');
+        
+        console.log('新故事讨论已创建:', newDiscussion);
+        
+    } catch (error) {
+        console.error('创建故事讨论失败:', error);
+        showNotification('发起讨论失败，请重试', 'error');
+    }
+}
+
+// 获取分类显示名称
+function getCategoryDisplayName(category) {
+    const categoryNames = {
+        'all': '全部',
+        'character': '角色分析',
+        'plot': '剧情解读',
+        'world': '世界观讨论',
+        'theory': '理论探讨',
+        'creative': '创作分享',
+        'general': '综合讨论'
+    };
+    return categoryNames[category] || category;
+}
+
+// 获取章节显示名称（保留兼容）
+function getChapterDisplayName(chapter) {
+    const chapterNames = {
+        'all': '全部',
+        'prequel': '前传篇',
+        'chapter1': '第一集',
+        'chapter2': '第二集', 
+        'chapter3': '第三集',
+        'chapter4': '第四集',
+        'chapter5': '第五集',
+        'chapter6': '第六集',
+        'characters': '角色分析',
+        'worldbuilding': '世界观'
+    };
+    return chapterNames[chapter] || chapter;
+}
+
+// 查看故事讨论详情
+function viewStoryDiscussion(discussionId) {
+    const discussion = storyDiscussions.discussions.find(d => d.id === discussionId);
+    if (!discussion) {
+        showNotification('讨论不存在', 'error');
+        return;
+    }
+    
+    // 显示详情模态框
+    showStoryDiscussionDetail(discussion);
+}
+
+// 显示故事讨论详情
+function showStoryDiscussionDetail(discussion) {
+    const modal = createModal('storyDiscussionDetailModal', discussion.title, `
+        <div class="story-discussion-detail">
+            ${discussion.isSpoiler ? '<div class="spoiler-warning-banner">⚠️ 本讨论包含剧透内容 ⚠️</div>' : ''}
+            
+            <div class="discussion-detail-header">
+                <div class="author-info">
+                    <div class="author-avatar">${discussion.author.avatar}</div>
+                    <div class="author-details">
+                        <div class="author-name">${discussion.author.displayName || discussion.author.username}</div>
+                        <div class="discussion-meta">
+                            <span class="discussion-time">${formatTimeAgo(discussion.timestamp)}</span>
+                            <span class="discussion-type">${discussion.type}</span>
+                            <span class="discussion-category">${getCategoryDisplayName(discussion.category)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="discussion-stats">
+                    <span class="stat-item">❤️ ${discussion.likes}</span>
+                    <span class="stat-item">💬 ${discussion.replies}</span>
+                </div>
+            </div>
+            
+            <div class="discussion-detail-content">
+                ${discussion.content.replace(/\n/g, '<br>')}
+            </div>
+            
+            <div class="discussion-detail-tags">
+                ${discussion.tags.map(tag => `<span class="story-tag">${tag}</span>`).join('')}
+            </div>
+            
+            <div class="discussion-detail-actions">
+                <button class="btn btn-outline" onclick="toggleStoryDiscussionLike('${discussion.id}')">
+                    <span class="icon">❤️</span> ${discussion.likes} 点赞
+                </button>
+                <button class="btn btn-primary" onclick="showStoryReplyForm('${discussion.id}')">
+                    <span class="icon">💬</span> 回复
+                </button>
+                ${isUserAdmin() ? `
+                    <button class="btn btn-danger" onclick="deleteStoryDiscussion('${discussion.id}')">
+                        删除
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `, 'large');
+    
+    document.body.appendChild(modal);
+    showModal('storyDiscussionDetailModal');
+}
+
+// 处理高级创作灵感
+function handleAdvancedInspiration(title, category) {
+    if (!isUserLoggedIn()) {
+        showLoginPrompt();
+        return;
+    }
+    
+    // 根据不同类型处理
+    switch (category) {
+        case 'character':
+            handleCharacterAnalysis(title);
+            break;
+        case 'world':
+            handleWorldBuilding(title);
+            break;
+        case 'plot':
+            handlePlotCreation(title);
+            break;
+        case 'creative':
+            handleArtCreation(title);
+            break;
+        case 'theory':
+            handleTheoryDiscussion(title);
+            break;
+        default:
+            showStoryDiscussionModal();
+    }
+}
+
+// 角色分析处理
+function handleCharacterAnalysis(character) {
+    const presetData = {
+        category: 'character',
+        type: '角色分析',
+        title: `${character}的深度角色分析`,
+        content: `让我们从多个维度来分析${character}这个角色：\n\n1. 心理层面：\n2. 成长轨迹：\n3. 人物关系：\n4. 象征意义：\n\n欢迎大家分享你们的见解！`
+    };
+    showPresetDiscussionModal(presetData);
+}
+
+// 世界构建处理
+function handleWorldBuilding(type) {
+    const presetData = {
+        category: 'world',
+        type: '世界观讨论',
+        title: `琳凯蒂亚星球${type}创造计划`,
+        content: `让我们一起丰富琳凯蒂亚星球的${type}设定：\n\n请考虑以下方面：\n- 外观特征\n- 功能作用\n- 文化意义\n- 与现有世界的关系\n\n发挥你的想象力，创造属于你的奇幻世界！`
+    };
+    showPresetDiscussionModal(presetData);
+}
+
+// 情节创作处理
+function handlePlotCreation(type) {
+    const presetData = {
+        category: 'plot',
+        type: '剧情创作',
+        title: `${type}情节创作分享`,
+        content: `分享你对${type}情节的想法和创作：\n\n可以包含：\n- 故事设定\n- 角色发展\n- 冲突设计\n- 情节转折\n\n让我们一起构建更精彩的光线传奇世界！`
+    };
+    showPresetDiscussionModal(presetData);
+}
+
+// 艺术创作处理
+function handleArtCreation(artType) {
+    const presetData = {
+        category: 'creative',
+        type: '艺术创作',
+        title: `${artType}作品分享与交流`,
+        content: `欢迎分享你的${artType}作品！\n\n分享时请包含：\n- 作品描述\n- 创作灵感\n- 技法说明\n- 希望得到的反馈\n\n让我们一起欣赏和讨论你的创作！`
+    };
+    showPresetDiscussionModal(presetData);
+}
+
+// 理论讨论处理
+function handleTheoryDiscussion(theory) {
+    const presetData = {
+        category: 'theory',
+        type: '理论研究',
+        title: `从${theory}角度分析光线传奇`,
+        content: `让我们从${theory}的角度深入分析光线传奇：\n\n可以探讨的主题：\n- 理论框架应用\n- 深层含义挖掘\n- 跨学科对比\n- 现实意义探讨\n\n欢迎学术性的深度交流！`
+    };
+    showPresetDiscussionModal(presetData);
+}
+
+// 显示预设讨论模态框
+function showPresetDiscussionModal(presetData) {
+    showStoryDiscussionModal();
+    
+    setTimeout(() => {
+        if (presetData.title) {
+            const titleInput = document.getElementById('discussionTitle');
+            if (titleInput) titleInput.value = presetData.title;
+        }
+        if (presetData.content) {
+            const contentInput = document.getElementById('discussionContent');
+            if (contentInput) contentInput.value = presetData.content;
+        }
+        if (presetData.type) {
+            const typeSelect = document.getElementById('discussionType');
+            if (typeSelect) typeSelect.value = presetData.type;
+        }
+        if (presetData.category) {
+            const categorySelect = document.getElementById('discussionCategory');
+            if (categorySelect) categorySelect.value = presetData.category;
+        }
+    }, 100);
+}
+
+// 填充缺失的工具函数
+function truncateText(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+}
+
+// 简单的通知函数（如果不存在）
+if (typeof showNotification !== 'function') {
+    function showNotification(message, type = 'info') {
+        console.log(`${type.toUpperCase()}: ${message}`);
+        
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'error' ? '#ff4757' : type === 'success' ? '#2ed573' : '#5352ed'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            font-weight: 500;
+            max-width: 300px;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
+    }
+}
+
+// 缺失的工具函数
+function updateCommunityStats() {
+    const totalUsersEl = document.getElementById('totalUsers');
+    const totalPostsEl = document.getElementById('totalPosts');
+    const onlineUsersEl = document.getElementById('onlineUsers');
+    
+    if (totalUsersEl) {
+        const totalUsers = (window.communitySystem ? window.communitySystem.users.length : 0) + 
+                          (communityData ? communityData.users.length : 0);
+        totalUsersEl.textContent = totalUsers;
+    }
+    
+    if (totalPostsEl) {
+        const totalPosts = (window.communitySystem ? window.communitySystem.posts.length : 0) + 
+                          (communityData ? communityData.posts.length : 0);
+        totalPostsEl.textContent = totalPosts;
+    }
+    
+    if (onlineUsersEl) {
+        const onlineUsers = Math.floor(Math.random() * 10) + 5; // 模拟在线用户
+        onlineUsersEl.textContent = onlineUsers;
+    }
+}
+
+// 缺失的加载函数
+function loadLearningContent() {
+    console.log('📚 加载学习交流内容...');
+}
+
+function loadTranslationContent() {
+    console.log('🔄 加载翻译练习内容...');
+}
+
+function loadEventsContent() {
+    console.log('🎆 加载星球活动内容...');
+}
+
+function loadResourcesContent() {
+    console.log('📋 加载资源分享内容...');
+}
+
+function loadOnlineUsers() {
+    console.log('👥 加载在线用户...');
+}
+
+function loadRecentActivity() {
+    console.log('🔥 加载最新动态...');
+}
+
+function loadMorePosts() {
+    console.log('📜 加载更多帖子...');
+    showNotification('暂无更多内容', 'info');
+}
+
+// 模拟的帖子查看和操作函数
+function viewPostDetail(postId) {
+    console.log('👁️ 查看帖子详情:', postId);
+    
+    // 在localStorage中查找帖子
+    let post = null;
+    
+    // 从 communityData 中查找
+    if (communityData && communityData.posts) {
+        post = communityData.posts.find(p => p.id === postId);
+    }
+    
+    // 从 communitySystem 中查找
+    if (!post && window.communitySystem && window.communitySystem.posts) {
+        post = window.communitySystem.posts.find(p => p.id === postId);
+    }
+    
+    if (!post) {
+        showNotification('帖子不存在', 'error');
+        return;
+    }
+    
+    // 增加浏览量
+    if (post.views !== undefined) {
+        post.views++;
+    }
+    
+    // 显示帖子详情
+    const modal = createModal('postDetailModal', post.title, `
+        <div class="post-detail">
+            <div class="post-meta" style="margin-bottom: 1rem; color: #a0a0a0;">
+                <span>👤 ${post.author ? (typeof post.author === 'string' ? post.author : post.author.username || post.author.displayName) : '匿名用户'}</span>
+                <span style="margin-left: 1rem;">🕰️ ${post.timeDisplay || getTimeAgo(post.timestamp)}</span>
+                <span style="margin-left: 1rem;">👁️ ${post.views || 0} 次查看</span>
+            </div>
+            <div class="post-content" style="color: #e0e0e0; line-height: 1.6; margin-bottom: 2rem; white-space: pre-wrap;">
+                ${post.content}
+            </div>
+            ${post.tags && post.tags.length > 0 ? `
+                <div class="post-tags" style="margin-bottom: 1rem;">
+                    ${post.tags.map(tag => `<span class="tag" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem; margin-right: 0.5rem;">#${tag}</span>`).join('')}
+                </div>
+            ` : ''}
+            <div class="post-actions" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display: flex; gap: 1rem;">
+                <button class="btn btn-outline" onclick="likePost('${postId}')">
+                    ❤️ ${Array.isArray(post.likes) ? post.likes.length : (post.likes || 0)} 点赞
+                </button>
+                <button class="btn btn-primary" onclick="replyToPost('${postId}')">
+                    💬 回复
+                </button>
+            </div>
+        </div>
+    `, 'large');
+    
+    document.body.appendChild(modal);
+    showModal('postDetailModal');
+}
+
+function replyToPost(postId) {
+    console.log('💬 回复帖子:', postId);
+    if (!isUserLoggedIn()) {
+        showLoginPrompt();
+        return;
+    }
+    showNotification('回复功能正在开发中...', 'info');
+}
+
+function deleteMyPost(postId) {
+    console.log('🗑️ 删除帖子:', postId);
+    if (!isUserLoggedIn()) {
+        showLoginPrompt();
+        return;
+    }
+    
+    if (confirm('确定要删除这个帖子吗？')) {
+        // 从 communityData 中删除
+        if (communityData && communityData.posts) {
+            const index = communityData.posts.findIndex(p => p.id === postId);
+            if (index !== -1) {
+                communityData.posts.splice(index, 1);
+                localStorage.setItem('communityPosts', JSON.stringify(communityData.posts));
+            }
+        }
+        
+        // 从 communitySystem 中删除
+        if (window.communitySystem && window.communitySystem.posts) {
+            const post = window.communitySystem.posts.find(p => p.id === postId);
+            if (post) {
+                post.status = 'deleted';
+                window.communitySystem.savePosts();
+            }
+        }
+        
+        showNotification('帖子已删除', 'success');
+        loadDiscussions('all'); // 刷新列表
+    }
+}
+
+function likePost(postId) {
+    console.log('❤️ 点赞帖子:', postId);
+    if (!isUserLoggedIn()) {
+        showLoginPrompt();
+        return;
+    }
+    showNotification('点赞成功！', 'success');
+}
+
+// 更新认证状态函数
+function updateAuthenticationState() {
+    const authButtons = document.querySelector('.auth-buttons');
+    const userInfo = document.getElementById('userInfo');
+    
+    // 检查各种认证系统
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser) ||
+                       communityData.currentUser;
+    
+    if (currentUser) {
+        if (authButtons) authButtons.style.display = 'none';
+        if (userInfo) {
+            userInfo.style.display = 'flex';
+            const userNameEl = document.getElementById('userName');
+            const userAvatarEl = document.getElementById('userAvatar');
+            if (userNameEl) userNameEl.textContent = currentUser.username || currentUser.displayName;
+            if (userAvatarEl) userAvatarEl.textContent = currentUser.avatar || currentUser.username.charAt(0).toUpperCase();
+        }
+        
+        // 更新 communityData
+        communityData.currentUser = currentUser;
+    } else {
+        if (authButtons) authButtons.style.display = 'flex';
+        if (userInfo) userInfo.style.display = 'none';
+        communityData.currentUser = null;
+    }
 }
 
 // 立即执行一次确保
