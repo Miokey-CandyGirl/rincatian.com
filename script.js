@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
-// 页面完全加载后的额外初始化
+// 窗口加载事件，最终确保认证系统已加载
 window.addEventListener('load', function() {
     console.log('页面完全加载，执行最终初始化...');
     
@@ -102,6 +102,11 @@ window.addEventListener('load', function() {
         forceAuthStateRefresh();
         console.log('强制认证状态刷新完成！');
     }, 500);
+    
+    // 认证系统加载状态检查
+    setTimeout(() => {
+        checkAuthSystemStatus();
+    }, 1000);
 });
 
 // 创建动态星空
@@ -967,6 +972,12 @@ async function performNewLogin() {
         return;
     }
     
+    // 检查认证系统是否已加载
+    if (!window.authSystem) {
+        alert('认证系统尚未完全加载，请稍后再试或刷新页面！');
+        return;
+    }
+    
     try {
         const result = await window.authSystem.login({ username, password });
         
@@ -1013,6 +1024,12 @@ async function performNewRegister() {
         return;
     }
     
+    // 检查认证系统是否已加载
+    if (!window.authSystem) {
+        alert('认证系统尚未完全加载，请稍后再试或刷新页面！');
+        return;
+    }
+    
     try {
         const result = await window.authSystem.register({ username, email, password });
         
@@ -1044,6 +1061,11 @@ async function performNewRegister() {
 
 // 处理新退出登录
 function handleNewLogout() {
+    if (!window.authSystem) {
+        alert('认证系统尚未完全加载，请刷新页面！');
+        return;
+    }
+    
     if (confirm('确定要退出登录吗？')) {
         const result = window.authSystem.logout();
         
@@ -1065,7 +1087,10 @@ function handleNewLogout() {
 
 // 显示用户详细信息
 function showUserDetailedInfo() {
-    if (!window.authSystem.currentUser) return;
+    if (!window.authSystem || !window.authSystem.currentUser) {
+        alert('认证系统未初始化或用户未登录！');
+        return;
+    }
     
     const user = window.authSystem.currentUser;
     const joinDate = new Date(user.joinDate).toLocaleDateString('zh-CN');
@@ -1574,7 +1599,10 @@ function handleProfileUpdate() {
 
 // 显示新个人资料             旧的链接：<button onclick="showUserDetailedInfo()" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">我的信息</button>
 function showNewProfile() {
-    if (!window.authSystem.currentUser) return;
+    if (!window.authSystem || !window.authSystem.currentUser) {
+        alert('认证系统未初始化或用户未登录！');
+        return;
+    }
     
     const user = window.authSystem.currentUser;
     const joinDate = new Date(user.joinDate).toLocaleDateString('zh-CN');
@@ -2444,3 +2472,39 @@ setTimeout(() => {
 }, 1000);
 
 console.log('🌟 首页特有功能初始化完成！');
+
+// 检查认证系统加载状态
+function checkAuthSystemStatus() {
+    console.log('=== 认证系统状态检查 ===');
+    console.log('window.authSystem:', !!window.authSystem);
+    console.log('window.supabaseClient:', !!window.supabaseClient);
+    console.log('window.TABLES:', !!window.TABLES);
+    
+    if (window.authSystem) {
+        console.log('✅ 新认证系统已加载');
+        console.log('- 当前用户:', window.authSystem.currentUser ? window.authSystem.currentUser.username : '未登录');
+        console.log('- 方法可用:', typeof window.authSystem.login === 'function');
+    } else {
+        console.log('⚠️ 新认证系统未加载');
+    }
+    
+    if (typeof currentUser !== 'undefined') {
+        console.log('🔄 旧认证系统可用');
+        console.log('- 当前用户 (旧):', currentUser ? currentUser.username : '未登录');
+    }
+    
+    console.log('=== 检查完成 ===');
+}
+
+// 调试函数：手动初始化认证系统
+function debugInitAuth() {
+    console.log('🛠️ 手动初始化认证系统...');
+    initializeAuthSystem();
+}
+
+// 调试函数：刷新认证状态
+function debugRefreshAuth() {
+    console.log('🔄 手动刷新认证状态...');
+    forceAuthStateRefresh();
+    updateAuthenticationState();
+}
