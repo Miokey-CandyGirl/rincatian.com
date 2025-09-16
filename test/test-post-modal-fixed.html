@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布话题修复测试 - 琳凯蒂亚语</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 120px auto 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .test-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #ffd700, #4ecdc4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .instructions {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .status-display {
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+        }
+        
+        .status-success { background: rgba(76, 175, 80, 0.2); border: 1px solid #4caf50; }
+        .status-error { background: rgba(244, 67, 54, 0.2); border: 1px solid #f44336; }
+        .status-info { background: rgba(33, 150, 243, 0.2); border: 1px solid #2196f3; }
+        
+        .fix-notes {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #4caf50;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">修复测试</span>
+                    <span class="logo-english">Fixed Test</span>
+                </div>
+            </div>
+            <div class="nav-extras">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container">
+        <h1>🔧 发布话题功能修复测试</h1>
+        
+        <div class="fix-notes">
+            <h3>🎯 修复内容</h3>
+            <ol>
+                <li><strong>叉号关闭按钮修复</strong>：增强了事件绑定，添加了额外的onclick处理</li>
+                <li><strong>表单验证改进</strong>：使用通知系统替代alert弹窗</li>
+                <li><strong>发布成功提示优化</strong>：使用现代化通知替代alert</li>
+                <li><strong>错误处理完善</strong>：统一的错误提示机制</li>
+            </ol>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 测试步骤</h3>
+            <ol style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <li>首先点击"登录管理员"按钮进行登录</li>
+                <li>然后点击"测试发布话题"按钮</li>
+                <li>在弹出的对话框中：
+                    <ul>
+                        <li>✅ 测试右上角的 ❌ 按钮能否正常关闭</li>
+                        <li>✅ 测试不填写内容直接点击"发布话题"的验证</li>
+                        <li>✅ 填写完整标题和内容，测试正常发布流程</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="status-display" id="statusDisplay">
+            <strong>系统状态:</strong> 等待测试...
+        </div>
+        
+        <button class="test-button" onclick="loginAdmin()">🔐 登录管理员</button>
+        <button class="test-button" onclick="testPostModal()">📝 测试发布话题</button>
+        <button class="test-button" onclick="testValidation()">⚠️ 测试表单验证</button>
+        <button class="test-button" onclick="checkStatus()">🔍 检查系统状态</button>
+        <button class="test-button" onclick="logout()">🚪 退出登录</button>
+        
+        <div style="margin-top: 2rem;">
+            <h3>🐛 高级测试</h3>
+            <button class="test-button" onclick="testCloseButton()">🎯 专项测试关闭按钮</button>
+            <button class="test-button" onclick="testEmptyForm()">📋 测试空表单提交</button>
+            <button class="test-button" onclick="testCompleteFlow()">🔄 测试完整流程</button>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+
+    <script>
+        // 显示状态
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('statusDisplay');
+            statusDiv.className = `status-display status-${type}`;
+            statusDiv.innerHTML = `<strong>状态:</strong> ${message}`;
+            console.log(`[状态] ${message}`);
+        }
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('页面加载完成，正在初始化修复版本...', 'info');
+            
+            setTimeout(() => {
+                checkStatus();
+            }, 1000);
+        });
+
+        // 登录管理员
+        async function loginAdmin() {
+            showStatus('正在登录管理员账户...', 'info');
+            
+            if (!window.authSystem) {
+                showStatus('❌ 认证系统未加载', 'error');
+                return;
+            }
+            
+            try {
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (result.success) {
+                    showStatus(`✅ 管理员登录成功: ${window.authSystem.currentUser.username}`, 'success');
+                } else {
+                    showStatus(`❌ 登录失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ 登录异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试发布话题模态框
+        function testPostModal() {
+            showStatus('正在测试修复后的发布话题模态框...', 'info');
+            
+            try {
+                if (typeof showNewPostModal === 'function') {
+                    showNewPostModal();
+                    showStatus('✅ 发布话题模态框已打开，请测试关闭按钮和提交功能', 'success');
+                } else {
+                    showStatus('❌ showNewPostModal 函数未定义', 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ 模态框测试失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试表单验证
+        function testValidation() {
+            showStatus('测试表单验证功能...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                showStatus('请先登录再测试表单验证', 'error');
+                return;
+            }
+            
+            // 打开模态框并尝试提交空表单
+            if (typeof showNewPostModal === 'function') {
+                showNewPostModal();
+                
+                // 等待模态框完全加载后测试
+                setTimeout(() => {
+                    const submitBtn = document.querySelector('.btn-submit');
+                    if (submitBtn) {
+                        showStatus('点击提交按钮测试验证...', 'info');
+                        submitBtn.click();
+                    } else {
+                        showStatus('❌ 未找到提交按钮', 'error');
+                    }
+                }, 500);
+            }
+        }
+
+        // 检查系统状态
+        function checkStatus() {
+            let status = [];
+            
+            // 检查认证系统
+            if (window.authSystem) {
+                if (window.authSystem.currentUser) {
+                    status.push(`✅ 用户已登录: ${window.authSystem.currentUser.username}`);
+                } else {
+                    status.push(`⚠️ 用户未登录`);
+                }
+            } else {
+                status.push(`❌ 认证系统未加载`);
+            }
+            
+            // 检查社区系统
+            if (window.communitySystem) {
+                status.push(`✅ 社区系统已加载`);
+            } else {
+                status.push(`❌ 社区系统未加载`);
+            }
+            
+            // 检查关键函数
+            const functions = ['showNewPostModal', 'closeNewPostModal', 'handleNewPostSubmit'];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    status.push(`✅ ${funcName} 函数可用`);
+                } else {
+                    status.push(`❌ ${funcName} 函数缺失`);
+                }
+            });
+            
+            showStatus(status.join('<br>'), status.some(s => s.includes('❌')) ? 'error' : 'success');
+        }
+
+        // 退出登录
+        function logout() {
+            if (window.authSystem && window.authSystem.currentUser) {
+                window.authSystem.logout();
+                showStatus('✅ 已退出登录', 'info');
+            } else {
+                showStatus('⚠️ 当前未登录', 'info');
+            }
+        }
+
+        // 专项测试关闭按钮
+        function testCloseButton() {
+            showStatus('专项测试关闭按钮功能...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                showStatus('请先登录再测试', 'error');
+                return;
+            }
+            
+            if (typeof showNewPostModal === 'function') {
+                showNewPostModal();
+                
+                setTimeout(() => {
+                    const closeBtn = document.querySelector('.close-modal-btn');
+                    if (closeBtn) {
+                        showStatus('找到关闭按钮，请点击测试...', 'info');
+                        // 添加测试提示
+                        closeBtn.style.border = '2px solid #ffd700';
+                        closeBtn.style.animation = 'pulse 1s infinite';
+                    } else {
+                        showStatus('❌ 未找到关闭按钮', 'error');
+                    }
+                }, 300);
+            }
+        }
+
+        // 测试空表单提交
+        function testEmptyForm() {
+            showStatus('测试空表单提交验证...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                showStatus('请先登录再测试', 'error');
+                return;
+            }
+            
+            if (typeof showNewPostModal === 'function') {
+                showNewPostModal();
+                
+                setTimeout(() => {
+                    if (typeof handleNewPostSubmit === 'function') {
+                        showStatus('直接调用提交函数测试验证...', 'info');
+                        handleNewPostSubmit();
+                    } else {
+                        showStatus('❌ handleNewPostSubmit 函数未定义', 'error');
+                    }
+                }, 300);
+            }
+        }
+
+        // 测试完整流程
+        function testCompleteFlow() {
+            showStatus('开始测试完整发布流程...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                showStatus('请先登录再测试完整流程', 'error');
+                return;
+            }
+            
+            if (typeof showNewPostModal === 'function') {
+                showNewPostModal();
+                
+                setTimeout(() => {
+                    // 自动填写表单
+                    const titleInput = document.getElementById('newPostTitle');
+                    const contentTextarea = document.getElementById('newPostContent');
+                    
+                    if (titleInput && contentTextarea) {
+                        titleInput.value = '测试标题 - 自动填写';
+                        contentTextarea.value = '这是一个自动测试内容，用于验证发布功能是否正常工作。';
+                        
+                        showStatus('已自动填写表单，点击发布按钮测试...', 'success');
+                        
+                        // 高亮提交按钮
+                        const submitBtn = document.querySelector('.btn-submit');
+                        if (submitBtn) {
+                            submitBtn.style.border = '2px solid #ffd700';
+                            submitBtn.style.animation = 'pulse 1s infinite';
+                        }
+                    } else {
+                        showStatus('❌ 未找到表单元素', 'error');
+                    }
+                }, 300);
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</body>
+</html>

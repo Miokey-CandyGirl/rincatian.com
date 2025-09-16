@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词典功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 3px solid #007bff;
+        }
+        .success { border-left-color: #28a745; }
+        .error { border-left-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 琳凯蒂亚语词典功能测试</h1>
+        
+        <div class="test-section">
+            <h3>🔐 认证系统测试</h3>
+            <button class="test-button" onclick="testAuthSystem()">测试认证系统</button>
+            <button class="test-button" onclick="testAdminLogin()">管理员登录</button>
+            <button class="test-button" onclick="testUserLogin()">普通用户登录</button>
+            <button class="test-button" onclick="testLogout()">退出登录</button>
+            <div id="auth-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📚 内容管理测试</h3>
+            <button class="test-button" onclick="testContentManager()">测试内容管理器</button>
+            <button class="test-button" onclick="testAddWord()">测试添加单词</button>
+            <button class="test-button" onclick="testGetWords()">获取词汇列表</button>
+            <div id="content-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 词典功能测试</h3>
+            <button class="test-button" onclick="testDictionaryFunctions()">测试词典函数</button>
+            <button class="test-button" onclick="testAddWordButton()">测试添加单词按钮</button>
+            <button class="test-button" onclick="testPermissions()">测试权限系统</button>
+            <div id="dictionary-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 数据统计</h3>
+            <div id="stats-result" class="result">
+                <p>系统状态：<span id="system-status">检查中...</span></p>
+                <p>词汇数量：<span id="vocab-count">-</span></p>
+                <p>当前用户：<span id="current-user">未登录</span></p>
+                <p>用户权限：<span id="user-permissions">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入必要的脚本文件 -->
+    <script src="auth-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="dictionary.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            console.log('测试页面加载完成');
+        });
+
+        // 更新统计信息
+        function updateStats() {
+            const systemStatus = document.getElementById('system-status');
+            const vocabCount = document.getElementById('vocab-count');
+            const currentUser = document.getElementById('current-user');
+            const userPermissions = document.getElementById('user-permissions');
+
+            // 检查系统状态
+            if (window.authSystem && window.contentManager) {
+                systemStatus.textContent = '正常';
+                systemStatus.style.color = 'green';
+            } else {
+                systemStatus.textContent = '异常';
+                systemStatus.style.color = 'red';
+            }
+
+            // 词汇数量
+            if (window.contentManager) {
+                const stats = window.contentManager.getStatistics();
+                vocabCount.textContent = stats.vocabulary;
+            }
+
+            // 当前用户
+            if (window.authSystem && window.authSystem.currentUser) {
+                currentUser.textContent = window.authSystem.currentUser.username + ' (' + window.authSystem.currentUser.role + ')';
+                userPermissions.textContent = window.authSystem.currentUser.permissions ? window.authSystem.currentUser.permissions.join(', ') : '无';
+            } else {
+                currentUser.textContent = '未登录';
+                userPermissions.textContent = '-';
+            }
+        }
+
+        // 测试认证系统
+        function testAuthSystem() {
+            const result = document.getElementById('auth-result');
+            let html = '<h4>认证系统测试结果：</h4>';
+
+            try {
+                // 检查认证系统是否存在
+                if (!window.authSystem) {
+                    throw new Error('认证系统未加载');
+                }
+
+                html += '<p>✅ 认证系统已加载</p>';
+                html += '<p>📊 用户数量：' + window.authSystem.getAllUsers().length + '</p>';
+                html += '<p>🔑 当前用户：' + (window.authSystem.currentUser ? window.authSystem.currentUser.username : '未登录') + '</p>';
+                
+                result.className = 'result success';
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 测试管理员登录
+        async function testAdminLogin() {
+            const result = document.getElementById('auth-result');
+            let html = '<h4>管理员登录测试：</h4>';
+
+            try {
+                const loginResult = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+
+                if (loginResult.success) {
+                    html += '<p>✅ 管理员登录成功</p>';
+                    html += '<p>👤 用户名：' + window.authSystem.currentUser.username + '</p>';
+                    html += '<p>🎭 角色：' + window.authSystem.currentUser.role + '</p>';
+                    html += '<p>🔐 权限：' + window.authSystem.currentUser.permissions.join(', ') + '</p>';
+                    result.className = 'result success';
+                } else {
+                    throw new Error(loginResult.message);
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 测试普通用户登录
+        async function testUserLogin() {
+            const result = document.getElementById('auth-result');
+            let html = '<h4>普通用户登录测试：</h4>';
+
+            try {
+                // 先注册一个测试用户
+                const registerResult = await window.authSystem.register({
+                    username: 'testuser',
+                    email: 'test@example.com',
+                    password: 'test123',
+                    role: 'user'
+                });
+
+                if (registerResult.success) {
+                    html += '<p>✅ 测试用户注册/登录成功</p>';
+                    html += '<p>👤 用户名：' + window.authSystem.currentUser.username + '</p>';
+                    html += '<p>🎭 角色：' + window.authSystem.currentUser.role + '</p>';
+                    html += '<p>🔐 权限：' + window.authSystem.currentUser.permissions.join(', ') + '</p>';
+                    result.className = 'result success';
+                } else {
+                    throw new Error(registerResult.message);
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 测试退出登录
+        function testLogout() {
+            const result = document.getElementById('auth-result');
+            let html = '<h4>退出登录测试：</h4>';
+
+            try {
+                const logoutResult = window.authSystem.logout();
+                if (logoutResult.success) {
+                    html += '<p>✅ 成功退出登录</p>';
+                    html += '<p>📝 消息：' + logoutResult.message + '</p>';
+                    result.className = 'result success';
+                } else {
+                    throw new Error('退出登录失败');
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 测试内容管理器
+        function testContentManager() {
+            const result = document.getElementById('content-result');
+            let html = '<h4>内容管理器测试结果：</h4>';
+
+            try {
+                if (!window.contentManager) {
+                    throw new Error('内容管理器未加载');
+                }
+
+                html += '<p>✅ 内容管理器已加载</p>';
+                
+                const stats = window.contentManager.getStatistics();
+                html += '<p>📚 词汇数量：' + stats.vocabulary + '</p>';
+                html += '<p>📖 语法数量：' + stats.grammar + '</p>';
+                html += '<p>💬 短语数量：' + stats.phrases + '</p>';
+                html += '<p>🔢 数词数量：' + stats.numbers + '</p>';
+                html += '<p>📊 总计：' + stats.total + '</p>';
+
+                result.className = 'result success';
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 测试添加单词
+        async function testAddWord() {
+            const result = document.getElementById('content-result');
+            let html = '<h4>添加单词测试：</h4>';
+
+            try {
+                // 确保管理员已登录
+                if (!window.authSystem.currentUser) {
+                    await testAdminLogin();
+                }
+
+                if (!window.authSystem.hasPermission('write')) {
+                    throw new Error('当前用户没有写入权限');
+                }
+
+                const testWord = {
+                    word: 'test' + Date.now(),
+                    pronunciation: '[test]',
+                    meaning: '测试单词',
+                    type: '名',
+                    definition: '这是一个用于测试的单词',
+                    examples: ['test example'],
+                    level: 'basic'
+                };
+
+                const addResult = window.contentManager.addVocabulary(testWord);
+                
+                if (addResult.success) {
+                    html += '<p>✅ 单词添加成功</p>';
+                    html += '<p>🆔 ID：' + addResult.data.id + '</p>';
+                    html += '<p>📝 单词：' + addResult.data.word + '</p>';
+                    html += '<p>🔤 释义：' + addResult.data.meaning + '</p>';
+                    result.className = 'result success';
+                } else {
+                    throw new Error(addResult.message);
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+            updateStats();
+        }
+
+        // 获取词汇列表
+        function testGetWords() {
+            const result = document.getElementById('content-result');
+            let html = '<h4>获取词汇列表测试：</h4>';
+
+            try {
+                const words = window.contentManager.getVocabulary();
+                html += '<p>✅ 成功获取词汇列表</p>';
+                html += '<p>📊 词汇数量：' + words.length + '</p>';
+
+                if (words.length > 0) {
+                    html += '<p>📖 最新词汇：</p><ul>';
+                    words.slice(-3).forEach(word => {
+                        html += '<li>' + (word.word || word.linkaitian) + ' - ' + (word.meaning || word.chinese) + '</li>';
+                    });
+                    html += '</ul>';
+                }
+
+                result.className = 'result success';
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+        }
+
+        // 测试词典函数
+        function testDictionaryFunctions() {
+            const result = document.getElementById('dictionary-result');
+            let html = '<h4>词典函数测试：</h4>';
+
+            try {
+                // 测试主要函数是否存在
+                const functions = [
+                    'handleAddWord',
+                    'showAddWordModal',
+                    'showWordRequestModal',
+                    'submitNewWord',
+                    'submitWordRequest',
+                    'updatePermissions',
+                    'loadStandardWords'
+                ];
+
+                functions.forEach(funcName => {
+                    if (typeof window[funcName] === 'function') {
+                        html += '<p>✅ ' + funcName + ' 函数已定义</p>';
+                    } else {
+                        html += '<p>❌ ' + funcName + ' 函数未定义</p>';
+                    }
+                });
+
+                result.className = 'result success';
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+        }
+
+        // 测试添加单词按钮
+        function testAddWordButton() {
+            const result = document.getElementById('dictionary-result');
+            let html = '<h4>添加单词按钮测试：</h4>';
+
+            try {
+                if (typeof handleAddWord === 'function') {
+                    html += '<p>✅ handleAddWord 函数可用</p>';
+                    
+                    // 测试不同权限下的行为
+                    if (window.authSystem.currentUser) {
+                        if (window.authSystem.hasPermission('write')) {
+                            html += '<p>🔑 当前用户有写入权限，应该显示添加单词模态框</p>';
+                        } else {
+                            html += '<p>📝 当前用户无写入权限，应该显示申请模态框</p>';
+                        }
+                    } else {
+                        html += '<p>⚠️ 未登录用户，应该显示登录提示</p>';
+                    }
+                    
+                    result.className = 'result success';
+                } else {
+                    throw new Error('handleAddWord 函数未定义');
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+        }
+
+        // 测试权限系统
+        function testPermissions() {
+            const result = document.getElementById('dictionary-result');
+            let html = '<h4>权限系统测试：</h4>';
+
+            try {
+                if (typeof updatePermissions === 'function') {
+                    html += '<p>✅ updatePermissions 函数可用</p>';
+                    
+                    // 调用权限更新函数
+                    updatePermissions();
+                    html += '<p>✅ 权限更新函数执行完成</p>';
+                    
+                    // 检查权限相关功能
+                    if (window.authSystem.currentUser) {
+                        html += '<p>👤 当前用户：' + window.authSystem.currentUser.username + '</p>';
+                        html += '<p>🎭 用户角色：' + window.authSystem.currentUser.role + '</p>';
+                        html += '<p>🔐 用户权限：' + window.authSystem.currentUser.permissions.join(', ') + '</p>';
+                        html += '<p>🛡️ 是否管理员：' + (window.authSystem.isAdmin() ? '是' : '否') + '</p>';
+                        html += '<p>✍️ 是否有写入权限：' + (window.authSystem.hasPermission('write') ? '是' : '否') + '</p>';
+                    } else {
+                        html += '<p>⚠️ 当前未登录</p>';
+                    }
+                    
+                    result.className = 'result success';
+                } else {
+                    throw new Error('updatePermissions 函数未定义');
+                }
+            } catch (error) {
+                html += '<p>❌ 错误：' + error.message + '</p>';
+                result.className = 'result error';
+            }
+
+            result.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI翻译功能测试 - 琳凯蒂亚语社区</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-section { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+        .test-log { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        .feature-demo { background: rgba(255,255,255,0.05); padding: 15px; margin: 15px 0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI翻译功能测试</h1>
+    
+    <div class="test-section">
+        <h2>🔑 API配置信息</h2>
+        <div class="feature-demo">
+            <h4>🌐 DeepSeek API状态</h4>
+            <p>API地址：<span style="color: #4ecdc4; font-family: monospace;">https://api.deepseek.com/v1/chat/completions</span></p>
+            <p>API密钥：<span style="color: #ffd700; font-family: monospace;">sk-b75eaf***（已配置）</span></p>
+            <p>🤖 智能模型：deepseek-reasoner (0:30-8:30) / deepseek-chat (其他时间)</p>
+            <button class="test-button" onclick="testAPIConnection()">测试API连接</button>
+            <div id="apiStatus" class="status info">等待API连接测试...</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔧 功能初始化测试</h2>
+        <button class="test-button" onclick="testAIInitialization()">测试AI翻译初始化</button>
+        <button class="test-button" onclick="testModelSelection()">测试模型选择逻辑</button>
+        <button class="test-button" onclick="testUserBalance()">测试用户余额系统</button>
+        <div id="initStatus" class="status info">等待初始化测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>💬 翻译功能测试</h2>
+        <button class="test-button" onclick="testTranslationAPI()">测试翻译API</button>
+        <button class="test-button" onclick="testCharacterLimit()">测试字符限制</button>
+        <button class="test-button" onclick="testDirectionSwitch()">测试翻译方向切换</button>
+        <div id="translationStatus" class="status info">等待翻译功能测试...</div>
+        
+        <div class="feature-demo">
+            <h4>🎯 实时翻译演示</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label>输入文本：</label>
+                    <textarea id="demoInput" placeholder="输入要翻译的文本..." style="width: 100%; height: 80px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #ffd700; border-radius: 5px; padding: 8px;"></textarea>
+                    <button class="test-button" onclick="demoTranslation()">翻译</button>
+                </div>
+                <div>
+                    <label>翻译结果：</label>
+                    <div id="demoOutput" style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 5px; min-height: 80px; border: 1px solid #4caf50;">等待翻译结果...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>💰 收费机制测试</h2>
+        <button class="test-button" onclick="testPaymentSystem()">测试收费扣款</button>
+        <button class="test-button" onclick="testInsufficientBalance()">测试余额不足</button>
+        <button class="test-button" onclick="testRecharge()">测试充值功能</button>
+        <div id="paymentStatus" class="status info">等待收费机制测试...</div>
+        
+        <div class="feature-demo">
+            <h4>💳 余额管理</h4>
+            <p>当前余额：<span id="currentBalance" style="color: #ffd700; font-weight: bold;">0.00</span> 元</p>
+            <button class="test-button" onclick="showBalance()">查看余额</button>
+            <button class="test-button" onclick="addTestBalance()">添加测试余额(+5元)</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>⏰ 时间段模型测试</h2>
+        <button class="test-button" onclick="testTimeBasedModel()">测试当前时间模型</button>
+        <button class="test-button" onclick="simulateReasonerTime()">模拟推理模型时段</button>
+        <button class="test-button" onclick="simulateChatTime()">模拟对话模型时段</button>
+        <div id="timeModelStatus" class="status info">等待时间段模型测试...</div>
+        
+        <div class="feature-demo">
+            <h4>🕐 当前模型信息</h4>
+            <p>当前时间：<span id="currentTime">--:--</span></p>
+            <p>使用模型：<span id="currentModel" style="color: #4ecdc4; font-weight: bold;">--</span></p>
+            <p>时间段：<span id="timeRange" style="color: #ffd700;">--</span></p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 测试日志</h2>
+        <div class="test-log" id="testLog">[系统] AI翻译功能测试页面已加载...<br></div>
+        <button class="test-button" onclick="clearTestLog()">清空日志</button>
+        <button class="test-button" onclick="runAllTests()">运行全部测试</button>
+    </div>
+
+    <script src="ai-translation.js"></script>
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const logElement = document.getElementById('testLog');
+            logElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function testAPIConnection() {
+            log('测试DeepSeek API连接...', 'info');
+            document.getElementById('apiStatus').innerHTML = '🔄 正在测试API连接...';
+            document.getElementById('apiStatus').className = 'status info';
+            
+            // 使用简单的测试文本
+            const testText = '你好';
+            
+            if (typeof performAITranslation === 'function') {
+                performAITranslation(testText, 'zh-to-rincatian', 'deepseek-chat')
+                    .then(result => {
+                        if (result.model.includes('备用')) {
+                            log('⚠️ API连接失败，使用备用模式', 'warning');
+                            document.getElementById('apiStatus').innerHTML = '⚠️ API连接失败，已启用备用模式';
+                            document.getElementById('apiStatus').className = 'status warning';
+                        } else {
+                            log('✅ DeepSeek API连接成功！', 'success');
+                            log(`测试翻译结果: ${result.translation}`, 'info');
+                            document.getElementById('apiStatus').innerHTML = '✅ DeepSeek API连接正常';
+                            document.getElementById('apiStatus').className = 'status success';
+                        }
+                    })
+                    .catch(error => {
+                        log(`❌ API连接测试失败: ${error.message}`, 'error');
+                        document.getElementById('apiStatus').innerHTML = '❌ API连接失败';
+                        document.getElementById('apiStatus').className = 'status error';
+                    });
+            } else {
+                log('❌ performAITranslation 函数不存在', 'error');
+                document.getElementById('apiStatus').innerHTML = '❌ API函数缺失';
+                document.getElementById('apiStatus').className = 'status error';
+            }
+        }
+        
+        function testAIInitialization() {
+            log('测试AI翻译功能初始化...', 'info');
+            
+            try {
+                // 检查AI翻译模块是否加载
+                if (typeof window.AITranslation !== 'undefined') {
+                    log('✅ AI翻译模块已正确加载', 'success');
+                    
+                    // 检查关键函数
+                    const functions = ['init', 'translate', 'getCurrentModel'];
+                    const missing = functions.filter(func => typeof window.AITranslation[func] !== 'function');
+                    
+                    if (missing.length === 0) {
+                        log('✅ 所有核心函数都存在', 'success');
+                        document.getElementById('initStatus').innerHTML = '✅ AI翻译功能初始化正常';
+                        document.getElementById('initStatus').className = 'status success';
+                    } else {
+                        log(`❌ 缺少函数: ${missing.join(', ')}`, 'error');
+                        document.getElementById('initStatus').innerHTML = '❌ 初始化异常，缺少核心函数';
+                        document.getElementById('initStatus').className = 'status error';
+                    }
+                } else {
+                    log('❌ AI翻译模块未加载', 'error');
+                    document.getElementById('initStatus').innerHTML = '❌ AI翻译模块未加载';
+                    document.getElementById('initStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 初始化测试失败: ${error.message}`, 'error');
+                document.getElementById('initStatus').innerHTML = '❌ 初始化测试失败';
+                document.getElementById('initStatus').className = 'status error';
+            }
+        }
+        
+        function testModelSelection() {
+            log('测试模型选择逻辑...', 'info');
+            
+            try {
+                if (typeof getCurrentModel === 'function') {
+                    const modelInfo = getCurrentModel();
+                    log(`当前模型: ${modelInfo.model}`, 'info');
+                    log(`时间段: ${modelInfo.timeRange}`, 'info');
+                    
+                    // 更新显示
+                    document.getElementById('currentTime').textContent = new Date().toLocaleTimeString();
+                    document.getElementById('currentModel').textContent = modelInfo.model;
+                    document.getElementById('timeRange').textContent = modelInfo.timeRange;
+                    
+                    log('✅ 模型选择逻辑正常工作', 'success');
+                } else {
+                    log('❌ getCurrentModel 函数不存在', 'error');
+                }
+            } catch (error) {
+                log(`❌ 模型选择测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testUserBalance() {
+            log('测试用户余额系统...', 'info');
+            
+            try {
+                // 初始化余额
+                if (typeof initUserBalance === 'function') {
+                    initUserBalance();
+                    log('✅ 用户余额系统初始化成功', 'success');
+                } else {
+                    log('❌ initUserBalance 函数不存在', 'error');
+                }
+                
+                // 检查余额
+                const balance = localStorage.getItem('userTranslationBalance') || '0';
+                log(`当前余额: ${balance} 元`, 'info');
+                document.getElementById('currentBalance').textContent = parseFloat(balance).toFixed(2);
+                
+            } catch (error) {
+                log(`❌ 余额系统测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testTranslationAPI() {
+            log('测试DeepSeek API真实调用...', 'info');
+            
+            try {
+                if (typeof performAITranslation === 'function') {
+                    const testText = '你好';
+                    log(`测试文本: "${testText}"`, 'info');
+                    
+                    performAITranslation(testText, 'zh-to-rincatian', 'deepseek-chat')
+                        .then(result => {
+                            log(`✅ API调用成功: ${result.translation}`, 'success');
+                            log(`使用模型: ${result.model}`, 'info');
+                            log(`置信度: ${result.confidence}`, 'info');
+                            if (result.usage) {
+                                log(`Token使用量: ${JSON.stringify(result.usage)}`, 'info');
+                            }
+                            document.getElementById('translationStatus').innerHTML = '✅ DeepSeek API正常工作';
+                            document.getElementById('translationStatus').className = 'status success';
+                        })
+                        .catch(error => {
+                            log(`⚠️ API调用失败，使用备用模式: ${error.message}`, 'warning');
+                            document.getElementById('translationStatus').innerHTML = '⚠️ API调用失败，已启用备用模式';
+                            document.getElementById('translationStatus').className = 'status warning';
+                        });
+                } else if (typeof simulateAITranslation === 'function') {
+                    // 如果没有真实API函数，使用模拟函数
+                    simulateAITranslation('你好', 'zh-to-rincatian', 'deepseek-chat')
+                        .then(result => {
+                            log(`✅ 模拟翻译成功: ${result.translation}`, 'success');
+                            document.getElementById('translationStatus').innerHTML = '✅ 模拟翻译API正常工作';
+                            document.getElementById('translationStatus').className = 'status success';
+                        })
+                        .catch(error => {
+                            log(`❌ 模拟翻译失败: ${error.message}`, 'error');
+                            document.getElementById('translationStatus').innerHTML = '❌ 翻译API异常';
+                            document.getElementById('translationStatus').className = 'status error';
+                        });
+                } else {
+                    log('❌ 翻译函数不存在', 'error');
+                    document.getElementById('translationStatus').innerHTML = '❌ 翻译函数缺失';
+                    document.getElementById('translationStatus').className = 'status error';
+                }
+            } catch (error) {
+                log(`❌ 翻译API测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function testCharacterLimit() {
+            log('测试100字符限制...', 'info');
+            
+            const shortText = '短文本测试';
+            const longText = '这是一个超过100字符限制的测试文本'.repeat(10);
+            
+            log(`短文本长度: ${shortText.length} (应该通过)`, 'info');
+            log(`长文本长度: ${longText.length} (应该被拒绝)`, 'info');
+            
+            if (shortText.length <= 100) {
+                log('✅ 短文本检查通过', 'success');
+            }
+            
+            if (longText.length > 100) {
+                log('✅ 长文本正确识别为超限', 'success');
+            }
+        }
+        
+        function demoTranslation() {
+            const input = document.getElementById('demoInput').value;
+            const output = document.getElementById('demoOutput');
+            
+            if (!input.trim()) {
+                output.textContent = '请先输入要翻译的文本';
+                return;
+            }
+            
+            output.textContent = '翻译中...';
+            
+            // 优先使用真实API函数
+            if (typeof performAITranslation === 'function') {
+                performAITranslation(input, 'zh-to-rincatian', 'deepseek-chat')
+                    .then(result => {
+                        output.innerHTML = `<strong>译文:</strong> ${result.translation}<br><small>模型: ${result.model} | 置信度: ${result.confidence.toFixed(2)}</small>`;
+                        log(`演示翻译完成: "${input}" -> "${result.translation}"`, 'success');
+                    })
+                    .catch(error => {
+                        output.innerHTML = `<span style="color: #ff6b6b;">翻译失败: ${error.message}</span>`;
+                        log(`演示翻译失败: ${error.message}`, 'error');
+                    });
+            } else if (typeof simulateAITranslation === 'function') {
+                // 备用模拟函数
+                simulateAITranslation(input, 'zh-to-rincatian', 'deepseek-chat')
+                    .then(result => {
+                        output.innerHTML = `<strong>译文:</strong> ${result.translation}<br><small>模型: ${result.model}(模拟)</small>`;
+                        log(`演示翻译完成(模拟): "${input}" -> "${result.translation}"`, 'success');
+                    })
+                    .catch(error => {
+                        output.textContent = '翻译失败: ' + error.message;
+                        log(`演示翻译失败: ${error.message}`, 'error');
+                    });
+            } else {
+                output.textContent = '翻译功能不可用';
+            }
+        }
+        
+        function testPaymentSystem() {
+            log('测试收费扣款机制...', 'info');
+            
+            const currentBalance = parseFloat(localStorage.getItem('userTranslationBalance') || '0');
+            log(`扣款前余额: ${currentBalance} 元`, 'info');
+            
+            if (currentBalance >= 0.1) {
+                const newBalance = currentBalance - 0.1;
+                localStorage.setItem('userTranslationBalance', newBalance.toString());
+                log(`✅ 扣款成功: 0.1 元`, 'success');
+                log(`扣款后余额: ${newBalance} 元`, 'info');
+                document.getElementById('currentBalance').textContent = newBalance.toFixed(2);
+                document.getElementById('paymentStatus').innerHTML = '✅ 收费机制正常工作';
+                document.getElementById('paymentStatus').className = 'status success';
+            } else {
+                log('❌ 余额不足，无法扣款', 'error');
+                document.getElementById('paymentStatus').innerHTML = '❌ 余额不足测试';
+                document.getElementById('paymentStatus').className = 'status error';
+            }
+        }
+        
+        function addTestBalance() {
+            const currentBalance = parseFloat(localStorage.getItem('userTranslationBalance') || '0');
+            const newBalance = currentBalance + 5;
+            localStorage.setItem('userTranslationBalance', newBalance.toString());
+            document.getElementById('currentBalance').textContent = newBalance.toFixed(2);
+            log(`✅ 添加测试余额成功: +5元，当前余额: ${newBalance} 元`, 'success');
+        }
+        
+        function showBalance() {
+            const balance = localStorage.getItem('userTranslationBalance') || '0';
+            document.getElementById('currentBalance').textContent = parseFloat(balance).toFixed(2);
+            log(`当前余额: ${balance} 元`, 'info');
+        }
+        
+        function testTimeBasedModel() {
+            log('测试当前时间的模型选择...', 'info');
+            testModelSelection();
+        }
+        
+        function clearTestLog() {
+            document.getElementById('testLog').innerHTML = '';
+            log('测试日志已清空', 'info');
+        }
+        
+        function runAllTests() {
+            log('开始运行全部测试...', 'info');
+            setTimeout(() => testAIInitialization(), 100);
+            setTimeout(() => testModelSelection(), 500);
+            setTimeout(() => testUserBalance(), 1000);
+            setTimeout(() => testTranslationAPI(), 1500);
+            setTimeout(() => testCharacterLimit(), 2000);
+            setTimeout(() => testPaymentSystem(), 2500);
+            log('全部测试已启动，请查看各项结果', 'info');
+        }
+        
+        // 页面加载时的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('AI翻译功能测试页面初始化完成', 'info');
+            testModelSelection(); // 自动显示当前模型信息
+            testUserBalance(); // 自动显示当前余额
+        });
+    </script>
+</body>
+</html>

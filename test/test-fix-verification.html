@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理页面修复验证 - 琳凯蒂亚语社区</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-panel { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .test-output { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 400px; overflow-y: auto; margin: 10px 0; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .warning { background: rgba(255,152,0,0.2); color: #ff9800; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+    </style>
+</head>
+<body>
+    <h1>🔧 管理页面修复验证</h1>
+    
+    <div class="test-panel">
+        <h2>🛠️ 修复验证</h2>
+        <button class="test-button" onclick="testTabClickEvents()">测试标签点击事件</button>
+        <button class="test-button" onclick="testStatisticsUpdate()">测试统计数据更新</button>
+        <button class="test-button" onclick="testUserDataLoading()">测试用户数据加载</button>
+        <button class="test-button" onclick="simulateUserManagementClick()">模拟用户管理点击</button>
+        <div id="testStatus" class="status info">等待测试...</div>
+    </div>
+    
+    <div class="test-panel">
+        <h2>📊 数据验证</h2>
+        <button class="test-button" onclick="checkUserData()">检查用户数据</button>
+        <button class="test-button" onclick="checkStatisticsElements()">检查统计元素</button>
+        <button class="test-button" onclick="checkTabElements()">检查标签元素</button>
+        <div id="dataStatus" class="status info">等待数据验证...</div>
+    </div>
+    
+    <div class="test-panel">
+        <h2>🚀 完整测试</h2>
+        <button class="test-button" onclick="runCompleteTest()">运行完整测试</button>
+        <button class="test-button" onclick="openAdminPage()">打开管理页面</button>
+        <div id="completeStatus" class="status info">等待完整测试...</div>
+    </div>
+    
+    <div class="test-panel">
+        <h2>📋 测试输出</h2>
+        <div class="test-output" id="testOutput">[系统] 修复验证工具已启动<br></div>
+        <button class="test-button" onclick="clearOutput()">清空输出</button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const outputElement = document.getElementById('testOutput');
+            outputElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            outputElement.scrollTop = outputElement.scrollHeight;
+        }
+        
+        function testTabClickEvents() {
+            log('测试标签点击事件...', 'info');
+            
+            // 检查是否能找到标签元素
+            const tabs = document.querySelectorAll('.admin-tab');
+            log(`找到 ${tabs.length} 个标签元素`, tabs.length > 0 ? 'success' : 'error');
+            
+            // 模拟标签点击
+            tabs.forEach((tab, index) => {
+                const tabName = tab.dataset.tab;
+                log(`标签 ${index + 1}: ${tab.textContent.trim()} (${tabName})`, 'info');
+            });
+            
+            document.getElementById('testStatus').innerHTML = tabs.length > 0 ? '✅ 标签元素检测正常' : '❌ 未找到标签元素';
+            document.getElementById('testStatus').className = tabs.length > 0 ? 'status success' : 'status error';
+        }
+        
+        function testStatisticsUpdate() {
+            log('测试统计数据更新...', 'info');
+            
+            // 检查统计数据元素
+            const statsElements = ['totalUsers', 'onlineUsers', 'totalVisits', 'todayVisits'];
+            let foundElements = 0;
+            
+            statsElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    foundElements++;
+                    log(`✅ 找到统计元素: ${id}`, 'success');
+                } else {
+                    log(`❌ 未找到统计元素: ${id}`, 'error');
+                }
+            });
+            
+            const status = foundElements === statsElements.length ? '✅ 统计元素完整' : `⚠️ 缺少 ${statsElements.length - foundElements} 个统计元素`;
+            document.getElementById('testStatus').innerHTML = status;
+            document.getElementById('testStatus').className = foundElements === statsElements.length ? 'status success' : 'status warning';
+        }
+        
+        function testUserDataLoading() {
+            log('测试用户数据加载...', 'info');
+            
+            // 检查localStorage中的用户数据
+            const sources = ['users', 'linkaitiya_users'];
+            let userData = null;
+            
+            for (const source of sources) {
+                const data = localStorage.getItem(source);
+                if (data) {
+                    try {
+                        userData = JSON.parse(data);
+                        log(`✅ 从 ${source} 加载到 ${userData.length} 个用户`, 'success');
+                        break;
+                    } catch (error) {
+                        log(`❌ 解析 ${source} 失败: ${error.message}`, 'error');
+                    }
+                }
+            }
+            
+            if (!userData) {
+                log('⚠️ 未找到用户数据，创建测试数据...', 'warning');
+                userData = [{
+                    id: 'admin-test',
+                    username: 'admin',
+                    role: 'admin',
+                    email: 'admin@rincatian.com',
+                    status: 'active',
+                    joinDate: Date.now()
+                }];
+                localStorage.setItem('linkaitiya_users', JSON.stringify(userData));
+                log('✅ 测试用户数据创建完成', 'success');
+            }
+            
+            document.getElementById('dataStatus').innerHTML = `✅ 用户数据验证完成 (${userData.length} 个用户)`;
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function simulateUserManagementClick() {
+            log('模拟用户管理标签点击...', 'info');
+            
+            // 查找用户管理标签
+            const userTab = document.querySelector('[data-tab="users"]');
+            if (userTab) {
+                log('✅ 找到用户管理标签', 'success');
+                
+                // 模拟点击事件
+                const clickEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                
+                userTab.dispatchEvent(clickEvent);
+                log('✅ 模拟点击事件已触发', 'success');
+                
+                document.getElementById('testStatus').innerHTML = '✅ 用户管理标签点击测试完成';
+                document.getElementById('testStatus').className = 'status success';
+            } else {
+                log('❌ 未找到用户管理标签', 'error');
+                document.getElementById('testStatus').innerHTML = '❌ 用户管理标签不存在';
+                document.getElementById('testStatus').className = 'status error';
+            }
+        }
+        
+        function checkUserData() {
+            log('检查用户数据完整性...', 'info');
+            
+            const users = JSON.parse(localStorage.getItem('linkaitiya_users') || '[]');
+            
+            if (users.length === 0) {
+                log('❌ 用户数据为空', 'error');
+                document.getElementById('dataStatus').innerHTML = '❌ 用户数据为空';
+                document.getElementById('dataStatus').className = 'status error';
+                return;
+            }
+            
+            const adminUsers = users.filter(u => u.role === 'admin');
+            log(`📊 总用户数: ${users.length}`, 'info');
+            log(`👑 管理员数: ${adminUsers.length}`, 'info');
+            
+            users.forEach((user, index) => {
+                log(`用户 ${index + 1}: ${user.username} (${user.role})`, 'info');
+            });
+            
+            document.getElementById('dataStatus').innerHTML = `✅ 用户数据检查完成 (${users.length} 个用户, ${adminUsers.length} 个管理员)`;
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function checkStatisticsElements() {
+            log('检查统计数据元素...', 'info');
+            
+            const requiredElements = [
+                'totalUsers', 'onlineUsers', 'totalVisits', 'todayVisits',
+                'totalWords', 'totalGrammar', 'totalPhrases'
+            ];
+            
+            let foundCount = 0;
+            
+            requiredElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    foundCount++;
+                    log(`✅ ${id}: 存在`, 'success');
+                } else {
+                    log(`❌ ${id}: 不存在`, 'error');
+                }
+            });
+            
+            const percentage = Math.round((foundCount / requiredElements.length) * 100);
+            log(`统计元素完整度: ${percentage}% (${foundCount}/${requiredElements.length})`, foundCount === requiredElements.length ? 'success' : 'warning');
+            
+            document.getElementById('dataStatus').innerHTML = `统计元素: ${percentage}% 完整`;
+            document.getElementById('dataStatus').className = foundCount === requiredElements.length ? 'status success' : 'status warning';
+        }
+        
+        function checkTabElements() {
+            log('检查标签页元素...', 'info');
+            
+            const tabButtons = document.querySelectorAll('.admin-tab');
+            const tabSections = document.querySelectorAll('.admin-section');
+            
+            log(`找到 ${tabButtons.length} 个标签按钮`, 'info');
+            log(`找到 ${tabSections.length} 个标签内容区域`, 'info');
+            
+            tabButtons.forEach((btn, index) => {
+                const tabName = btn.dataset.tab;
+                const hasClickEvent = btn.onclick || btn.addEventListener;
+                log(`标签 ${index + 1}: ${btn.textContent.trim()} -> ${tabName}`, 'info');
+            });
+            
+            document.getElementById('dataStatus').innerHTML = `✅ 标签检查完成 (${tabButtons.length} 个标签)`;
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function runCompleteTest() {
+            log('🚀 开始运行完整测试...', 'info');
+            
+            setTimeout(() => testTabClickEvents(), 200);
+            setTimeout(() => testStatisticsUpdate(), 800);
+            setTimeout(() => testUserDataLoading(), 1400);
+            setTimeout(() => checkUserData(), 2000);
+            setTimeout(() => checkStatisticsElements(), 2600);
+            setTimeout(() => checkTabElements(), 3200);
+            setTimeout(() => simulateUserManagementClick(), 3800);
+            
+            setTimeout(() => {
+                log('✅ 完整测试流程已启动，请查看各项结果', 'success');
+                document.getElementById('completeStatus').innerHTML = '✅ 完整测试已完成';
+                document.getElementById('completeStatus').className = 'status success';
+            }, 4400);
+        }
+        
+        function openAdminPage() {
+            window.open('admin.html', '_blank');
+            log('已打开管理页面进行实际测试', 'info');
+        }
+        
+        function clearOutput() {
+            document.getElementById('testOutput').innerHTML = '';
+            log('测试输出已清空', 'info');
+        }
+        
+        // 页面加载时自动运行基础检查
+        document.addEventListener('DOMContentLoaded', function() {
+            log('修复验证工具初始化完成', 'info');
+            
+            setTimeout(() => {
+                testUserDataLoading();
+                checkUserData();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

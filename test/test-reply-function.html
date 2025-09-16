@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回复功能测试 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-section { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+        .test-log { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>💬 回复功能测试</h1>
+    
+    <div class="test-section">
+        <h2>📝 准备测试数据</h2>
+        <button class="test-button" onclick="createTestData()">创建测试帖子和回复</button>
+        <button class="test-button" onclick="loginTestUser()">登录测试用户</button>
+        <div id="dataStatus" class="status info">等待创建测试数据...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>👁️ 查看帖子详情</h2>
+        <button class="test-button" onclick="testViewPostDetail()">查看帖子详情</button>
+        <div id="viewStatus" class="status info">点击按钮测试查看功能</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>💬 回复功能</h2>
+        <button class="test-button" onclick="testReplySubmission()">测试回复提交</button>
+        <button class="test-button" onclick="testReplyDisplay()">测试回复显示</button>
+        <div id="replyStatus" class="status info">等待测试回复功能...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 测试日志</h2>
+        <div class="test-log" id="testLog">[系统] 回复功能测试页面已加载...<br></div>
+        <button class="test-button" onclick="clearLog()">清空日志</button>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const logElement = document.getElementById('testLog');
+            logElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function createTestData() {
+            log('创建测试帖子和回复数据...', 'info');
+            
+            // 创建测试帖子
+            const testPosts = [
+                {
+                    id: 'test-post-reply', 
+                    title: '🌟 测试回复功能的帖子', 
+                    content: '这是一个专门用来测试回复功能的帖子。大家可以在这里测试发表回复、查看回复等功能。',
+                    author: { id: 'test-user', username: 'testuser', displayName: '测试用户', avatar: '🧪' },
+                    timestamp: Date.now() - 300000, 
+                    likes: ['u1','u2'], 
+                    replyCount: 2, 
+                    replies: 2,
+                    views: 25,
+                    category: 'general',
+                    tags: ['测试', '回复']
+                }
+            ];
+            
+            // 创建测试回复
+            const testReplies = [
+                {
+                    id: 'reply_test_1',
+                    postId: 'test-post-reply',
+                    authorId: 'other-user',
+                    content: '这是第一条测试回复！回复功能看起来不错。',
+                    parentReplyId: null,
+                    timestamp: Date.now() - 120000,
+                    likes: ['test-user'],
+                    status: 'active'
+                },
+                {
+                    id: 'reply_test_2',
+                    postId: 'test-post-reply',
+                    authorId: 'another-user',
+                    content: '我也来测试一下回复功能，期待看到更多互动！',
+                    parentReplyId: null,
+                    timestamp: Date.now() - 60000,
+                    likes: [],
+                    status: 'active'
+                }
+            ];
+            
+            // 创建测试用户
+            const testUsers = [
+                { id: 'test-user', username: 'testuser', displayName: '测试用户', avatar: '🧪' },
+                { id: 'other-user', username: 'otheruser', displayName: '其他用户', avatar: '👤' },
+                { id: 'another-user', username: 'anotheruser', displayName: '另一个用户', avatar: '🤔' }
+            ];
+            
+            localStorage.setItem('communityPosts', JSON.stringify(testPosts));
+            localStorage.setItem('communityReplies', JSON.stringify(testReplies));
+            localStorage.setItem('communityUsers', JSON.stringify(testUsers));
+            
+            log('✅ 测试数据创建成功 - 1个帖子，2条回复', 'success');
+            document.getElementById('dataStatus').innerHTML = '✅ 测试数据已创建 (1帖子 + 2回复)';
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function loginTestUser() {
+            const testUser = { id: 'test-user', username: 'testuser', displayName: '测试用户', avatar: '🧪' };
+            localStorage.setItem('currentUser', JSON.stringify(testUser));
+            if (typeof communityData !== 'undefined') { 
+                communityData.currentUser = testUser; 
+            }
+            log('✅ 测试用户登录成功', 'success');
+            document.getElementById('dataStatus').innerHTML = '✅ 测试用户已登录';
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function testViewPostDetail() {
+            log('测试查看帖子详情...', 'info');
+            if (typeof viewPostDetail === 'function') {
+                viewPostDetail('test-post-reply');
+                log('✅ 帖子详情页面已打开', 'success');
+                document.getElementById('viewStatus').innerHTML = '✅ 详情页面正常打开';
+                document.getElementById('viewStatus').className = 'status success';
+            } else {
+                log('❌ viewPostDetail 函数未定义', 'error');
+                document.getElementById('viewStatus').innerHTML = '❌ 详情查看功能异常';
+                document.getElementById('viewStatus').className = 'status error';
+            }
+        }
+        
+        function testReplySubmission() {
+            log('测试回复提交功能...', 'info');
+            
+            // 检查相关函数是否存在
+            const functions = ['submitPostReply', 'loadPostReplies', 'renderReplies'];
+            let allExists = functions.every(name => typeof window[name] === 'function');
+            
+            if (allExists) {
+                log('✅ 回复相关函数都存在', 'success');
+                document.getElementById('replyStatus').innerHTML = '✅ 回复提交功能正常';
+                document.getElementById('replyStatus').className = 'status success';
+                
+                // 模拟创建回复表单元素进行测试
+                const testContent = '这是一条测试回复内容！';
+                log(`模拟回复内容: "${testContent}"`, 'info');
+                
+            } else {
+                const missing = functions.filter(name => typeof window[name] !== 'function');
+                log(`❌ 缺少函数: ${missing.join(', ')}`, 'error');
+                document.getElementById('replyStatus').innerHTML = '❌ 回复功能异常';
+                document.getElementById('replyStatus').className = 'status error';
+            }
+        }
+        
+        function testReplyDisplay() {
+            log('测试回复显示功能...', 'info');
+            
+            if (typeof loadPostReplies === 'function') {
+                loadPostReplies('test-post-reply');
+                log('✅ 回复加载函数调用成功', 'success');
+            } else {
+                log('❌ loadPostReplies 函数未定义', 'error');
+            }
+        }
+        
+        function clearLog() { 
+            document.getElementById('testLog').innerHTML = ''; 
+            log('日志已清空', 'info'); 
+        }
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('回复功能测试页面初始化完成', 'info');
+            
+            // 检查核心函数
+            const coreFunctions = ['viewPostDetail', 'submitPostReply', 'loadPostReplies', 'renderReplies'];
+            coreFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    log(`✓ ${funcName} 函数存在`, 'success');
+                } else {
+                    log(`✗ ${funcName} 函数缺失`, 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

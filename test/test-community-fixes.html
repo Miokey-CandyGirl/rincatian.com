@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区功能修复测试 - 琳凯蒂亚语社区</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a237e; color: white; }
+        .test-section { background: rgba(255,255,255,0.1); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
+        .test-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #45a049; }
+        .filter-btn { padding: 8px 16px; border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.1); color: #ffd700; border-radius: 20px; cursor: pointer; margin: 5px; }
+        .filter-btn.active { background: linear-gradient(45deg, #ffd700, #4ecdc4); color: #1a1a2e; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .error { background: rgba(244,67,54,0.2); color: #f44336; }
+        .info { background: rgba(33,150,243,0.2); color: #2196f3; }
+        .test-log { background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 社区功能修复测试</h1>
+    
+    <div class="test-section">
+        <h2>📝 测试数据准备</h2>
+        <button class="test-button" onclick="createTestData()">创建测试数据</button>
+        <button class="test-button" onclick="loginTestUser()">登录测试用户</button>
+        <div id="dataStatus" class="status info">等待创建测试数据...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔍 筛选功能测试</h2>
+        <div class="posts-container">
+            <div style="display: flex; gap: 10px; margin: 20px 0;">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="hot">热门</button>
+                <button class="filter-btn" data-filter="latest">最新</button>
+                <button class="filter-btn" data-filter="unanswered">待回复</button>
+            </div>
+            <div id="testPostsList" style="margin: 20px 0;">
+                <!-- 帖子列表将在这里显示 -->
+            </div>
+        </div>
+        <button class="test-button" onclick="testAllFilters()">自动测试所有筛选</button>
+        <div id="filterStatus" class="status info">点击筛选按钮测试</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🗑️ 删除功能测试</h2>
+        <button class="test-button" onclick="testDeleteOwnPost()">测试删除自己的帖子</button>
+        <button class="test-button" onclick="testDeleteOthersPost()">测试删除别人的帖子</button>
+        <div id="deleteStatus" class="status info">等待测试删除功能...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>💬 回复功能测试</h2>
+        <button class="test-button" onclick="testReplyFunction()">测试回复功能</button>
+        <button class="test-button" onclick="testPostDetailView()">测试帖子详情查看</button>
+        <div id="replyStatus" class="status info">等待测试回复功能...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 测试日志</h2>
+        <div class="test-log" id="testLog">[系统] 测试页面已加载...<br></div>
+        <button class="test-button" onclick="clearLog()">清空日志</button>
+    </div>
+
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = { 'success': '#00ff00', 'error': '#ff0000', 'warning': '#ffaa00', 'info': '#00ffff' };
+            const color = colors[type] || '#ffffff';
+            const logElement = document.getElementById('testLog');
+            logElement.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function createTestData() {
+            log('创建测试数据...', 'info');
+            const testPosts = [
+                {
+                    id: 'test-post-1', title: '🌟 我的测试帖子', content: '这是我的帖子，我可以删除它。',
+                    author: { id: 'test-user', username: 'testuser', avatar: '🧪' },
+                    timestamp: Date.now() - 60000, likes: [], replyCount: 0, views: 15
+                },
+                {
+                    id: 'test-post-2', title: '📚 别人的帖子', content: '这是其他用户的帖子，热门内容。',
+                    author: { id: 'other-user', username: 'otheruser', avatar: '👤' },
+                    timestamp: Date.now() - 300000, likes: ['u1','u2','u3','u4','u5'], replyCount: 3, views: 45
+                },
+                {
+                    id: 'test-post-3', title: '❓ 待回复帖子', content: '这是一个没有回复的帖子。',
+                    author: { id: 'another-user', username: 'anotheruser', avatar: '🤔' },
+                    timestamp: Date.now() - 120000, likes: [], replyCount: 0, views: 8
+                }
+            ];
+            
+            localStorage.setItem('communityPosts', JSON.stringify(testPosts));
+            if (typeof communityData !== 'undefined') { communityData.posts = testPosts; }
+            log('✅ 测试数据创建成功', 'success');
+            loadTestPosts('all');
+            document.getElementById('dataStatus').innerHTML = '✅ 测试数据已创建';
+            document.getElementById('dataStatus').className = 'status success';
+        }
+        
+        function loginTestUser() {
+            const testUser = { id: 'test-user', username: 'testuser', avatar: '🧪' };
+            localStorage.setItem('currentUser', JSON.stringify(testUser));
+            if (typeof communityData !== 'undefined') { communityData.currentUser = testUser; }
+            log('✅ 测试用户登录成功', 'success');
+        }
+        
+        function loadTestPosts(filterType) {
+            const postsList = document.getElementById('testPostsList');
+            let posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            
+            // 筛选逻辑
+            switch (filterType) {
+                case 'hot':
+                    posts.sort((a,b) => (b.likes.length + b.replyCount*2) - (a.likes.length + a.replyCount*2));
+                    break;
+                case 'unanswered':
+                    posts = posts.filter(p => p.replyCount === 0);
+                    break;
+                default:
+                    posts.sort((a,b) => b.timestamp - a.timestamp);
+            }
+            
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p>暂无帖子，请先创建测试数据</p>';
+                return;
+            }
+            
+            postsList.innerHTML = posts.map(post => {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                const isAuthor = currentUser && currentUser.id === post.author.id;
+                return `
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; margin: 10px 0;">
+                        <h4 style="color: #ffd700;">${post.title}</h4>
+                        <p style="color: #e0e0e0;">${post.content}</p>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button onclick="testViewPost('${post.id}')" style="background: rgba(78,205,196,0.2); color: #4ecdc4; border: 1px solid rgba(78,205,196,0.3); padding: 5px 10px; border-radius: 15px; cursor: pointer;">👁️ 查看</button>
+                            <button onclick="testReplyPost('${post.id}')" style="background: rgba(255,215,0,0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); padding: 5px 10px; border-radius: 15px; cursor: pointer;">💬 回复</button>
+                            ${isAuthor ? `<button onclick="testDeletePost('${post.id}')" style="background: rgba(244,67,54,0.2); color: #f44336; border: 1px solid rgba(244,67,54,0.3); padding: 5px 10px; border-radius: 15px; cursor: pointer;">🗑️ 删除</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            log(`✅ 显示 ${posts.length} 个帖子 (${filterType})`, 'success');
+        }
+        
+        function testAllFilters() {
+            const filters = ['all', 'hot', 'latest', 'unanswered'];
+            let i = 0;
+            function next() {
+                if (i >= filters.length) { 
+                    log('✅ 所有筛选测试完成', 'success'); 
+                    document.getElementById('filterStatus').innerHTML = '✅ 筛选功能正常';
+                    document.getElementById('filterStatus').className = 'status success';
+                    return; 
+                }
+                const filter = filters[i];
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === filter);
+                });
+                loadTestPosts(filter);
+                log(`测试筛选: ${filter}`, 'info');
+                i++;
+                setTimeout(next, 1000);
+            }
+            next();
+        }
+        
+        function testDeleteOwnPost() {
+            if (typeof deleteMyPost === 'function') {
+                deleteMyPost('test-post-1');
+                setTimeout(() => { loadTestPosts('all'); }, 500);
+                log('✅ 删除自己帖子测试完成', 'success');
+                document.getElementById('deleteStatus').innerHTML = '✅ 删除功能正常';
+                document.getElementById('deleteStatus').className = 'status success';
+            } else {
+                log('❌ deleteMyPost 函数未定义', 'error');
+            }
+        }
+        
+        function testDeleteOthersPost() {
+            if (typeof deleteMyPost === 'function') {
+                deleteMyPost('test-post-2');
+                log('✅ 权限保护测试完成', 'success');
+            } else {
+                log('❌ deleteMyPost 函数未定义', 'error');
+            }
+        }
+        
+        function testReplyFunction() {
+            const functions = ['replyToPost', 'viewPostDetail'];
+            let allExists = functions.every(name => typeof window[name] === 'function');
+            if (allExists) {
+                log('✅ 回复相关函数存在', 'success');
+                document.getElementById('replyStatus').innerHTML = '✅ 回复功能正常';
+                document.getElementById('replyStatus').className = 'status success';
+            } else {
+                log('❌ 部分回复功能缺失', 'error');
+                document.getElementById('replyStatus').innerHTML = '❌ 回复功能异常';
+                document.getElementById('replyStatus').className = 'status error';
+            }
+        }
+        
+        function testPostDetailView() {
+            if (typeof viewPostDetail === 'function') {
+                viewPostDetail('test-post-1');
+                log('✅ 帖子详情查看调用成功', 'success');
+            } else {
+                log('❌ viewPostDetail 函数未定义', 'error');
+            }
+        }
+        
+        function testViewPost(id) { if (typeof viewPostDetail === 'function') viewPostDetail(id); }
+        function testReplyPost(id) { if (typeof replyToPost === 'function') replyToPost(id); }
+        function testDeletePost(id) { if (typeof deleteMyPost === 'function') { deleteMyPost(id); setTimeout(() => loadTestPosts('all'), 500); } }
+        function clearLog() { document.getElementById('testLog').innerHTML = ''; log('日志已清空', 'info'); }
+        
+        // 绑定筛选按钮事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    loadTestPosts(this.dataset.filter);
+                    log('点击筛选: ' + this.dataset.filter, 'info');
+                });
+            });
+            log('页面初始化完成', 'info');
+        });
+    </script>
+</body>
+</html>

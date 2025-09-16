@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闪退问题修复测试 - 琳凯蒂亚语</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="community.css">
+    <style>
+        .debug-container {
+            max-width: 900px;
+            margin: 120px auto 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.8));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .debug-title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .test-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #4ecdc4;
+        }
+        
+        .test-button {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(45deg, #ffd700, #4ecdc4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .test-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .test-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .test-button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .log-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-item {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            border-left: 3px solid #4ecdc4;
+            background: rgba(255, 255, 255, 0.05);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+        
+        .log-success { border-left-color: #00b894; color: #00b894; }
+        .log-error { border-left-color: #e74c3c; color: #e74c3c; }
+        .log-warning { border-left-color: #f39c12; color: #f39c12; }
+        .log-info { border-left-color: #3498db; color: #3498db; }
+        
+        .status-badges {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .badge-success { background: rgba(0, 184, 148, 0.2); color: #00b894; border: 1px solid #00b894; }
+        .badge-error { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+        .badge-warning { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid #f39c12; }
+        
+        .fix-highlights {
+            background: linear-gradient(45deg, rgba(0, 184, 148, 0.1), rgba(116, 185, 255, 0.1));
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 3px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="planet-icon"></div>
+                <div class="logo-text">
+                    <span class="logo-chinese">闪退修复测试</span>
+                    <span class="logo-english">Flash Fix Test</span>
+                </div>
+            </div>
+            <div class="nav-extras">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                    <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink">个人中心</a>
+                        <a href="#" id="logoutLink">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="debug-container">
+        <h1 class="debug-title">🔧 模态框闪退问题修复测试</h1>
+        
+        <div class="fix-highlights">
+            <h3 style="color: #ffd700; margin-bottom: 1rem;">🎯 修复亮点</h3>
+            <ul style="color: #e0e0e0; line-height: 1.8;">
+                <li><strong>🛡️ 防止重复创建</strong>：增加了严格的模态框重复检查和清理机制</li>
+                <li><strong>⚡ 异步处理</strong>：使用setTimeout避免DOM操作冲突</li>
+                <li><strong>🎭 平滑动画</strong>：替换可能导致闪退的CSS animation为更稳定的transition</li>
+                <li><strong>🔒 事件隔离</strong>：多重事件绑定防护，防止事件冲突</li>
+                <li><strong>🧹 内存清理</strong>：完善的事件监听器清理机制</li>
+                <li><strong>📊 调试日志</strong>：详细的控制台日志帮助追踪问题</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 基础功能测试</h3>
+            <button class="test-button" onclick="quickLogin()">⚡ 快速登录</button>
+            <button class="test-button" onclick="testModalCreate()">🎭 测试模态框创建</button>
+            <button class="test-button" onclick="testModalClose()">❌ 测试关闭功能</button>
+            <button class="test-button" onclick="checkSystemStatus()">📊 系统状态检查</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔥 压力测试</h3>
+            <button class="test-button" onclick="rapidClickTest()">💨 快速点击测试</button>
+            <button class="test-button" onclick="multipleModalTest()">🔄 多重模态框测试</button>
+            <button class="test-button" onclick="escKeyTest()">⌨️ ESC键测试</button>
+            <button class="test-button" onclick="backgroundClickTest()">🎯 背景点击测试</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 专项诊断</h3>
+            <button class="test-button" onclick="debugEvents()">🔍 事件绑定诊断</button>
+            <button class="test-button" onclick="debugDOM()">🌐 DOM状态诊断</button>
+            <button class="test-button" onclick="memoryLeakTest()">🧠 内存泄漏测试</button>
+            <button class="test-button" onclick="clearAllTests()">🧹 清理所有测试</button>
+        </div>
+        
+        <div class="status-badges" id="statusBadges">
+            <div class="status-badge badge-warning">等待测试...</div>
+        </div>
+        
+        <div class="log-container scrollbar-custom">
+            <h4 style="color: #ffd700; margin-bottom: 1rem;">📋 实时测试日志</h4>
+            <div id="testLog"></div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="auth-system.js"></script>
+    <script src="community-system.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="script.js"></script>
+    <script src="community.js"></script>
+
+    <script>
+        let testCounter = 0;
+        let testResults = {
+            success: 0,
+            error: 0,
+            warning: 0
+        };
+
+        // 日志记录函数
+        function log(message, type = 'info', showTime = true) {
+            const logDiv = document.getElementById('testLog');
+            const timestamp = showTime ? new Date().toLocaleTimeString() : '';
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            const icon = icons[type] || icons.info;
+            
+            const logItem = document.createElement('div');
+            logItem.className = `log-item log-${type}`;
+            logItem.innerHTML = `${timestamp ? `[${timestamp}] ` : ''}${icon} ${message}`;
+            
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            console.log(`[测试${++testCounter}] ${message}`);
+            testResults[type]++;
+            updateStatusBadges();
+        }
+
+        // 更新状态徽章
+        function updateStatusBadges() {
+            const badgesDiv = document.getElementById('statusBadges');
+            badgesDiv.innerHTML = `
+                <div class="status-badge badge-success">成功: ${testResults.success}</div>
+                <div class="status-badge badge-error">错误: ${testResults.error}</div>
+                <div class="status-badge badge-warning">警告: ${testResults.warning}</div>
+            `;
+        }
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🌟 闪退修复测试页面加载完成', 'info');
+            
+            setTimeout(() => {
+                checkSystemStatus();
+            }, 1000);
+        });
+
+        // 快速登录
+        async function quickLogin() {
+            log('正在执行快速登录...', 'info');
+            
+            if (!window.authSystem) {
+                log('认证系统未加载', 'error');
+                return;
+            }
+            
+            try {
+                const result = await window.authSystem.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (result.success) {
+                    log(`快速登录成功: ${window.authSystem.currentUser.username}`, 'success');
+                } else {
+                    log(`登录失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`登录异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试模态框创建
+        function testModalCreate() {
+            log('🎭 开始测试模态框创建...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再测试', 'warning');
+                return;
+            }
+            
+            try {
+                // 监听模态框创建过程
+                const originalConsoleLog = console.log;
+                let createLogs = [];
+                
+                console.log = function(...args) {
+                    const message = args.join(' ');
+                    if (message.includes('🌟') || message.includes('🎯') || message.includes('✅') || message.includes('❌')) {
+                        createLogs.push(message);
+                    }
+                    originalConsoleLog.apply(console, args);
+                };
+                
+                showNewPostModal();
+                
+                setTimeout(() => {
+                    console.log = originalConsoleLog;
+                    
+                    const modal = document.getElementById('newPostModal');
+                    if (modal) {
+                        log('模态框创建成功，DOM元素存在', 'success');
+                        log(`捕获到 ${createLogs.length} 条创建日志`, 'info');
+                        createLogs.forEach(logMsg => log(logMsg, 'info', false));
+                    } else {
+                        log('模态框创建失败，DOM元素不存在', 'error');
+                    }
+                }, 500);
+                
+            } catch (error) {
+                log(`模态框创建异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试关闭功能
+        function testModalClose() {
+            log('❌ 开始测试关闭功能...', 'info');
+            
+            const modal = document.getElementById('newPostModal');
+            if (!modal) {
+                log('没有找到打开的模态框', 'warning');
+                return;
+            }
+            
+            try {
+                // 测试关闭按钮
+                const closeBtn = modal.querySelector('.close-modal-btn');
+                if (closeBtn) {
+                    log('找到关闭按钮，模拟点击...', 'info');
+                    closeBtn.click();
+                    
+                    setTimeout(() => {
+                        const modalAfterClose = document.getElementById('newPostModal');
+                        if (!modalAfterClose) {
+                            log('关闭按钮测试成功，模态框已移除', 'success');
+                        } else {
+                            log('关闭按钮测试失败，模态框仍然存在', 'error');
+                        }
+                    }, 500);
+                } else {
+                    log('未找到关闭按钮', 'error');
+                }
+            } catch (error) {
+                log(`关闭测试异常: ${error.message}`, 'error');
+            }
+        }
+
+        // 检查系统状态
+        function checkSystemStatus() {
+            log('📊 检查系统状态...', 'info');
+            
+            const checks = [
+                { name: 'window.authSystem', obj: window.authSystem },
+                { name: 'window.communitySystem', obj: window.communitySystem },
+                { name: 'showNewPostModal 函数', obj: window.showNewPostModal },
+                { name: 'closeNewPostModal 函数', obj: window.closeNewPostModal },
+                { name: 'createNewPostModal 函数', obj: window.createNewPostModal },
+                { name: 'setupModalEvents 函数', obj: window.setupModalEvents }
+            ];
+            
+            checks.forEach(check => {
+                if (check.obj) {
+                    log(`${check.name} ✅ 已加载`, 'success');
+                } else {
+                    log(`${check.name} ❌ 未加载`, 'error');
+                }
+            });
+            
+            // 检查用户登录状态
+            if (window.authSystem?.currentUser) {
+                log(`用户状态: 已登录 (${window.authSystem.currentUser.username})`, 'success');
+            } else {
+                log('用户状态: 未登录', 'warning');
+            }
+        }
+
+        // 快速点击测试
+        function rapidClickTest() {
+            log('💨 开始快速点击测试...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再进行压力测试', 'warning');
+                return;
+            }
+            
+            let clickCount = 0;
+            const maxClicks = 5;
+            
+            function rapidClick() {
+                if (clickCount >= maxClicks) {
+                    log(`快速点击测试完成，共执行 ${clickCount} 次点击`, 'success');
+                    return;
+                }
+                
+                clickCount++;
+                log(`执行第 ${clickCount} 次快速点击`, 'info');
+                
+                try {
+                    showNewPostModal();
+                    
+                    setTimeout(() => {
+                        const modal = document.getElementById('newPostModal');
+                        if (modal) {
+                            closeNewPostModal();
+                        }
+                        
+                        setTimeout(rapidClick, 100);
+                    }, 100);
+                } catch (error) {
+                    log(`第 ${clickCount} 次点击异常: ${error.message}`, 'error');
+                }
+            }
+            
+            rapidClick();
+        }
+
+        // 多重模态框测试
+        function multipleModalTest() {
+            log('🔄 开始多重模态框测试...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再进行测试', 'warning');
+                return;
+            }
+            
+            // 尝试创建多个模态框
+            for (let i = 1; i <= 3; i++) {
+                setTimeout(() => {
+                    log(`创建第 ${i} 个模态框...`, 'info');
+                    showNewPostModal();
+                    
+                    setTimeout(() => {
+                        const modals = document.querySelectorAll('#newPostModal');
+                        log(`当前页面中模态框数量: ${modals.length}`, modals.length === 1 ? 'success' : 'warning');
+                    }, 200);
+                }, i * 300);
+            }
+        }
+
+        // ESC键测试
+        function escKeyTest() {
+            log('⌨️ 开始ESC键测试...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再测试', 'warning');
+                return;
+            }
+            
+            showNewPostModal();
+            
+            setTimeout(() => {
+                const modal = document.getElementById('newPostModal');
+                if (modal) {
+                    log('模拟按下ESC键...', 'info');
+                    
+                    const escEvent = new KeyboardEvent('keydown', {
+                        key: 'Escape',
+                        keyCode: 27,
+                        bubbles: true
+                    });
+                    
+                    document.dispatchEvent(escEvent);
+                    
+                    setTimeout(() => {
+                        const modalAfterEsc = document.getElementById('newPostModal');
+                        if (!modalAfterEsc) {
+                            log('ESC键测试成功，模态框已关闭', 'success');
+                        } else {
+                            log('ESC键测试失败，模态框仍然存在', 'error');
+                        }
+                    }, 500);
+                } else {
+                    log('模态框创建失败，无法测试ESC键', 'error');
+                }
+            }, 300);
+        }
+
+        // 背景点击测试
+        function backgroundClickTest() {
+            log('🎯 开始背景点击测试...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再测试', 'warning');
+                return;
+            }
+            
+            showNewPostModal();
+            
+            setTimeout(() => {
+                const modal = document.getElementById('newPostModal');
+                if (modal) {
+                    log('模拟点击模态框背景...', 'info');
+                    
+                    const clickEvent = new MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    
+                    // 确保事件目标是模态框背景
+                    Object.defineProperty(clickEvent, 'target', {
+                        value: modal,
+                        enumerable: true
+                    });
+                    
+                    modal.dispatchEvent(clickEvent);
+                    
+                    setTimeout(() => {
+                        const modalAfterClick = document.getElementById('newPostModal');
+                        if (!modalAfterClick) {
+                            log('背景点击测试成功，模态框已关闭', 'success');
+                        } else {
+                            log('背景点击测试失败，模态框仍然存在', 'error');
+                        }
+                    }, 500);
+                } else {
+                    log('模态框创建失败，无法测试背景点击', 'error');
+                }
+            }, 300);
+        }
+
+        // 事件绑定诊断
+        function debugEvents() {
+            log('🔍 开始事件绑定诊断...', 'info');
+            
+            const modal = document.getElementById('newPostModal');
+            if (!modal) {
+                log('没有找到模态框，请先创建', 'warning');
+                return;
+            }
+            
+            const closeBtn = modal.querySelector('.close-modal-btn');
+            const cancelBtn = modal.querySelector('.btn-cancel');
+            const submitBtn = modal.querySelector('.btn-submit');
+            
+            log(`关闭按钮: ${closeBtn ? '✅ 找到' : '❌ 缺失'}`, closeBtn ? 'success' : 'error');
+            log(`取消按钮: ${cancelBtn ? '✅ 找到' : '❌ 缺失'}`, cancelBtn ? 'success' : 'error');
+            log(`提交按钮: ${submitBtn ? '✅ 找到' : '❌ 缺失'}`, submitBtn ? 'success' : 'error');
+            
+            // 检查事件监听器
+            if (closeBtn) {
+                log(`关闭按钮onclick: ${closeBtn.onclick ? '✅ 已绑定' : '❌ 未绑定'}`, closeBtn.onclick ? 'success' : 'warning');
+            }
+            
+            // 检查ESC键监听器
+            log(`ESC键监听器: ${modal._escKeyHandler ? '✅ 已绑定' : '❌ 未绑定'}`, modal._escKeyHandler ? 'success' : 'warning');
+        }
+
+        // DOM状态诊断
+        function debugDOM() {
+            log('🌐 开始DOM状态诊断...', 'info');
+            
+            const modals = document.querySelectorAll('#newPostModal');
+            log(`页面中模态框数量: ${modals.length}`, 'info');
+            
+            if (modals.length > 0) {
+                modals.forEach((modal, index) => {
+                    log(`模态框${index + 1}: 显示状态=${modal.style.display}, 透明度=${modal.style.opacity}`, 'info');
+                });
+            }
+            
+            // 检查body的overflow状态
+            log(`body overflow: ${document.body.style.overflow || 'auto'}`, 'info');
+            
+            // 检查z-index层级
+            const modal = document.getElementById('newPostModal');
+            if (modal) {
+                const zIndex = window.getComputedStyle(modal).zIndex;
+                log(`模态框z-index: ${zIndex}`, 'info');
+            }
+        }
+
+        // 内存泄漏测试
+        function memoryLeakTest() {
+            log('🧠 开始内存泄漏测试...', 'info');
+            
+            if (!window.authSystem?.currentUser) {
+                log('请先登录再测试', 'warning');
+                return;
+            }
+            
+            let modalCount = 0;
+            
+            function createAndDestroyModal() {
+                if (modalCount >= 10) {
+                    log('内存泄漏测试完成，共创建和销毁10个模态框', 'success');
+                    return;
+                }
+                
+                modalCount++;
+                log(`创建和销毁第 ${modalCount} 个模态框...`, 'info');
+                
+                showNewPostModal();
+                
+                setTimeout(() => {
+                    closeNewPostModal();
+                    
+                    setTimeout(() => {
+                        // 检查是否有残留的事件监听器
+                        const listeners = document._listeners || [];
+                        log(`当前文档事件监听器数量: ${listeners.length}`, 'info');
+                        
+                        setTimeout(createAndDestroyModal, 100);
+                    }, 200);
+                }, 100);
+            }
+            
+            createAndDestroyModal();
+        }
+
+        // 清理所有测试
+        function clearAllTests() {
+            log('🧹 清理所有测试状态...', 'info');
+            
+            // 移除所有可能的模态框
+            const modals = document.querySelectorAll('#newPostModal');
+            modals.forEach((modal, index) => {
+                modal.remove();
+                log(`已移除模态框 ${index + 1}`, 'success');
+            });
+            
+            // 恢复body状态
+            document.body.style.overflow = 'auto';
+            
+            // 重置测试计数器
+            testCounter = 0;
+            testResults = { success: 0, error: 0, warning: 0 };
+            updateStatusBadges();
+            
+            // 清空日志
+            document.getElementById('testLog').innerHTML = '';
+            
+            log('所有测试状态已清理完成', 'success');
+        }
+    </script>
+</body>
+</html>

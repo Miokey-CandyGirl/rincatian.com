@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复测试页面</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a237e;
+            color: white;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(26, 35, 126, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-extras {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .tian-calendar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 0.9rem;
+            color: #e8eaf6;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .btn {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #e8eaf6;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd700, #00bcd4);
+            color: #1a237e;
+            font-weight: 600;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 琳凯蒂亚语网站修复测试</h1>
+    
+    <div class="test-section">
+        <h2>测试导航栏（模拟）</h2>
+        <div class="nav-container">
+            <div>琳凯蒂亚语社区</div>
+            <div class="nav-extras">
+                <div class="tian-calendar">
+                    <span class="calendar-icon">📅</span>
+                    <span class="tian-date" id="tianDate">载入中...</span>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">登录</button>
+                    <button class="btn btn-primary" id="registerBtn">注册</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span class="user-name" id="userName"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试结果</h2>
+        <p id="testResult">正在检测...</p>
+        <button onclick="runTests()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">重新测试</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>控制台日志</h2>
+        <div id="consoleLog" style="background: #000; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 300px; overflow-y: auto;"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 捕获控制台日志
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const logContainer = document.getElementById('consoleLog');
+        
+        function addLogToUI(message, type = 'log') {
+            const logLine = document.createElement('div');
+            logLine.style.color = type === 'error' ? '#ff5722' : '#4CAF50';
+            logLine.style.marginBottom = '2px';
+            logLine.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logLine);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            addLogToUI(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            addLogToUI(args.join(' '), 'error');
+        };
+        
+        function runTests() {
+            const testResult = document.getElementById('testResult');
+            const tianDate = document.getElementById('tianDate');
+            const authButtons = document.querySelector('.auth-buttons');
+            const userInfo = document.getElementById('userInfo');
+            
+            let results = [];
+            
+            // 测试田历日期
+            if (tianDate) {
+                const dateText = tianDate.textContent;
+                if (dateText === '载入中...') {
+                    results.push('❌ 田历日期未更新，仍显示"载入中..."');
+                } else if (dateText.includes('华田')) {
+                    results.push('✅ 田历日期正常显示：' + dateText);
+                } else {
+                    results.push('⚠️ 田历日期异常：' + dateText);
+                }
+            } else {
+                results.push('❌ 未找到田历日期元素');
+            }
+            
+            // 测试认证按钮
+            if (authButtons) {
+                const isVisible = window.getComputedStyle(authButtons).display !== 'none';
+                if (isVisible) {
+                    results.push('✅ 登录注册按钮正常显示');
+                } else {
+                    results.push('❌ 登录注册按钮被隐藏');
+                }
+            } else {
+                results.push('❌ 未找到认证按钮容器');
+            }
+            
+            // 测试用户信息
+            if (userInfo) {
+                const isVisible = window.getComputedStyle(userInfo).display !== 'none';
+                if (isVisible) {
+                    results.push('ℹ️ 用户信息区域已显示（表示已登录）');
+                } else {
+                    results.push('ℹ️ 用户信息区域隐藏（表示未登录）');
+                }
+            }
+            
+            testResult.innerHTML = results.join('<br>');
+            console.log('测试完成，结果：', results);
+        }
+        
+        // 页面加载后运行测试
+        setTimeout(runTests, 1000);
+        setTimeout(runTests, 3000); // 再次测试确保延迟初始化完成
+    </script>
+</body>
+</html>

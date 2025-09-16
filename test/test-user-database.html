@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户数据库测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-section h2 {
+            color: #ffd700;
+            margin-top: 0;
+        }
+        .btn {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ffd700, #00bcd4);
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success {
+            color: #4ecdc4;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="rincatian-flag">
+                        <img src="rincatian-flag.png" alt="琳凯蒂亚国旗" class="flag-icon">
+                    </div>
+                    <div class="planet-icon"></div>
+                    <div class="logo-text">
+                        <span class="logo-chinese">琳凯蒂亚语社区</span>
+                        <span class="logo-english">Rincatian Community</span>
+                    </div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="grammar.html">语法</a></li>
+                    <li><a href="dictionary.html">词典</a></li>
+                    <li><a href="culture.html">文化</a></li>
+                    <li><a href="community.html">社区</a></li>
+                </ul>
+                <div class="nav-extras">
+                    <div class="tian-calendar">
+                        <span class="calendar-icon">📅</span>
+                        <span class="tian-date" id="tianDate">载入中...</span>
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline btn-small" id="loginBtn">登录</button>
+                        <button class="btn btn-primary btn-small" id="registerBtn">注册</button>
+                    </div>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <div class="user-avatar" id="userAvatar"></div>
+                        <span class="user-name" id="userName"></span>
+                        <div class="user-dropdown">
+                            <a href="user-profile.html" id="profileLink">我的信息</a>
+                            <a href="#" id="logoutLink">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>用户数据库功能测试</h1>
+            
+            <div class="test-section">
+                <h2>用户状态检查</h2>
+                <button class="btn" onclick="checkUserStatus()">检查用户登录状态</button>
+                <div id="userStatusResult" class="result"></div>
+            </div>
+            
+            <div class="test-section">
+                <h2>用户资料测试</h2>
+                <button class="btn" onclick="saveUserProfile()">保存用户资料</button>
+                <button class="btn" onclick="getUserProfile()">获取用户资料</button>
+                <div id="userProfileResult" class="result"></div>
+            </div>
+            
+            <div class="test-section">
+                <h2>学习数据测试</h2>
+                <button class="btn" onclick="saveLearningData()">保存学习数据</button>
+                <button class="btn" onclick="getLearningData()">获取学习数据</button>
+                <div id="learningDataResult" class="result"></div>
+            </div>
+            
+            <div class="test-section">
+                <h2>收藏功能测试</h2>
+                <button class="btn" onclick="addFavorite()">添加收藏</button>
+                <button class="btn" onclick="getUserFavorites()">获取收藏</button>
+                <button class="btn" onclick="removeFavorite()">移除收藏</button>
+                <div id="favoritesResult" class="result"></div>
+            </div>
+            
+            <div class="test-section">
+                <h2>学习历史测试</h2>
+                <button class="btn" onclick="saveLearningHistory()">保存学习历史</button>
+                <button class="btn" onclick="getLearningHistory()">获取学习历史</button>
+                <div id="learningHistoryResult" class="result"></div>
+            </div>
+            
+            <div class="test-section">
+                <h2>用户设置测试</h2>
+                <button class="btn" onclick="saveUserSettings()">保存用户设置</button>
+                <button class="btn" onclick="getUserSettings()">获取用户设置</button>
+                <div id="userSettingsResult" class="result"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth-system.js"></script>
+    <script src="user-database.js"></script>
+    <script>
+        // 初始化星空背景
+        function initStarfield() {
+            const starfield = document.getElementById('starfield');
+            if (!starfield) return;
+            
+            starfield.innerHTML = '';
+            
+            // 创建星星
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                starfield.appendChild(star);
+            }
+        }
+        
+        // 检查用户状态
+        function checkUserStatus() {
+            const resultElement = document.getElementById('userStatusResult');
+            try {
+                if (window.authSystem && window.authSystem.currentUser) {
+                    resultElement.innerHTML = `<span class="success">用户已登录: ${window.authSystem.currentUser.username}</span>`;
+                } else {
+                    resultElement.innerHTML = `<span class="error">用户未登录</span>`;
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 保存用户资料
+        function saveUserProfile() {
+            const resultElement = document.getElementById('userProfileResult');
+            try {
+                if (window.userDatabase) {
+                    const profileData = {
+                        bio: '这是测试用户简介',
+                        location: '测试城市',
+                        website: 'https://test.example.com'
+                    };
+                    const success = window.userDatabase.saveUserProfile(profileData);
+                    if (success) {
+                        resultElement.innerHTML = '<span class="success">用户资料保存成功</span>';
+                    } else {
+                        resultElement.innerHTML = '<span class="error">用户资料保存失败</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 获取用户资料
+        function getUserProfile() {
+            const resultElement = document.getElementById('userProfileResult');
+            try {
+                if (window.userDatabase) {
+                    const profile = window.userDatabase.getUserProfile();
+                    if (profile) {
+                        resultElement.innerHTML = `<span class="success">用户资料: ${JSON.stringify(profile, null, 2)}</span>`;
+                    } else {
+                        resultElement.innerHTML = '<span class="error">未找到用户资料</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 保存学习数据
+        function saveLearningData() {
+            const resultElement = document.getElementById('learningDataResult');
+            try {
+                if (window.userDatabase) {
+                    const learningData = {
+                        progress: {
+                            vocabulary: 75,
+                            grammar: 60
+                        },
+                        streak: 5,
+                        lastStudyDate: new Date().toISOString()
+                    };
+                    const success = window.userDatabase.saveLearningData(learningData);
+                    if (success) {
+                        resultElement.innerHTML = '<span class="success">学习数据保存成功</span>';
+                    } else {
+                        resultElement.innerHTML = '<span class="error">学习数据保存失败</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 获取学习数据
+        function getLearningData() {
+            const resultElement = document.getElementById('learningDataResult');
+            try {
+                if (window.userDatabase) {
+                    const learningData = window.userDatabase.getLearningData();
+                    resultElement.innerHTML = `<span class="success">学习数据: ${JSON.stringify(learningData, null, 2)}</span>`;
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 添加收藏
+        function addFavorite() {
+            const resultElement = document.getElementById('favoritesResult');
+            try {
+                if (window.userDatabase) {
+                    const favoriteItem = {
+                        id: 'test_word_' + Date.now(),
+                        word: 'testword',
+                        meaning: '测试词汇',
+                        type: 'word'
+                    };
+                    const success = window.userDatabase.addFavorite(favoriteItem);
+                    if (success) {
+                        resultElement.innerHTML = '<span class="success">收藏添加成功</span>';
+                    } else {
+                        resultElement.innerHTML = '<span class="error">收藏添加失败</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 获取收藏
+        function getUserFavorites() {
+            const resultElement = document.getElementById('favoritesResult');
+            try {
+                if (window.userDatabase) {
+                    const favorites = window.userDatabase.getUserFavorites();
+                    resultElement.innerHTML = `<span class="success">收藏列表: ${JSON.stringify(favorites, null, 2)}</span>`;
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 移除收藏
+        function removeFavorite() {
+            const resultElement = document.getElementById('favoritesResult');
+            try {
+                if (window.userDatabase) {
+                    // 先获取一个收藏项的ID来测试移除功能
+                    const favorites = window.userDatabase.getUserFavorites();
+                    if (favorites.length > 0) {
+                        const itemId = favorites[0].id;
+                        const success = window.userDatabase.removeFavorite(itemId);
+                        if (success) {
+                            resultElement.innerHTML = '<span class="success">收藏移除成功</span>';
+                        } else {
+                            resultElement.innerHTML = '<span class="error">收藏移除失败</span>';
+                        }
+                    } else {
+                        resultElement.innerHTML = '<span class="error">没有可移除的收藏</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 保存学习历史
+        function saveLearningHistory() {
+            const resultElement = document.getElementById('learningHistoryResult');
+            try {
+                if (window.userDatabase) {
+                    const history = [
+                        {
+                            id: 'history_1',
+                            word: 'linkaitiya',
+                            meaning: '琳凯蒂亚语',
+                            date: new Date().toISOString(),
+                            status: 'mastered',
+                            type: 'word'
+                        },
+                        {
+                            id: 'history_2',
+                            rule: '名词变格规则',
+                            date: new Date().toISOString(),
+                            status: 'learning',
+                            type: 'grammar'
+                        }
+                    ];
+                    const success = window.userDatabase.saveLearningHistory(history);
+                    if (success) {
+                        resultElement.innerHTML = '<span class="success">学习历史保存成功</span>';
+                    } else {
+                        resultElement.innerHTML = '<span class="error">学习历史保存失败</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 获取学习历史
+        function getLearningHistory() {
+            const resultElement = document.getElementById('learningHistoryResult');
+            try {
+                if (window.userDatabase) {
+                    const history = window.userDatabase.getLearningHistory();
+                    resultElement.innerHTML = `<span class="success">学习历史: ${JSON.stringify(history, null, 2)}</span>`;
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 保存用户设置
+        function saveUserSettings() {
+            const resultElement = document.getElementById('userSettingsResult');
+            try {
+                if (window.userDatabase) {
+                    const settings = {
+                        dailyGoal: 15,
+                        notifications: true,
+                        emailNotifications: false,
+                        theme: 'dark'
+                    };
+                    const success = window.userDatabase.saveUserSettings(settings);
+                    if (success) {
+                        resultElement.innerHTML = '<span class="success">用户设置保存成功</span>';
+                    } else {
+                        resultElement.innerHTML = '<span class="error">用户设置保存失败</span>';
+                    }
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 获取用户设置
+        function getUserSettings() {
+            const resultElement = document.getElementById('userSettingsResult');
+            try {
+                if (window.userDatabase) {
+                    const settings = window.userDatabase.getUserSettings();
+                    resultElement.innerHTML = `<span class="success">用户设置: ${JSON.stringify(settings, null, 2)}</span>`;
+                } else {
+                    resultElement.innerHTML = '<span class="error">用户数据库未加载</span>';
+                }
+            } catch (error) {
+                resultElement.innerHTML = `<span class="error">错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            initStarfield();
+            
+            // 模拟登录一个测试用户（实际使用时需要通过登录页面登录）
+            console.log('用户数据库测试页面已加载');
+        });
+    </script>
+</body>
+</html>

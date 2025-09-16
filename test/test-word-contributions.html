@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试词汇贡献功能</title>
+    <link rel="stylesheet" href="user-profile.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a237e, #3f51b5);
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .test-section h2 {
+            color: #ffd700;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .btn {
+            background: #00bcd4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #0097a7;
+        }
+        
+        .result {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>词汇贡献功能测试</h1>
+        
+        <div class="test-section">
+            <h2>添加测试数据</h2>
+            <button class="btn" onclick="addTestData()">添加测试申请记录</button>
+            <button class="btn" onclick="clearTestData()">清空测试数据</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>模拟用户数据</h2>
+            <button class="btn" onclick="simulateUserLogin()">模拟用户登录</button>
+            <button class="btn" onclick="simulateUserLogout()">模拟用户登出</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>测试结果</h2>
+            <div class="result" id="testResult">点击按钮进行测试</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>词汇贡献显示测试</h2>
+            <div id="wordContributions" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <div class="empty-text">您还没有贡献任何词汇</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟认证系统
+        window.authSystem = {
+            currentUser: null
+        };
+        
+        // 模拟用户登录
+        function simulateUserLogin() {
+            window.authSystem.currentUser = {
+                id: 'test_user_001',
+                username: '测试用户'
+            };
+            document.getElementById('testResult').textContent = '用户已登录: ' + window.authSystem.currentUser.username;
+        }
+        
+        // 模拟用户登出
+        function simulateUserLogout() {
+            window.authSystem.currentUser = null;
+            document.getElementById('testResult').textContent = '用户已登出';
+        }
+        
+        // 添加测试数据
+        function addTestData() {
+            if (!window.authSystem.currentUser) {
+                document.getElementById('testResult').textContent = '请先模拟用户登录';
+                return;
+            }
+            
+            // 创建测试申请记录
+            const testRequests = [
+                {
+                    id: 'request_1',
+                    linkaitiya: 'testword1',
+                    chinese: '测试词1',
+                    type: '名词',
+                    reason: '在阅读《光线传奇》时遇到，希望添加到词典中',
+                    requestedBy: window.authSystem.currentUser.id,
+                    requestedByName: window.authSystem.currentUser.username,
+                    requestedAt: new Date().toISOString(),
+                    status: 'pending'
+                },
+                {
+                    id: 'request_2',
+                    linkaitiya: 'testword2',
+                    chinese: '测试词2',
+                    type: '动词',
+                    reason: '这是一个常用的动词，在日常交流中经常使用',
+                    requestedBy: window.authSystem.currentUser.id,
+                    requestedByName: window.authSystem.currentUser.username,
+                    requestedAt: new Date(Date.now() - 86400000).toISOString(), // 昨天
+                    status: 'approved'
+                },
+                {
+                    id: 'request_3',
+                    linkaitiya: 'testword3',
+                    chinese: '测试词3',
+                    type: '形容词',
+                    reason: '用于描述事物的特征，建议添加',
+                    requestedBy: window.authSystem.currentUser.id,
+                    requestedByName: window.authSystem.currentUser.username,
+                    requestedAt: new Date(Date.now() - 172800000).toISOString(), // 前天
+                    status: 'rejected'
+                }
+            ];
+            
+            // 保存到localStorage
+            localStorage.setItem('linkaitiya_word_requests', JSON.stringify(testRequests));
+            document.getElementById('testResult').textContent = '已添加3条测试申请记录';
+            
+            // 显示贡献记录
+            displayTestContributions();
+        }
+        
+        // 清空测试数据
+        function clearTestData() {
+            localStorage.removeItem('linkaitiya_word_requests');
+            document.getElementById('testResult').textContent = '已清空测试数据';
+            
+            // 显示空状态
+            document.getElementById('wordContributions').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <div class="empty-text">您还没有贡献任何词汇</div>
+                </div>
+            `;
+        }
+        
+        // 显示测试贡献记录
+        function displayTestContributions() {
+            if (!window.authSystem.currentUser) {
+                document.getElementById('testResult').textContent = '请先模拟用户登录';
+                return;
+            }
+            
+            try {
+                // 从localStorage获取所有单词申请记录
+                let allRequests = JSON.parse(localStorage.getItem('linkaitiya_word_requests') || '[]');
+                
+                // 筛选出当前用户的申请记录
+                const userRequests = allRequests.filter(request => request.requestedBy === window.authSystem.currentUser.id);
+                
+                // 按时间倒序排列
+                userRequests.sort((a, b) => new Date(b.requestedAt) - new Date(a.requestedAt));
+                
+                // 显示申请记录
+                const contributionsContainer = document.getElementById('wordContributions');
+                if (contributionsContainer) {
+                    if (userRequests.length > 0) {
+                        contributionsContainer.innerHTML = '';
+                        userRequests.forEach(request => {
+                            const contributionItem = document.createElement('div');
+                            contributionItem.className = 'history-item';
+                            
+                            // 构建词性信息
+                            const typeInfo = request.type ? `<div class="word-type">词性：${request.type}</div>` : '';
+                            
+                            // 构建理由信息
+                            const reasonInfo = request.reason ? `<div class="request-reason">申请理由：${request.reason}</div>` : '';
+                            
+                            contributionItem.innerHTML = `
+                                <div class="history-header">
+                                    <div class="history-word">${request.linkaitiya}</div>
+                                    <div class="history-status ${request.status === 'approved' ? 'mastered' : request.status === 'rejected' ? 'rejected' : 'learning'}">
+                                        ${request.status === 'approved' ? '已通过' : request.status === 'rejected' ? '已拒绝' : '待审核'}
+                                    </div>
+                                </div>
+                                <div class="history-meaning">${request.chinese}</div>
+                                ${typeInfo}
+                                ${reasonInfo}
+                                <div class="history-date">${new Date(request.requestedAt).toLocaleDateString('zh-CN')}</div>
+                            `;
+                            contributionsContainer.appendChild(contributionItem);
+                        });
+                    } else {
+                        contributionsContainer.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">📝</div>
+                                <div class="empty-text">您还没有贡献任何词汇</div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                document.getElementById('testResult').textContent = '已显示词汇贡献记录，共' + userRequests.length + '条';
+            } catch (error) {
+                document.getElementById('testResult').textContent = '显示贡献记录失败: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
