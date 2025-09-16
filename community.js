@@ -3291,8 +3291,8 @@ function downloadResource(resourceId) {
     // 特殊处理安卓输入法APP的下载
     if (resourceId === 'res_android_input') {
         // 这里可以设置真实的下载链接
-        const downloadLink = 'https://fnnbtlfqjfgbifhhnuij.storage.supabase.co/storage/v1/s3'; // 模拟下载链接
-        showNotification('🚀 正在准备下载安卓输入法APP...', 'success');
+        const downloadLink = 'https://fnnbtlfqjfgbifhhnuij.supabase.co/storage/v1/object/public/Android%20App/Rincatian_Ime.apk'; // 下载链接
+        showNotification('🚀 正在准备下载安卓输入法APP...', '下载成功！');
         
         // 创建一个隐藏的下载链接并触发点击
         const link = document.createElement('a');
