@@ -2947,6 +2947,25 @@ function loadResourcesList() {
             features: ['细分类别', '快速索引', '例句丰富', '离线可用']
         },
         {
+            id: 'res_android_input',
+            title: '📱 安卓琳语输入法APP',
+            description: '专为安卓设备设计的琳凯蒂亚语输入法，支持汉语输入，目前是开发版',
+            author: '琳凯蒂亚语社区开发组',
+            category: 'app',
+            type: '移动应用',
+            size: '12.8 MB',
+            downloads: 226,
+            rating: 4.8,
+            tags: ['输入法', '安卓', '工具'],
+            uploadTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '不限',
+            language: '琳凯蒂亚语',
+            preview: '支持多种输入方式，包含词库更新、云同步、个性化设置等功能。',
+            features: ['拼音输入', '手写识别', '语音输入', '词库更新', '云同步'],
+            // 添加下载链接属性
+            downloadLink: '#'
+        },
+        {
             id: 'res_006',
             title: '🎵 琳凯蒂亚语歌曲合集',
             description: '由社区成员创作的美丽琳凯蒂亚语歌曲，让你在音乐中感受语言的魅力。',
@@ -3259,19 +3278,37 @@ function formatNumber(num) {
 
 // 资源操作函数
 function downloadResource(resourceId) {
-    console.log('下载资源:', resourceId);
-    showNotification('💾 开始下载资源...', 'info');
+    console.log('📥 下载资源:', resourceId);
     
-    // 模拟下载进度
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 20;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-            showNotification('✅ 资源下载完成！', 'success');
-        }
-    }, 200);
+    const currentUser = (window.authSystem && window.authSystem.currentUser) || 
+                       (window.communitySystem && window.communitySystem.currentUser);
+    
+    if (!currentUser) {
+        showNotification('请先登录后再下载资源！', 'warning');
+        return;
+    }
+    
+    // 特殊处理安卓输入法APP的下载
+    if (resourceId === 'res_android_input') {
+        // 这里可以设置真实的下载链接
+        const downloadLink = 'https://fnnbtlfqjfgbifhhnuij.storage.supabase.co/storage/v1/s3'; // 模拟下载链接
+        showNotification('🚀 正在准备下载安卓输入法APP...', 'success');
+        
+        // 创建一个隐藏的下载链接并触发点击
+        const link = document.createElement('a');
+        link.href = downloadLink;
+        link.download = '琳凯蒂亚语输入法.apk';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        return;
+    }
+    
+    showNotification('🚀 下载已开始，请稍候...', 'success');
+    
+    // 这里可以实现实际的下载逻辑
 }
 
 function previewResource(resourceId) {
@@ -3292,7 +3329,8 @@ function getResourceCategoryIcon(category) {
         'vocabulary': '📚',
         'exercises': '🎯',
         'tools': '🛠️',
-        'media': '🎧'
+        'media': '🎧',
+        'app': '🎮'
     };
     return icons[category] || '📄';
 }
@@ -3491,6 +3529,27 @@ function filterResources(category) {
             language: '多语言界面',
             preview: '包含听力、阅读、语法、词汇四大模块，自动评分和详细解析。',
             features: ['自动评分', '详细解析', '水平报告', '学习建议']
+        },
+
+        // 应用下载
+        {
+            id: 'res_android_input',
+            title: '📱 安卓琳语输入法APP',
+            description: '专为安卓设备设计的琳凯蒂亚语输入法，支持汉语输入，目前是开发版',
+            author: '琳凯蒂亚语社区开发组',
+            category: 'app',
+            type: '移动应用',
+            size: '12.8 MB',
+            downloads: 226,
+            rating: 4.8,
+            tags: ['输入法', '安卓', '工具'],
+            uploadTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            difficulty: '不限',
+            language: '琳凯蒂亚语',
+            preview: '支持多种输入方式，包含词库更新、云同步、个性化设置等功能。',
+            features: ['拼音输入', '手写识别', '语音输入', '词库更新', '云同步'],
+            // 添加下载链接属性
+            downloadLink: '#'
         }
     ];
     
@@ -3510,7 +3569,8 @@ function getCategoryDisplayName(category) {
         'vocabulary': '词汇表',
         'exercises': '练习题',
         'tools': '学习工具',
-        'media': '音视频'
+        'media': '音视频',
+        'app': '应用下载'
     };
     return names[category] || '未知分类';
 }
@@ -3581,6 +3641,24 @@ function downloadResource(resourceId) {
         return;
     }
     
+    // 特殊处理安卓输入法APP的下载
+    if (resourceId === 'res_android_input') {
+        // 这里可以设置真实的下载链接
+        const downloadLink = 'https://fnnbtlfqjfgbifhhnuij.storage.supabase.co/storage/v1/s3'; // 下载链接
+        showNotification('🚀 正在准备下载安卓输入法APP...', 'success');
+        
+        // 创建一个隐藏的下载链接并触发点击
+        const link = document.createElement('a');
+        link.href = downloadLink;
+        link.download = '琳凯蒂亚语输入法.apk';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        return;
+    }
+    
     showNotification('🚀 下载已开始，请稍候...', 'success');
     
     // 这里可以实现实际的下载逻辑
@@ -3633,6 +3711,7 @@ function handleLogin(e) {
     e.preventDefault();
     
     console.log('🔑 开始处理登录...');
+
     
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
