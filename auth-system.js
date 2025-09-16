@@ -17,7 +17,7 @@ class AuthSystem {
                 id: 'admin_001',
                 username: '琳凯蒂亚',
                 email: '1778181360@qq.com',
-                password: 'Rincatian-2015!', // 使用明文密码，在login方法中特殊处理
+                password: this.hashPassword('Rincatian-2015!'), // 使用哈希密码存储
                 role: '管理员',
                 rank: '星帝级管理员',
                 avatar: '👑',
@@ -30,13 +30,13 @@ class AuthSystem {
             this.saveUsers();
             console.log('🔧 默认管理员账户已创建');
             console.log('用户名: 琳凯蒂亚');
-            console.log('密码: Rincatian-2015!');
+            console.log('请使用默认密码 R***! 登录后立即修改密码');
         } else {
-            // 确保现有admin用户的密码是正确的
+            // 确保现有admin用户的密码是正确的哈希值
             const admin = this.users.find(user => user.username === '琳凯蒂亚');
-            if (admin && admin.password !== 'Rincatian-2015!' && admin.password !== this.hashPassword('Rincatian-2015!')) {
+            if (admin && admin.password === 'Rincatian-2015!') {
                 console.log('🔧 修复管理员密码...');
-                admin.password = 'Rincatian-2015!'; // 设置为明文密码
+                admin.password = this.hashPassword('Rincatian-2015!'); // 转换为哈希密码
                 this.saveUsers();
                 console.log('✅ 管理员密码已修复');
             }
@@ -166,13 +166,13 @@ class AuthSystem {
 
             console.log('👤 找到用户:', { id: user.id, username: user.username, role: user.role });
             
-            // 验证密码 - 特殊处理admin用户和普通用户
+            // 验证密码 - 统一使用哈希验证
             let passwordValid = false;
             
-            // 检查是否为管理员用户
+            // 检查是否为管理员用户（仅用于日志记录）
             const isAdminUser = user.username === '琳凯蒂亚';
             
-            if (isAdminUser && password === 'Rincatian-2015!') {
+            if (isAdminUser.password === this.hashPassword('Rincatian-2015!')){
                 // admin用户的特殊处理：直接验证明文密码
                 passwordValid = true;
                 console.log('✅ 管理员密码验证成功（明文验证）');
@@ -181,10 +181,14 @@ class AuthSystem {
                 passwordValid = true;
                 console.log('✅ 普通用户密码验证成功（哈希验证）');
             } else {
-                // 双重验证：也尝试明文密码（用于兼容性）
+                // 双重验证：也尝试明文密码（用于兼容性，但会提示需要更新密码）
                 if (user.password === password) {
                     passwordValid = true;
                     console.log('✅ 密码验证成功（明文兼容验证）');
+                    // 如果是明文密码，建议用户更新密码
+                    if (isAdminUser) {
+                        console.warn('⚠️ 检测到管理员账户使用明文密码，请尽快修改密码以确保安全');
+                    }
                 }
             }
 
@@ -496,19 +500,34 @@ class AuthSystem {
 
     // 重置密码（仅管理员）
     resetPassword(userId, newPassword) {
-        if (!this.isAdmin()) {
-            throw new Error('权限不足');
-        }
+        // 返回Promise以支持异步操作
+        return new Promise((resolve, reject) => {
+            try {
+                if (!this.isAdmin()) {
+                    reject(new Error('权限不足'));
+                    return;
+                }
 
-        const user = this.users.find(u => u.id === userId);
-        if (!user) {
-            throw new Error('用户不存在');
-        }
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    reject(new Error('用户不存在'));
+                    return;
+                }
 
-        user.password = this.hashPassword(newPassword);
-        this.saveUsers();
+                // 验证新密码强度
+                if (newPassword.length < 8) {
+                    reject(new Error('新密码至少需要8个字符'));
+                    return;
+                }
 
-        return { success: true, message: '密码已重置' };
+                user.password = this.hashPassword(newPassword);
+                this.saveUsers();
+
+                resolve({ success: true, message: '密码已重置' });
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 }
 

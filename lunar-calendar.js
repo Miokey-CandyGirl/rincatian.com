@@ -135,9 +135,9 @@ static LUNAR_DATA = {
     2021: [0, 29, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30],
     2022: [1, 29, 30, 29, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29],
     2023: [1, 29, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30],
-    2024: [0, 29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 29],
-    2025: [0, 29, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30],
-    2026: [1, 29, 30, 29, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30],
+    2024: [0, 29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 118],
+    2025: [6, 29, 30, 29, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30],
+    2026: [0, 29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30],
     2027: [0, 29, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30],
     2028: [1, 29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30],
     2029: [0, 29, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29],
@@ -337,8 +337,8 @@ static LUNAR_DATA = {
             return this.simpleSolarToLunar(year, month, day);
         }
         
-        // 基准日期：1900年1月31日（农历1900年正月初一）
-        const baseDate = new Date(1900, 0, 31);
+        // 基准日期：1900年2月1日（农历4597年正月初一）
+        const baseDate = new Date(1900, 1, 1);
         const targetDate = new Date(year, month - 1, day);
         
         // 计算相差天数
@@ -369,6 +369,7 @@ static LUNAR_DATA = {
         }
         
         let leapMonth = monthDays[0]; // 闰月月份
+        let isLeapMonth = false;
         
         // 找到目标日期所在的农历月
         for (let i = 1; i <= 12; i++) {
@@ -382,33 +383,27 @@ static LUNAR_DATA = {
             
             // 检查闰月
             if (leapMonth > 0 && i === leapMonth) {
-                const leapDays = monthDays[leapMonth];
+                const leapDays = monthDays[13]; // 闰月天数在索引13位置
                 if (diffDays < leapDays) {
                     lunarMonth = leapMonth;
                     lunarDay = diffDays + 1;
-                    // 标记为闰月
-                    leapMonth = -leapMonth; // 用负数表示闰月
+                    isLeapMonth = true; // 标记为闰月
                     break;
                 }
                 diffDays -= leapDays;
             }
         }
         
-        // 判断是否为闰月
-        const isLeapMonth = leapMonth < 0;
-        if (isLeapMonth) {
-            lunarMonth = -leapMonth; // 恢复正确的月份
-        }
-        
         // 正确计算生肖和干支（基于60年循环）
-        // 使用已知的参考年份：2025年是乙巳年（蛇年）
-        // 2025年对应的天干索引是1（乙），地支索引是5（巳）
-        const referenceYear = 2025;
-        const referenceStemIndex = 1; // 乙
-        const referenceBranchIndex = 5; // 巳
+        // 使用已知的参考年份：1984年是甲子年（鼠年）
+        // 1984年对应的天干索引是0（甲），地支索引是0（子）
+        const referenceYear = 1984;
+        const referenceStemIndex = 0; // 甲
+        const referenceBranchIndex = 0; // 子
         
-        const stemIndex = (referenceStemIndex + (year - referenceYear) + 10) % 10;
-        const branchIndex = (referenceBranchIndex + (year - referenceYear) + 12) % 12;
+        // 计算天干地支索引
+        const stemIndex = (referenceStemIndex + (lunarYear - referenceYear) + 10) % 10;
+        const branchIndex = (referenceBranchIndex + (lunarYear - referenceYear) + 12) % 12;
         
         return {
             lunarYear: lunarYear,
@@ -418,7 +413,7 @@ static LUNAR_DATA = {
             zodiac: this.ZODIAC_ANIMALS[branchIndex],
             heavenlyStem: this.HEAVENLY_STEMS[stemIndex],
             earthlyBranch: this.EARTHLY_BRANCHES[branchIndex],
-            lunarMonthName: this.LUNAR_MONTH_NAMES[lunarMonth],
+            lunarMonthName: isLeapMonth ? "" + this.LUNAR_MONTH_NAMES[lunarMonth] : this.LUNAR_MONTH_NAMES[lunarMonth],
             lunarDayName: this.LUNAR_DAY_NAMES[lunarDay],
             isLeap: isLeapMonth
         };

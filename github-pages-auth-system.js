@@ -59,7 +59,7 @@
 
                     // 2. 在用户表中创建档案
                     const userProfile = {
-                        auth_id: authData.user.id,
+                        id: authData.user.id,  // 使用auth_id作为主键
                         username: userData.username,
                         email: userData.email,
                         avatar: userData.username.charAt(0).toUpperCase(),
@@ -146,7 +146,7 @@
                     const { data, error } = await this.supabase
                         .from(this.TABLES.USERS)
                         .select('*')
-                        .eq('auth_id', authId)
+                        .eq('id', authId)
                         .single();
 
                     if (error) {
@@ -236,6 +236,59 @@
                     'admin': '星帝级管理员'
                 };
                 return roleRanks[role] || '见习光线使者';
+            }
+
+            // 获取所有用户（仅管理员）
+            async getAllUsers() {
+                if (!this.isAdmin()) {
+                    throw new Error('权限不足');
+                }
+
+                try {
+                    const { data, error } = await this.supabase
+                        .from(this.TABLES.USERS)
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        throw new Error(`获取用户列表失败: ${error.message}`);
+                    }
+
+                    return data;
+                } catch (error) {
+                    console.error('获取所有用户失败:', error);
+                    throw error;
+                }
+            }
+
+            // 删除用户
+            async deleteUser(userId) {
+                if (!this.isAdmin()) {
+                    throw new Error('权限不足');
+                }
+
+                if (userId === this.currentUser.id) {
+                    throw new Error('不能删除自己的账户');
+                }
+
+                try {
+                    // 在新的表结构中，id就是auth_id，直接删除Auth用户
+                    await this.supabase.auth.admin.deleteUser(userId);
+                } catch (authError) {
+                    console.warn('删除Auth用户失败:', authError);
+                }
+
+                // 删除用户档案
+                const { error } = await this.supabase
+                    .from(this.TABLES.USERS)
+                    .delete()
+                    .eq('id', userId);
+
+                if (error) {
+                    throw new Error(`删除用户失败: ${error.message}`);
+                }
+
+                return { success: true, message: '用户已删除' };
             }
 
             // 更新UI（保持与原系统的兼容性）

@@ -59,7 +59,7 @@
                     <p>此页面仅限管理员访问，请先登录管理员账户。</p>
                     <p><strong>默认管理员账户：</strong></p>
                     <p>用户名: 琳凯蒂亚</p>
-                    <p>密码: Rincatian-2015!</p>
+                    <p>密码: 请使用默认密码登录之后立即修改</p>
                     <button class="btn btn-primary" onclick="showLoginModal()">立即登录</button>
                 </div>
             </div>
@@ -436,6 +436,34 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">创建用户</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 密码重置模态框 -->
+    <div class="modal" id="resetPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>重置用户密码</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm">
+                    <input type="hidden" id="resetUserId">
+                    <div class="form-group">
+                        <label for="resetUsername">用户名</label>
+                        <input type="text" id="resetUsername" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">新密码</label>
+                        <input type="password" id="newPassword" required minlength="8" placeholder="至少8个字符">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">确认新密码</label>
+                        <input type="password" id="confirmPassword" required minlength="8">
+                    </div>
+                    <button type="submit" class="btn btn-primary">重置密码</button>
                 </form>
             </div>
         </div>

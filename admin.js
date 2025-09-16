@@ -168,7 +168,33 @@ class AdminPanel {
         // 绑定操作按钮
         this.bindActionButtons();
         
+        // 绑定模态框关闭事件
+        this.bindModalCloseEvents();
+        
         console.log('✅ 所有事件绑定完成');
+    }
+    
+    // 绑定模态框关闭事件
+    bindModalCloseEvents() {
+        // 获取所有模态框
+        const modals = document.querySelectorAll('.modal');
+        
+        modals.forEach(modal => {
+            // 点击关闭按钮关闭模态框
+            const closeBtn = modal.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.remove('show');
+                });
+            }
+            
+            // 点击模态框外部关闭模态框
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        });
     }
     
     // 绑定标签页切换事件
@@ -236,6 +262,15 @@ class AdminPanel {
                 this.showAddUserModal();
             });
         }
+        
+        // 绑定添加用户表单提交事件
+        const addUserForm = document.getElementById('addUserForm');
+        if (addUserForm) {
+            addUserForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.addUser();
+            });
+        }
     }
     
     // 绑定设置按钮
@@ -252,6 +287,20 @@ class AdminPanel {
         if (clearDataBtn) {
             clearDataBtn.addEventListener('click', () => {
                 this.clearData();
+            });
+        }
+        
+        // 绑定修改管理员密码按钮
+        const changeAdminPasswordBtn = document.getElementById('changeAdminPasswordBtn');
+        if (changeAdminPasswordBtn) {
+            changeAdminPasswordBtn.addEventListener('click', () => {
+                // 获取当前管理员用户ID
+                const currentUser = this.getCurrentUser();
+                if (currentUser) {
+                    this.showResetPasswordModal(currentUser.id, currentUser.username);
+                } else {
+                    alert('无法获取当前用户信息');
+                }
             });
         }
     }
@@ -513,6 +562,15 @@ class AdminPanel {
                 btn.addEventListener('click', handler);
             }
         });
+        
+        // 绑定重置密码表单提交事件
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        if (resetPasswordForm) {
+            resetPasswordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.resetUserPassword();
+            });
+        }
     }
     
     // 切换标签
@@ -771,6 +829,7 @@ class AdminPanel {
                     <div class="action-buttons">
                         <button class="btn-view" onclick="window.adminPanel.viewUserDetail('${user.id}')">详情</button>
                         <button class="btn-edit" onclick="window.adminPanel.editUser('${user.id}')">编辑</button>
+                        <button class="btn-reset" onclick="window.adminPanel.showResetPasswordModal('${user.id}', '${user.username}')">重置密码</button>
                         ${user.role !== '管理员' ? 
                             `<button class="btn-delete" onclick="window.adminPanel.deleteUser('${user.id}')">删除</button>` : 
                             '<span style="color: #666; font-size: 0.9rem;">-</span>'}
@@ -1098,6 +1157,79 @@ class AdminPanel {
             console.log('🗑️ 删除用户:', userId);
             alert('用户删除成功！');
             this.loadUserData();
+        }
+    }
+    
+    // 显示重置密码模态框
+    showResetPasswordModal(userId, username) {
+        console.log('🔑 显示重置密码模态框:', { userId, username });
+        
+        const modal = document.getElementById('resetPasswordModal');
+        if (modal) {
+            // 设置用户信息
+            document.getElementById('resetUserId').value = userId;
+            document.getElementById('resetUsername').value = username;
+            
+            // 清空密码字段
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            
+            // 显示模态框
+            modal.classList.add('show');
+        }
+    }
+    
+    // 重置用户密码
+    resetUserPassword() {
+        try {
+            const userId = document.getElementById('resetUserId').value;
+            const username = document.getElementById('resetUsername').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            console.log('🔄 重置用户密码:', { userId, username });
+            
+            // 验证数据
+            if (!newPassword || !confirmPassword) {
+                alert('请填写所有密码字段');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('两次输入的密码不一致');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('密码至少需要8个字符');
+                return;
+            }
+            
+            // 使用 authSystem 重置密码
+            if (window.authSystem && typeof window.authSystem.resetPassword === 'function') {
+                window.authSystem.resetPassword(userId, newPassword)
+                    .then(result => {
+                        alert('密码重置成功！');
+                        
+                        // 关闭模态框
+                        const modal = document.getElementById('resetPasswordModal');
+                        if (modal) {
+                            modal.classList.remove('show');
+                        }
+                        
+                        // 重新加载用户数据
+                        this.loadUserData();
+                    })
+                    .catch(error => {
+                        console.error('密码重置失败:', error);
+                        alert('密码重置失败: ' + error.message);
+                    });
+            } else {
+                alert('密码重置功能暂不可用');
+            }
+        } catch (error) {
+            console.error('密码重置失败:', error);
+            alert('密码重置失败: ' + error.message);
         }
     }
     

@@ -606,7 +606,7 @@
     color: #4ecdc4;
 }
 
-/* 故事内容样式 */
+/* 传说故事 */
 .story-content {
     position: relative;
     display: none;
@@ -616,6 +616,141 @@
 .story-content.active {
     display: block;
     animation: fadeInUp 0.6s ease-out;
+}
+
+/* 继续阅读钩子样式 */
+.story-continuation-hook {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.7));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: none; /* 初始状态隐藏 */
+}
+
+.story-continuation-hook:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.story-continuation-hook::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: rotate 10s linear infinite;
+    z-index: 0;
+}
+
+.hook-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hook-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.hook-title {
+    color: #ffd700;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.hook-description {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+.hook-teaser {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 4px solid #4ecdc4;
+}
+
+.hook-teaser p {
+    color: #4ecdc4;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.hook-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.hook-list li {
+    color: #e0e0e0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hook-list li:last-child {
+    border-bottom: none;
+}
+
+.hook-list li::before {
+    content: '✧';
+    color: #ffd700;
+    font-size: 1.2rem;
+}
+
+.hook-cta {
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(76, 205, 196, 0.2));
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.hook-cta p {
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    animation: glow 3s infinite;
+}
+
+/* 动画效果 */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .story-header {
@@ -895,6 +1030,126 @@
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
+}
+
+/* 文化社会制度中的介绍 */
+.society-card.cultural-introduction {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.7));
+    border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.society-card.cultural-introduction h3 {
+    color: #ff6b6b;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    background: linear-gradient(45deg, #ff6b6b, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 国旗展示样式 */
+.flag-display {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+}
+
+.flag-container {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.flag-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.rincatian-flag-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.rincatian-flag-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+}
+
+.flag-caption {
+    color: #ffd700;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.cultural-description {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.cultural-description > p {
+    color: #e0e0e0;
+    line-height: 1.7;
+    font-size: 1.1rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.cultural-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.cultural-section h4 {
+    color: #ff6b6b;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.cultural-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.cultural-item:hover {
+    background: rgba(255, 107, 107, 0.1);
+    transform: translateY(-3px);
+}
+
+.cultural-item:last-child {
+    margin-bottom: 0;
+}
+
+.cultural-item h5 {
+    color: #ffd700;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.cultural-item p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin: 0;
 }
 
 /* 角色列表 */

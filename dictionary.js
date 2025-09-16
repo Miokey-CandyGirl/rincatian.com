@@ -371,7 +371,7 @@ function initAlphabetFilter() {
     if (!alphabetFilter) return;
     
     // 琳凯蒂亚语41个字母
-    const letters = ['a', 'ā', 'â', 'b', 'c', 'ĉ', 'd', 'e', 'ē', 'ê', 'f', 'g', 'h', 'i', 'ï', 'î', 'j', 'k', 'l', 'm', 'n', 'o', 'ō', 'ô', 'p', 'q', 'r', 's', 'ŝ', 't', 'u', 'ü', 'û', 'v', 'w', 'x', 'y', 'z', 'ẑ', 'θ', 'ŋ'];
+    const letters = ['A', 'Ā', 'Â', 'B', 'C', 'Ĉ', 'D', 'E', 'Ē', 'Ê', 'F', 'G', 'H', 'I', 'Ï', 'Î', 'J', 'K', 'L', 'M', 'N', 'O', 'Ō', 'Ô', 'P', 'Q', 'R', 'S', 'Ŝ', 'T', 'U', 'Ü', 'Û', 'V', 'W', 'X', 'Y', 'Z', 'Ẑ', 'Θ', 'Ŋ'];
     
     // 添加"全部"按钮
     const allBtn = document.createElement('button');
@@ -1004,21 +1004,21 @@ function loadVowels() {
     vowelsList.innerHTML = '';
     
     const vowels = [
-        { char: 'a', pronunciation: 'ä', ipa: '[ä]' },
-        { char: 'e', pronunciation: 'e', ipa: '[e̞]' },
-        { char: 'i', pronunciation: 'i', ipa: '[i]' },
-        { char: 'o', pronunciation: 'o', ipa: '[ɑʊ̯]' },
-        { char: 'u', pronunciation: 'u', ipa: '[u]' },
-        { char: 'ā', pronunciation: 'ai', ipa: '[aɪ̯]' },
-        { char: 'ē', pronunciation: 'ei', ipa: '[eɪ̯]' },
-        { char: 'ï', pronunciation: 'iz', ipa: '[z̩]' },
-        { char: 'ō', pronunciation: 'ou', ipa: '[oʊ̯]' },
-        { char: 'ü', pronunciation: 'yu', ipa: '[y]' },
-        { char: 'â', pronunciation: 'ae', ipa: '[æ]' },
-        { char: 'ê', pronunciation: 'eh', ipa: '[ɤ]' },
-        { char: 'î', pronunciation: 'iv', ipa: '[ɸ]' },
-        { char: 'ô', pronunciation: 'oe', ipa: '[œ]' },
-        { char: 'û', pronunciation: 'uo', ipa: '[o]' }
+        { char: 'A', pronunciation: 'a', ipa: '[ä]' },
+        { char: 'E', pronunciation: 'e', ipa: '[e̞]' },
+        { char: 'I', pronunciation: 'i', ipa: '[i]' },
+        { char: 'O', pronunciation: 'o', ipa: '[ɑʊ̯]' },
+        { char: 'U', pronunciation: 'u', ipa: '[u]' },
+        { char: 'Ā', pronunciation: 'ai', ipa: '[aɪ̯]' },
+        { char: 'Ē', pronunciation: 'ei', ipa: '[eɪ̯]' },
+        { char: 'Ï', pronunciation: 'iz', ipa: '[z̩]' },
+        { char: 'Ō', pronunciation: 'ou', ipa: '[oʊ̯]' },
+        { char: 'Ü', pronunciation: 'yu', ipa: '[y]' },
+        { char: 'Â', pronunciation: 'ae', ipa: '[æ]' },
+        { char: 'Ê', pronunciation: 'eh', ipa: '[ɤ]' },
+        { char: 'Î', pronunciation: 'iv', ipa: '[ɸ]' },
+        { char: 'Ô', pronunciation: 'oe', ipa: '[œ]' },
+        { char: 'Û', pronunciation: 'uo', ipa: '[o]' }
     ];
     
     vowels.forEach(vowel => {
@@ -1041,32 +1041,32 @@ function loadConsonants() {
     consonantsList.innerHTML = '';
     
     const consonants = [
-        { char: 'b', pronunciation: 'b', ipa: '[pɑʊ̯]' },
-        { char: 'c', pronunciation: 'ts', ipa: '[tsʰɑʊ̯]' },
-        { char: 'ĉ', pronunciation: 'ch', ipa: '[tʂʰɑʊ̯]/[tɕʰɑʊ̯]' },
-        { char: 'd', pronunciation: 'd', ipa: '[tɑʊ̯]' },
-        { char: 'f', pronunciation: 'f', ipa: '[fɑʊ̯]' },
-        { char: 'g', pronunciation: 'g', ipa: '[kɑʊ̯]/[k]' },
-        { char: 'h', pronunciation: 'h', ipa: '[xɑʊ̯]' },
-        { char: 'j', pronunciation: 'j', ipa: '[tɕɑʊ̯]' },
-        { char: 'k', pronunciation: 'k', ipa: '[kʰɑʊ̯]' },
-        { char: 'l', pronunciation: 'l', ipa: '[lɑʊ̯]/[ɭ]' },
-        { char: 'm', pronunciation: 'm', ipa: '[mɑʊ̯]/[m̚]' },
-        { char: 'n', pronunciation: 'n', ipa: '[nɑʊ̯]/[n̚]' },
-        { char: 'p', pronunciation: 'p', ipa: '[pʰɑʊ̯]' },
-        { char: 'q', pronunciation: 'q', ipa: '[tɕʰɑʊ̯]' },
-        { char: 'r', pronunciation: 'r', ipa: '[ɻɑʊ̯]/[l]/[ɚ]' },
-        { char: 's', pronunciation: 's', ipa: '[sɑʊ̯]' },
-        { char: 'ŝ', pronunciation: 'sh', ipa: '[ʂɑʊ̯]/[ɕɑʊ̯]' },
-        { char: 't', pronunciation: 't', ipa: '[tʰɑʊ̯]' },
-        { char: 'v', pronunciation: 'v', ipa: '[vɑʊ̯]' },
-        { char: 'w', pronunciation: 'w', ipa: '[wɑʊ̯]' },
-        { char: 'x', pronunciation: 'x', ipa: '[ɕɑʊ̯]' },
-        { char: 'y', pronunciation: 'y', ipa: '[jɑʊ̯]' },
-        { char: 'z', pronunciation: 'z', ipa: '[tsɑʊ̯]/[θɑʊ̯]' },
-        { char: 'ẑ', pronunciation: 'zh', ipa: '[tʂɑʊ̯]/[tɕɑʊ̯]' },
-        { char: 'θ', pronunciation: 'th', ipa: '[θɑʊ̯]' },
-        { char: 'ŋ', pronunciation: 'ng', ipa: '[ŋɑʊ̯]' }
+        { char: 'B', pronunciation: 'b', ipa: '[pɑʊ̯]' },
+        { char: 'C', pronunciation: 'c', ipa: '[tsʰɑʊ̯]' },
+        { char: 'Ĉ', pronunciation: 'ch', ipa: '[tʂʰɑʊ̯]/[tɕʰɑʊ̯]' },
+        { char: 'D', pronunciation: 'd', ipa: '[tɑʊ̯]' },
+        { char: 'F', pronunciation: 'f', ipa: '[fɑʊ̯]' },
+        { char: 'G', pronunciation: 'g', ipa: '[kɑʊ̯]/[k]' },
+        { char: 'H', pronunciation: 'h', ipa: '[xɑʊ̯]' },
+        { char: 'J', pronunciation: 'j', ipa: '[tɕɑʊ̯]' },
+        { char: 'K', pronunciation: 'k', ipa: '[kʰɑʊ̯]' },
+        { char: 'L', pronunciation: 'l', ipa: '[lɑʊ̯]/[ɭ]' },
+        { char: 'M', pronunciation: 'm', ipa: '[mɑʊ̯]/[m̚]' },
+        { char: 'N', pronunciation: 'n', ipa: '[nɑʊ̯]/[n̚]' },
+        { char: 'P', pronunciation: 'p', ipa: '[pʰɑʊ̯]' },
+        { char: 'Q', pronunciation: 'q', ipa: '[tɕʰɑʊ̯]' },
+        { char: 'R', pronunciation: 'r', ipa: '[ɻɑʊ̯]/[l]/[ɚ]' },
+        { char: 'S', pronunciation: 's', ipa: '[sɑʊ̯]' },
+        { char: 'Ŝ', pronunciation: 'sh', ipa: '[ʂɑʊ̯]/[ɕɑʊ̯]' },
+        { char: 'T', pronunciation: 't', ipa: '[tʰɑʊ̯]' },
+        { char: 'V', pronunciation: 'v', ipa: '[vɑʊ̯]' },
+        { char: 'W', pronunciation: 'w', ipa: '[wɑʊ̯]' },
+        { char: 'X', pronunciation: 'x', ipa: '[ɕɑʊ̯]' },
+        { char: 'Y', pronunciation: 'y', ipa: '[jɑʊ̯]' },
+        { char: 'Z', pronunciation: 'z', ipa: '[tsɑʊ̯]/[θɑʊ̯]' },
+        { char: 'Ẑ', pronunciation: 'zh', ipa: '[tʂɑʊ̯]/[tɕɑʊ̯]' },
+        { char: 'Θ', pronunciation: 'th', ipa: '[θɑʊ̯]' },
+        { char: 'Ŋ', pronunciation: 'ng', ipa: '[ŋɑʊ̯]' }
     ];
     
     consonants.forEach(consonant => {

@@ -25,6 +25,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (targetLink && targetSection) {
             targetLink.classList.add('active');
             targetSection.classList.add('active');
+            
+            // 特殊处理：当切换到非传说故事标签时，隐藏"未完待续"内容
+            if (targetTab !== 'legends') {
+                const continuationHook = document.getElementById('continuation');
+                if (continuationHook) {
+                    continuationHook.style.display = 'none';
+                }
+                
+                // 同时确保所有故事内容都隐藏
+                storyContents.forEach(content => content.classList.remove('active'));
+                
+                // 移除所有故事标签的活动状态
+                storyTabs.forEach(tab => tab.classList.remove('active'));
+            }
         }
     }
     
@@ -49,23 +63,58 @@ document.addEventListener('DOMContentLoaded', function() {
         storyTabs.forEach(tab => tab.classList.remove('active'));
         storyContents.forEach(content => content.classList.remove('active'));
         
-        // 添加活动状态到目标元素
-        const targetTab = document.querySelector(`[data-story="${targetStory}"]`);
-        const targetContent = document.getElementById(targetStory);
-        
-        if (targetTab && targetContent) {
-            targetTab.classList.add('active');
-            targetContent.classList.add('active');
+        // 特殊处理"未完待续"标签
+        if (targetStory === 'continuation') {
+            // 移除所有故事内容的活动状态
+            document.querySelectorAll('.story-content').forEach(content => {
+                content.classList.remove('active');
+            });
             
-            // 添加动画效果
-            targetContent.style.opacity = '0';
-            targetContent.style.transform = 'translateY(20px)';
+            // 添加活动状态到目标标签
+            const targetTab = document.querySelector(`[data-story="${targetStory}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
             
-            setTimeout(() => {
-                targetContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                targetContent.style.opacity = '1';
-                targetContent.style.transform = 'translateY(0)';
-            }, 50);
+            // 显示继续阅读钩子
+            const continuationHook = document.getElementById('continuation');
+            if (continuationHook) {
+                continuationHook.style.display = 'block';
+                // 添加动画效果
+                continuationHook.style.opacity = '0';
+                continuationHook.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    continuationHook.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    continuationHook.style.opacity = '1';
+                    continuationHook.style.transform = 'translateY(0)';
+                }, 50);
+            }
+        } else {
+            // 添加活动状态到目标元素
+            const targetTab = document.querySelector(`[data-story="${targetStory}"]`);
+            const targetContent = document.getElementById(targetStory);
+            
+            if (targetTab && targetContent) {
+                targetTab.classList.add('active');
+                targetContent.classList.add('active');
+                
+                // 添加动画效果
+                targetContent.style.opacity = '0';
+                targetContent.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    targetContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    targetContent.style.opacity = '1';
+                    targetContent.style.transform = 'translateY(0)';
+                }, 50);
+            }
+            
+            // 隐藏继续阅读钩子
+            const continuationHook = document.getElementById('continuation');
+            if (continuationHook) {
+                continuationHook.style.display = 'none';
+            }
         }
     }
     
@@ -429,7 +478,14 @@ function initTianCalendar() {
     // 获取今天的田历日期
     function getTodayTianDate() {
         const today = new Date();
-        return gregorianToTian(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        const tianDate = gregorianToTian(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        
+        // 确保不存在0年
+        if (tianDate.year === 0) {
+            tianDate.year = -1;
+        }
+        
+        return tianDate;
     }
     
     // 公历转田历
@@ -442,9 +498,12 @@ function initTianCalendar() {
         if (daysDiff < 0) {
             // 纪元前
             return calculateTianDateBefore(Math.abs(daysDiff));
-        } else {
+        } else if (daysDiff > 0) {
             // 纪元后
             return calculateTianDateAfter(daysDiff);
+        } else {
+            // 正好是纪元日
+            return { year: 1, month: 1, day: 1 };
         }
     }
     
@@ -485,23 +544,26 @@ function initTianCalendar() {
     
     // 计算纪元前的田历日期
     function calculateTianDateBefore(days) {
-        let year = 0; // 纪元前1年
+        // 注意：没有0年，前1年直接接续元年
+        let year = -1; // 田元前1年
         let month = 12;
         let day = 30; // 12月是30天
         let remainingDays = days;
         
         while (remainingDays > 0) {
-            if (remainingDays >= day) {
-                remainingDays -= day;
+            // 计算当前月份的天数
+            const daysInCurrentMonth = getTianMonthDays(year, month);
+            
+            if (remainingDays >= daysInCurrentMonth) {
+                remainingDays -= daysInCurrentMonth;
                 month--;
                 if (month < 1) {
                     month = 12;
-                    year--;
+                    year--; // 继续向前推年份
                 }
-                day = getTianMonthDays(year, month);
             } else {
-                day -= remainingDays;
-                break;
+                day = daysInCurrentMonth - remainingDays + 1;
+                remainingDays = 0; // 结束循环
             }
         }
         
@@ -510,6 +572,11 @@ function initTianCalendar() {
     
     // 获取田历年份的总天数
     function getTianYearDays(year) {
+        // 处理0年的情况
+        if (year === 0) {
+            year = -1;
+        }
+        
         let totalDays = 0;
         for (let month = 1; month <= 12; month++) {
             totalDays += getTianMonthDays(year, month);
@@ -519,6 +586,11 @@ function initTianCalendar() {
     
     // 获取田历月份的天数
     function getTianMonthDays(year, month) {
+        // 处理0年的情况
+        if (year === 0) {
+            year = -1;
+        }
+        
         if (month === 1 && isLeapYear(year)) {
             return 31; // 闰年的一月是31天
         }
@@ -527,18 +599,40 @@ function initTianCalendar() {
     
     // 判断是否为闰年（简化版，每4年一闰）
     function isLeapYear(year) {
+        // 处理0年的情况
+        if (year === 0) {
+            year = -1;
+        }
+        
+        // 对于负数年份，需要特殊处理
+        if (year < 0) {
+            // 纪元前的年份，使用绝对值计算
+            return Math.abs(year) % 4 === 0;
+        }
         return year % 4 === 0;
     }
     
     // 田历转公历（近似计算）
     function tianToGregorian(tianYear, tianMonth, tianDay) {
-        if (tianYear < 1) {
-            // 纪元前的计算较复杂，这里简化处理
-            const epochDate = new Date(TIAN_CALENDAR.EPOCH_YEAR, TIAN_CALENDAR.EPOCH_MONTH - 1, TIAN_CALENDAR.EPOCH_DAY);
-            return epochDate;
+        // 处理0年的情况
+        if (tianYear === 0) {
+            tianYear = -1;
         }
         
-        // 计算总天数
+        // 从纪元起点开始计算
+        const epochDate = new Date(TIAN_CALENDAR.EPOCH_YEAR, TIAN_CALENDAR.EPOCH_MONTH - 1, TIAN_CALENDAR.EPOCH_DAY);
+        
+        if (tianYear > 0) {
+            // 纪元后的计算
+            return tianToGregorianAfter(epochDate, tianYear, tianMonth, tianDay);
+        } else {
+            // 纪元前的计算
+            return tianToGregorianBefore(epochDate, tianYear, tianMonth, tianDay);
+        }
+    }
+    
+    // 计算纪元后的公历日期
+    function tianToGregorianAfter(epochDate, tianYear, tianMonth, tianDay) {
         let totalDays = 0;
         
         // 加上完整年份的天数
@@ -551,13 +645,33 @@ function initTianCalendar() {
             totalDays += getTianMonthDays(tianYear, m);
         }
         
-        // 加上当月的天数
+        // 加上当月的天数（减去1，因为从第1天开始计算）
         totalDays += tianDay - 1;
         
-        // 从纪元起点开始计算
-        const epochDate = new Date(TIAN_CALENDAR.EPOCH_YEAR, TIAN_CALENDAR.EPOCH_MONTH - 1, TIAN_CALENDAR.EPOCH_DAY);
         const resultDate = new Date(epochDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
+        return resultDate;
+    }
+    
+    // 计算纪元前的公历日期
+    function tianToGregorianBefore(epochDate, tianYear, tianMonth, tianDay) {
+        let totalDays = 0;
         
+        // 从纪元前1年开始向前计算到指定年份
+        for (let y = -1; y > tianYear; y--) {
+            totalDays += getTianYearDays(y);
+        }
+        
+        // 加上目标年份中指定月份之前的天数
+        for (let m = 12; m > tianMonth; m--) {
+            totalDays += getTianMonthDays(tianYear, m);
+        }
+        
+        // 加上目标月份中剩余的天数
+        const daysInTargetMonth = getTianMonthDays(tianYear, tianMonth);
+        totalDays += daysInTargetMonth - tianDay;
+        
+        // 从纪元日期减去总天数
+        const resultDate = new Date(epochDate.getTime() - (totalDays + 1) * 24 * 60 * 60 * 1000);
         return resultDate;
     }
     
@@ -686,10 +800,21 @@ function initTianCalendar() {
 
     // 获取田历日期字符串
     function getTianDateString(year, month, day, isOtherMonth) {
-        const yearPrefix = year < 1 ? '田元前' : '华田';
-        const displayYear = year < 1 ? Math.abs(year) : year;
-        const monthName = TIAN_CALENDAR.MONTH_NAMES[month - 1];
-        return yearPrefix + displayYear + '年' + month + '月' + day + '日';
+        // 确保不存在0年
+        if (year === 0) {
+            year = -1;
+        }
+        
+        let yearStr = '';
+        if (year < 0) {
+            yearStr = '田元前' + Math.abs(year) + '年';
+        } else if (year === 1) {
+            yearStr = '华田元年';
+        } else {
+            yearStr = '华田' + year + '年';
+        }
+        
+        return yearStr + month + '月' + day + '日';
     }
 
     // 获取农历信息（使用真实的农历计算）
@@ -935,14 +1060,27 @@ function initTianCalendar() {
         const subtitleElement = document.getElementById('calendarSubtitle');
         
         if (titleElement && subtitleElement) {
-            const yearPrefix = currentDisplayYear < 1 ? '田元前' : '华田';
-            const displayYear = currentDisplayYear < 1 ? Math.abs(currentDisplayYear) : currentDisplayYear;
+            // 确保不存在0年
+            let displayYear = currentDisplayYear;
+            if (displayYear === 0) {
+                displayYear = -1;
+            }
             
-            titleElement.textContent = yearPrefix + displayYear + '年 ' + TIAN_CALENDAR.MONTH_NAMES[currentDisplayMonth - 1];
+            let yearStr = '';
+            if (displayYear < 0) {
+                yearStr = '田元前' + Math.abs(displayYear) + '年';
+            } else if (displayYear === 1) {
+                yearStr = '华田元年';
+            } else {
+                yearStr = '华田' + displayYear + '年';
+            }
+            
+            titleElement.textContent = yearStr + ' ' + TIAN_CALENDAR.MONTH_NAMES[currentDisplayMonth - 1];
             
             // 显示对应的公历日期范围
-            const firstDay = tianToGregorian(currentDisplayYear, currentDisplayMonth, 1);
-            const lastDay = tianToGregorian(currentDisplayYear, currentDisplayMonth, getTianMonthDays(currentDisplayYear, currentDisplayMonth));
+            const firstDay = tianToGregorian(displayYear, currentDisplayMonth, 1);
+            const daysInMonth = getTianMonthDays(displayYear, currentDisplayMonth);
+            const lastDay = tianToGregorian(displayYear, currentDisplayMonth, daysInMonth);
             subtitleElement.textContent = '对应公历: ' + firstDay.getFullYear() + '.' + (firstDay.getMonth() + 1) + '.' + firstDay.getDate() + ' - ' + lastDay.getFullYear() + '.' + (lastDay.getMonth() + 1) + '.' + lastDay.getDate();
         }
     }
@@ -1002,10 +1140,22 @@ function initTianCalendar() {
         const today = getTodayTianDate();
         const todayGregorian = new Date();
         
-        const yearPrefix = today.year < 1 ? '田元前' : '华田';
-        const displayYear = today.year < 1 ? Math.abs(today.year) : today.year;
+        // 确保不存在0年
+        let displayYear = today.year;
+        if (displayYear === 0) {
+            displayYear = -1;
+        }
         
-        todayInfoElement.innerHTML = '<strong>今天：</strong>' + yearPrefix + displayYear + '年' + today.month + '月' + today.day + '日<br>' +
+        let yearStr = '';
+        if (displayYear < 0) {
+            yearStr = '田元前' + Math.abs(displayYear) + '年';
+        } else if (displayYear === 1) {
+            yearStr = '华田元年';
+        } else {
+            yearStr = '华田' + displayYear + '年';
+        }
+        
+        todayInfoElement.innerHTML = '<strong>今天：</strong>' + yearStr + today.month + '月' + today.day + '日<br>' +
             '<strong>公历：</strong>' + todayGregorian.getFullYear() + '年' + (todayGregorian.getMonth() + 1) + '月' + todayGregorian.getDate() + '日';
     }
     
@@ -1014,10 +1164,22 @@ function initTianCalendar() {
         const currentYearElement = document.getElementById('currentYearValue');
         if (!currentYearElement) return;
         
-        const yearPrefix = currentDisplayYear < 1 ? '田元前' : '华田';
-        const displayYear = currentDisplayYear < 1 ? Math.abs(currentDisplayYear) : currentDisplayYear;
+        // 确保不存在0年
+        let displayYear = currentDisplayYear;
+        if (displayYear === 0) {
+            displayYear = -1;
+        }
         
-        currentYearElement.textContent = yearPrefix + displayYear + '年';
+        let yearStr = '';
+        if (displayYear < 0) {
+            yearStr = '田元前' + Math.abs(displayYear) + '年';
+        } else if (displayYear === 1) {
+            yearStr = '华田元年';
+        } else {
+            yearStr = '华田' + displayYear + '年';
+        }
+        
+        currentYearElement.textContent = yearStr;
         
         // 添加年份更新动画效果
         currentYearElement.style.transform = 'scale(1.1)';

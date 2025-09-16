@@ -44,7 +44,7 @@ class SupabaseAuthSystem {
 
             // 2. 在用户表中创建档案
             const userProfile = {
-                auth_id: authData.user.id,
+                id: authData.user.id,  // 使用auth_id作为主键
                 username: userData.username,
                 email: userData.email,
                 avatar: userData.username.charAt(0).toUpperCase(),
@@ -131,7 +131,7 @@ class SupabaseAuthSystem {
             const { data, error } = await supabase
                 .from(TABLES.USERS)
                 .select('*')
-                .eq('auth_id', authId)
+                .eq('id', authId)
                 .single()
 
             if (error) {

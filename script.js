@@ -598,14 +598,17 @@ function initializeAuthSystem() {
     // 添加全局认证状态监听器
     setupAuthEventListeners();
     
+    // 检查是否在GitHub Pages环境中（通过检查Supabase客户端是否存在）
+    const isGitHubPages = typeof window !== 'undefined' && window.supabaseClient;
+    
     // 检查认证系统是否已加载
-    if (window.authSystem) {
+    if (window.authSystem || isGitHubPages) {
         console.log('新认证系统已加载，使用新系统');
         
         // 验证现有会话
-        if (window.authSystem.currentUser) {
+        if (window.authSystem && window.authSystem.currentUser) {
             console.log('发现现有用户会话:', window.authSystem.currentUser.username);
-            if (!window.authSystem.validateSession()) {
+            if (!window.authSystem.validateSession) {
                 console.log('会话已过期，清除用户信息');
             }
         }
@@ -1562,33 +1565,106 @@ function handleProfileUpdate() {
         // 更新个人资料
         const result = window.authSystem.updateProfile(updateData);
         
-        if (result.success) {
-            // 如果需要修改密码
-            if (oldPassword && newPassword) {
-                try {
-                    const passwordResult = window.authSystem.changePassword(oldPassword, newPassword);
-                    if (passwordResult.success) {
-                        showNewWelcomeMessage('个人资料和密码已成功更新！');
+        // 检查是否是Promise（异步操作）
+        if (result instanceof Promise) {
+            result.then(profileResult => {
+                if (profileResult.success) {
+                    // 如果需要修改密码
+                    if (oldPassword && newPassword) {
+                        try {
+                            // 检查authSystem是否有changePassword方法
+                            if (typeof window.authSystem.changePassword === 'function') {
+                                const passwordResult = window.authSystem.changePassword(newPassword);
+                                if (passwordResult instanceof Promise) {
+                                    passwordResult.then(pwdResult => {
+                                        if (pwdResult.success) {
+                                            showNewWelcomeMessage('个人资料和密码已成功更新！');
+                                        } else {
+                                            alert('个人资料已更新，但密码修改失败：' + pwdResult.message);
+                                        }
+                                    }).catch(error => {
+                                        alert('个人资料已更新，但密码修改失败：' + error.message);
+                                    });
+                                } else {
+                                    if (passwordResult.success) {
+                                        showNewWelcomeMessage('个人资料和密码已成功更新！');
+                                    } else {
+                                        alert('个人资料已更新，但密码修改失败：' + passwordResult.message);
+                                    }
+                                }
+                            } else {
+                                // 如果没有changePassword方法，显示警告
+                                showNewWelcomeMessage('个人资料已成功更新！（注意：当前系统不支持密码修改功能）');
+                            }
+                        } catch (error) {
+                            alert('个人资料已更新，但密码修改失败：' + error.message);
+                        }
                     } else {
-                        alert('个人资料已更新，但密码修改失败：' + passwordResult.message);
+                        showNewWelcomeMessage('个人资料已成功更新！');
                     }
-                } catch (error) {
-                    alert('个人资料已更新，但密码修改失败：' + error.message);
+                    
+                    // 关闭编辑模态框，返回详细信息页面
+                    setTimeout(() => {
+                        showUserDetailedInfo();
+                    }, 1000);
+                    
+                    // 更新全局UI
+                    updateAuthenticationState();
+                    
+                } else {
+                    alert('更新失败：' + profileResult.message);
                 }
-            } else {
-                showNewWelcomeMessage('个人资料已成功更新！');
-            }
-            
-            // 关闭编辑模态框，返回详细信息页面
-            setTimeout(() => {
-                showUserDetailedInfo();
-            }, 1000);
-            
-            // 更新全局UI
-            updateAuthenticationState();
-            
+            }).catch(error => {
+                console.error('更新个人信息错误:', error);
+                alert('更新失败：' + error.message);
+            });
         } else {
-            alert('更新失败：' + result.message);
+            if (result.success) {
+                // 如果需要修改密码
+                if (oldPassword && newPassword) {
+                    try {
+                        // 检查authSystem是否有changePassword方法
+                        if (typeof window.authSystem.changePassword === 'function') {
+                            const passwordResult = window.authSystem.changePassword(newPassword);
+                            if (passwordResult instanceof Promise) {
+                                passwordResult.then(pwdResult => {
+                                    if (pwdResult.success) {
+                                        showNewWelcomeMessage('个人资料和密码已成功更新！');
+                                    } else {
+                                        alert('个人资料已更新，但密码修改失败：' + pwdResult.message);
+                                    }
+                                }).catch(error => {
+                                    alert('个人资料已更新，但密码修改失败：' + error.message);
+                                });
+                            } else {
+                                if (passwordResult.success) {
+                                    showNewWelcomeMessage('个人资料和密码已成功更新！');
+                                } else {
+                                    alert('个人资料已更新，但密码修改失败：' + passwordResult.message);
+                                }
+                            }
+                        } else {
+                            // 如果没有changePassword方法，显示警告
+                            showNewWelcomeMessage('个人资料已成功更新！（注意：当前系统不支持密码修改功能）');
+                        }
+                    } catch (error) {
+                        alert('个人资料已更新，但密码修改失败：' + error.message);
+                    }
+                } else {
+                    showNewWelcomeMessage('个人资料已成功更新！');
+                }
+                
+                // 关闭编辑模态框，返回详细信息页面
+                setTimeout(() => {
+                    showUserDetailedInfo();
+                }, 1000);
+                
+                // 更新全局UI
+                updateAuthenticationState();
+                
+            } else {
+                alert('更新失败：' + result.message);
+            }
         }
         
     } catch (error) {
@@ -1740,6 +1816,7 @@ function showLoginModal() {
             <button onclick="performLogin()" style="background: linear-gradient(45deg, #ffd700, #00bcd4); color: #1a237e; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">进入星球</button>
         </div>
     `);
+
     
     document.body.appendChild(modal);
 }
@@ -2187,80 +2264,85 @@ function updateStatistics() {
     // 1. 优先从 authSystem 获取所有用户（最可靠的数据源）
     if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
         try {
-            const users = window.authSystem.getAllUsers();
-            // 使用管理页面的去重逻辑
-            const uniqueUsers = [];
-            const userIds = new Set();
-            users.forEach(user => {
-                if (user && user.id && !userIds.has(user.id)) {
-                    userIds.add(user.id);
-                    uniqueUsers.push(user);
-                }
-            });
-            userCount = uniqueUsers.length;
-            console.log('📊 从 authSystem 获取用户数:', userCount);
-        } catch (error) {
-            console.warn('⚠️ authSystem 获取失败:', error);
-            
-            // 2. 如果 authSystem 获取失败，从 localStorage 获取 linkaitiya_users
-            try {
-                const storedUsers = localStorage.getItem('linkaitiya_users');
-                if (storedUsers) {
-                    const parsed = JSON.parse(storedUsers);
-                    if (Array.isArray(parsed)) {
-                        // 去重处理，避免重复计数
-                        const uniqueUsers = [];
-                        const userIds = new Set();
-                        parsed.forEach(user => {
-                            if (user && user.id && !userIds.has(user.id)) {
-                                userIds.add(user.id);
-                                uniqueUsers.push(user);
-                            }
-                        });
-                        userCount = uniqueUsers.length;
-                        console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
-                    }
-                }
-            } catch (e) {
-                console.warn('⚠️ 解析 linkaitiya_users 失败:', e);
-            }
-        }
-    } else {
-        // 3. 如果 authSystem 不可用，尝试从 localStorage 获取 linkaitiya_users
-        try {
-            const storedUsers = localStorage.getItem('linkaitiya_users');
-            if (storedUsers) {
-                const parsed = JSON.parse(storedUsers);
-                if (Array.isArray(parsed)) {
-                    // 去重处理，避免重复计数
+            // 检查是否是异步方法
+            const usersResult = window.authSystem.getAllUsers();
+            if (usersResult instanceof Promise) {
+                // 异步方法，需要等待结果
+                usersResult.then(users => {
+                    // 使用管理页面的去重逻辑
                     const uniqueUsers = [];
                     const userIds = new Set();
-                    parsed.forEach(user => {
+                    users.forEach(user => {
                         if (user && user.id && !userIds.has(user.id)) {
                             userIds.add(user.id);
                             uniqueUsers.push(user);
                         }
                     });
                     userCount = uniqueUsers.length;
-                    console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
-                }
+                    console.log('📊 从 authSystem 获取用户数:', userCount);
+                    // 更新UI显示
+                    updateStatisticsUI(userCount);
+                }).catch(error => {
+                    console.warn('⚠️ authSystem 获取失败:', error);
+                    // 回退到localStorage
+                    fallbackToLocalStorage();
+                });
+            } else {
+                // 同步方法
+                const users = usersResult;
+                // 使用管理页面的去重逻辑
+                const uniqueUsers = [];
+                const userIds = new Set();
+                users.forEach(user => {
+                    if (user && user.id && !userIds.has(user.id)) {
+                        userIds.add(user.id);
+                        uniqueUsers.push(user);
+                    }
+                });
+                userCount = uniqueUsers.length;
+                console.log('📊 从 authSystem 获取用户数:', userCount);
+                // 更新UI显示
+                updateStatisticsUI(userCount);
             }
         } catch (error) {
-            console.warn('⚠️ 解析 linkaitiya_users 失败:', error);
+            console.warn('⚠️ authSystem 获取失败:', error);
+            // 回退到localStorage
+            fallbackToLocalStorage();
         }
+    } else {
+        // 回退到localStorage
+        fallbackToLocalStorage();
     }
     
     // 获取今日活跃用户数
     let todayActiveUsers = 0;
     if (window.authSystem && typeof window.authSystem.getAllUsers === 'function') {
         try {
-            const allUsers = window.authSystem.getAllUsers();
-            const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
-            const now = Date.now();
-            todayActiveUsers = allUsers.filter(user => {
-                if (!user.lastLogin) return false;
-                return (now - new Date(user.lastLogin).getTime()) < oneDay;
-            }).length;
+            const allUsersResult = window.authSystem.getAllUsers();
+            if (allUsersResult instanceof Promise) {
+                allUsersResult.then(allUsers => {
+                    const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+                    const now = Date.now();
+                    todayActiveUsers = allUsers.filter(user => {
+                        if (!user.last_login) return false;
+                        return (now - new Date(user.last_login).getTime()) < oneDay;
+                    }).length;
+                    // 更新UI显示
+                    updateTodayActiveUI(todayActiveUsers);
+                }).catch(error => {
+                    console.warn('⚠️ 获取今日活跃用户数失败:', error);
+                });
+            } else {
+                const allUsers = allUsersResult;
+                const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+                const now = Date.now();
+                todayActiveUsers = allUsers.filter(user => {
+                    if (!user.last_login) return false;
+                    return (now - new Date(user.last_login).getTime()) < oneDay;
+                }).length;
+                // 更新UI显示
+                updateTodayActiveUI(todayActiveUsers);
+            }
         } catch (error) {
             console.warn('⚠️ 获取今日活跃用户数失败:', error);
         }
@@ -2300,8 +2382,57 @@ function updateStatistics() {
             animateCounter('todayActive', currentNumber, stats.todayActive, 1000);
         }
     }
-    
-    console.log('📊 首页统计数据已更新:', stats);
+}
+
+// 更新统计UI的辅助函数
+function updateStatisticsUI(userCount) {
+    const totalUsersElement = document.getElementById('totalUsers');
+    if (totalUsersElement) {
+        const currentText = totalUsersElement.textContent.replace(/,/g, '');
+        const currentNumber = parseInt(currentText) || 0;
+        if (currentNumber !== userCount) {
+            animateCounter('totalUsers', currentNumber, userCount, 1000);
+        }
+    }
+}
+
+// 更新今日活跃用户UI的辅助函数
+function updateTodayActiveUI(todayActiveUsers) {
+    const todayActiveElement = document.getElementById('todayActive');
+    if (todayActiveElement) {
+        const currentText = todayActiveElement.textContent.replace(/,/g, '');
+        const currentNumber = parseInt(currentText) || 0;
+        if (currentNumber !== todayActiveUsers) {
+            animateCounter('todayActive', currentNumber, todayActiveUsers, 1000);
+        }
+    }
+}
+
+// 回退到localStorage的辅助函数
+function fallbackToLocalStorage() {
+    try {
+        const storedUsers = localStorage.getItem('linkaitiya_users');
+        if (storedUsers) {
+            const parsed = JSON.parse(storedUsers);
+            if (Array.isArray(parsed)) {
+                // 去重处理，避免重复计数
+                const uniqueUsers = [];
+                const userIds = new Set();
+                parsed.forEach(user => {
+                    if (user && user.id && !userIds.has(user.id)) {
+                        userIds.add(user.id);
+                        uniqueUsers.push(user);
+                    }
+                });
+                const userCount = uniqueUsers.length;
+                console.log('📊 从 localStorage[linkaitiya_users] 获取用户数:', userCount);
+                // 更新UI显示
+                updateStatisticsUI(userCount);
+            }
+        }
+    } catch (error) {
+        console.warn('⚠️ 解析 linkaitiya_users 失败:', error);
+    }
 }
 
 // 数字动画效果
